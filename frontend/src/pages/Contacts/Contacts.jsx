@@ -10,7 +10,7 @@ export default function Contacts() {
             id: 1,
             name: "John",
             lastName: "Michael",
-            proffesionalTitle: "marketing specialist",
+            professionalTitle: "marketing specialist",
             company: "Google",
             email: "jmichael@yahoo.com",
             phoneNumber: "1234567890",
@@ -20,112 +20,62 @@ export default function Contacts() {
             id: 2,
             name: "Sean",
             lastName: "Doe",
-            proffesionalTitle: "sales manager",
+            professionalTitle: "sales manager",
             company: "Google",
             email: "doe2sean@gmail.com",
             phoneNumber: "1234567890",
             status: "lead"
         },
         {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
+            id: 3,
+            name: "Emily",
+            lastName: "Johnson",
+            professionalTitle: "software engineer",
+            company: "Microsoft",
+            email: "emily.j@example.com",
+            phoneNumber: "9876543210",
+            status: "prospect"
+        },
+        {
+            id: 4,
+            name: "Alex",
+            lastName: "Smith",
+            professionalTitle: "finance analyst",
+            company: "Amazon",
+            email: "alex.smith@example.com",
+            phoneNumber: "5551234567",
             status: "lead"
         },
         {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
+            id: 5,
+            name: "Sophia",
+            lastName: "Brown",
+            professionalTitle: "product manager",
+            company: "Apple",
+            email: "sophia.b@example.com",
+            phoneNumber: "7890123456",
+            status: "prospect"
+        },
+        {
+            id: 6,
+            name: "Michael",
+            lastName: "Wilson",
+            professionalTitle: "HR coordinator",
+            company: "Facebook",
+            email: "michael.w@example.com",
+            phoneNumber: "1112223333",
             status: "lead"
         },
         {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            proffesionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
+            id: 7,
+            name: "Ella",
+            lastName: "Davis",
+            professionalTitle: "graphic designer",
+            company: "Adobe",
+            email: "ella.d@example.com",
+            phoneNumber: "4445556666",
+            status: "prospect"
+        }
     ]
 
     return (
@@ -149,7 +99,7 @@ export default function Contacts() {
                             <Table.TextCell>{profile.id}</Table.TextCell>
                             <Table.TextCell>{profile.name}</Table.TextCell>
                             <Table.TextCell>{profile.lastName}</Table.TextCell>
-                            <Table.TextCell>{profile.proffesionalTitle}</Table.TextCell>
+                            <Table.TextCell>{profile.professionalTitle}</Table.TextCell>
                             <Table.TextCell>{profile.company}</Table.TextCell>
                             <Table.TextCell>{profile.email}</Table.TextCell>
                             <Table.TextCell>{profile.phoneNumber}</Table.TextCell>
