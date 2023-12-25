@@ -30,7 +30,8 @@ export default function Navbar() {
                     <li onClick={()=>{navigate('/deals')}}> Deals </li>
                 </ul>
 
-                <img src="https://avatars.githubusercontent.com/u/81866624?v=4" alt="User" id={style.profile}/>
+                <img src="https://avatars.githubusercontent.com/u/81866624?v=4" alt="User" id={style.profile} 
+                onClick={()=>{navigate('/profile')}}/>
             </div>
         </>
     )
