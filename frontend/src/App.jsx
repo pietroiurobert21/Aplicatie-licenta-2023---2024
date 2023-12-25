@@ -6,11 +6,15 @@ import Navbar from './components/Navbar/Navbar.jsx'
 import Login from './pages/Authentication/Login/Login.jsx'
 import { useLocation } from 'react-router-dom'
 
+import Chatbot from './components/Chatbot/Chatbot.jsx'
+
 function Main() {
   const location = useLocation();
 
   return (
     <>
+      <Chatbot />
+
       {location.pathname !== "/login" && <Navbar />}
       <Routes>
         {/* Authentication */}
