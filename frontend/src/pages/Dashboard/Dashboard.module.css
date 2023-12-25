@@ -1,0 +1,18 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: fit-content;
+}
+
+.page_container {
+    padding-left: 7%;
+}
+
+.graph_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 10%;
+}
