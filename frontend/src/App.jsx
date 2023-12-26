@@ -15,9 +15,10 @@ function Main() {
     <>
       <Chatbot />
 
-      {location.pathname !== "/login" && <Navbar />}
+      {location.pathname !== "/login" && location.pathname !== "/" && <Navbar />}
       <Routes>
         {/* Authentication */}
+        <Route path="/" element={<Login />} /> 
         <Route path="/login" element={<Login />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/contacts" element={<Contacts />} />
