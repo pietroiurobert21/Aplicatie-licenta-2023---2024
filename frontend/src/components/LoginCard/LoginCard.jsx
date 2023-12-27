@@ -1,5 +1,5 @@
 import style from './LoginCard.module.css';
-import { TextInput, Button } from 'evergreen-ui';
+import { TextInput, Button, toaster } from 'evergreen-ui';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -9,8 +9,6 @@ export default function LoginCard(props) {
     const [password, setPassword] = useState("");
 
     const loginFunction = async () => {
-        console.log(email, " ", password)
-
         const data = await fetch("http://localhost:3000/users/login", {
             method: "POST",
             headers: {
@@ -20,10 +18,31 @@ export default function LoginCard(props) {
         })
         const response = await data.json();
         if (response.success) {
+            toaster.success("Logged in successfully!", {duration: 2})
+            localStorage.setItem("token", response.token)
+            await checkUserBelongsToOrganization();
+        } else {
+            toaster.danger("Invalid credentials", {
+                description: "Incorrect email or password"
+            })
+        }
+    }
+
+    const checkUserBelongsToOrganization = async () => {
+        const data = await fetch('http://localhost:3000/users/belongsToOrganization', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({email})
+        })
+        const response = await data.json();
+        if (response.success) {
             localStorage.setItem("token", response.token)
             navigate('/contacts')
         } else {
-            alert("Invalid credentials")
+            toaster.notify("You must join or create an organization to continue", { duration: 5 })
+            navigate('/registerToCompany')
         }
     }
 
@@ -39,8 +58,9 @@ export default function LoginCard(props) {
 
             <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
                  onClick={loginFunction}> Login </Button>
+
             <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
-                onClick={props.onClick}> Register </Button>
+                onClick={()=>{navigate('/register')}}> Register </Button>
             </div>
         </>
     )
