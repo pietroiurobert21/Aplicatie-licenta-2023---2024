@@ -2,11 +2,51 @@ import style1 from '../Login/Login.module.css';
 import style2 from './RegisterToCompany.module.css';
 import Background from '../../../assets/background_image.png';
 import { useNavigate } from 'react-router-dom'
-import { TextInput, Button } from 'evergreen-ui'
+import { TextInput, Button, toaster } from 'evergreen-ui'
+import { useState } from 'react'
 
 export default function RegisterToCompany() {
     const navigate = useNavigate()
-    localStorage.removeItem("token")
+    // localStorage.removeItem("token")
+
+    const [companyName, setCompanyName] = useState("")
+    const [companyId, setCompanyId] = useState("")
+
+    const createCompanyFunc = async () => {
+        const data = await fetch("http://localhost:3000/organizations", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken') || ''
+            },
+            body: JSON.stringify({ name: companyName })
+        })
+        const response = await data.json()
+        if (data.status == 201) {
+            toaster.success("Company created successfully")
+            setCompanyId(response.organization.id)
+            await createUserCompanyFunc(response.organization.id)
+        } else {
+            toaster.danger("Error creating company", { description: response.error })
+        }
+    }
+
+    const createUserCompanyFunc = async (companyId) => {
+        const data = await fetch("http://localhost:3000/usersOrganization", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken') || ''
+            },
+            body: JSON.stringify({ role: "admin", organizationId: companyId,  userId: localStorage.getItem("userId")})
+        })
+        const response = await data.json()
+        if (data.status == 201) {
+            navigate("/")
+        } else {
+            toaster.danger("Error creating company", { description: response.error })
+        }
+    }
 
     return (
         <>
@@ -22,9 +62,9 @@ export default function RegisterToCompany() {
 
                     <div className={style2.card2}>
                         <h5> or create one </h5>
-                        <TextInput name="text-input-company" placeholder="Company Name" />
+                        <TextInput name="text-input-company" placeholder="Company Name" onChange={(e)=>{setCompanyName(e.target.value)}} />
                         <TextInput name="text-input-employees" type="number" placeholder="Number of employees"/>
-                        <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}> Create Company </Button>
+                        <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}} onClick={createCompanyFunc}> Create Company </Button>
                         <Button appearance="default" intent="danger" style={{width: "17.5rem", fontSize:"1rem"}}
                             onClick={()=>{navigate('/')}}> LogOut </Button>
                     </div>

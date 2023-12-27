@@ -7,7 +7,7 @@ import { useState } from 'react';
 import LoginCard from '../../../components/LoginCard/LoginCard';
 
 export default function Login() {
-    localStorage.removeItem("token")
+    localStorage.removeItem("accessToken")
 
     return (
         <>

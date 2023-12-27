@@ -19,7 +19,8 @@ export default function LoginCard(props) {
         const response = await data.json();
         if (response.success) {
             toaster.success("Logged in successfully!", {duration: 2})
-            localStorage.setItem("token", response.token)
+            localStorage.setItem("accessToken", response.token)
+            localStorage.setItem("userId", response.user.id)
             await checkUserBelongsToOrganization();
         } else {
             toaster.danger("Invalid credentials", {
@@ -38,7 +39,6 @@ export default function LoginCard(props) {
         })
         const response = await data.json();
         if (response.success) {
-            localStorage.setItem("token", response.token)
             navigate('/contacts')
         } else {
             toaster.notify("You must join or create an organization to continue", { duration: 5 })
