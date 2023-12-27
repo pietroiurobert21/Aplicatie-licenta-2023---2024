@@ -1,7 +1,5 @@
 import style from './RegisterCard.module.css';
 import { TextInput, Button } from 'evergreen-ui';
-import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
 
 export default function Registercard(props) {
     return (
@@ -14,9 +12,10 @@ export default function Registercard(props) {
             <TextInput name="text-input-email" placeholder="Email" />
             <TextInput name="text-input-password" type="password" placeholder="Password"/>
 
-            <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}> Next </Button>
+            <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
+                onClick={props.onClickNext}> Next </Button>
             <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
-                onClick={props.onClick}> Back </Button>
+                onClick={props.onClickBack}> Back </Button>
             </div>
         </>
     )

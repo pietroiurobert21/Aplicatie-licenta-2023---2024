@@ -1,11 +1,13 @@
 const express = require("express");
 const router = express.Router() // Create a new router using the express.Router() method
 
-const { getUsers, getUserById, postUser, loginUser } = require("./users-controller"); // Import the functions from the controller
+const { getUsers, getUserById, postUser, loginUser, belongsToOrganization } = require("./users-controller"); // Import the functions from the controller
 const { verifyToken } = require("../middlewares/middlewares"); // Import the middleware function
 
 router.get("/", getUsers)
-router.get("/:id", verifyToken, getUserById)
+router.get("/getUser/:id", verifyToken, getUserById)
+router.get("/belongsToOrganization", belongsToOrganization)
+
 
 router.post("/", postUser)
 router.post("/login", loginUser)

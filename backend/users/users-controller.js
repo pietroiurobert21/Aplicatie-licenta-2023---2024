@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 
 const Users = require("../database/models/user");
 
+const UserOrganization = require("../database/models/userOrganization");
+
 // GET all users from Database
 const getUsers = async (req, res) => {
     try {
@@ -50,7 +52,27 @@ const loginUser = async (req, res) => {
             res.status(404).json({ success:false, error: "User not found" });
         }
     } catch (error) {
-        res.status(500).json({ success:false, error: "user not found" });
+        res.status(500).json({ success:false, error: "error" });
+    }
+}
+
+const belongsToOrganization = async (req, res) => {
+    const { email } = req.body;
+    try {
+        const user = await Users.findOne({ where: { email } });
+        if (user) {
+            const userId = user.id;
+            const userOrganization = await UserOrganization.findOne({ where: { userId: userId } });
+            if (userOrganization) {
+                res.status(200).json({ success: true, message: "User belongs to an organization" });
+            } else {
+                res.status(403).json({ success: false, message: "User does not belong to an organization" })
+            }
+        } else {
+            res.status(404).json({ success:false, error: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ success:false, error: "error" });
     }
 }
 
@@ -58,5 +80,6 @@ module.exports = {
     getUsers,
     getUserById,
     postUser,
-    loginUser
+    loginUser,
+    belongsToOrganization
 }

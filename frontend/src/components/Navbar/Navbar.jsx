@@ -2,20 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import reactLogo from '../../assets/react.svg';
 import style from './Navbar.module.css';
 import { useEffect } from 'react';
+
+import { Popover, Position, Menu, toaster, Button } from 'evergreen-ui' // components
+import { UserIcon, LogOutIcon } from 'evergreen-ui' // icons
+
 export default function Navbar() {
     const navigate = useNavigate();
     const location = window.location.pathname;
-
-    useEffect(() => {
-        const active_li = document.querySelectorAll("li");
-        active_li.forEach((li) => {
-            if (li.textContent.toLowerCase().trim() === location.trim().substring(1)) {
-                li.classList.add(style.active);
-            } else {
-                li.classList.remove(style.active);
-            }
-        });
-    }, [location]);
 
     return (
         <>
@@ -30,8 +23,18 @@ export default function Navbar() {
                     <li onClick={()=>{navigate('/deals')}}> Deals </li>
                 </ul>
 
-                <img src="https://avatars.githubusercontent.com/u/81866624?v=4" alt="User" id={style.profile} 
-                onClick={()=>{navigate('/profile')}}/>
+
+                <Popover position={Position.BOTTOM_LEFT} content={
+                    <Menu>
+                        <Menu.Group>
+                            <Menu.Item icon={UserIcon} onSelect={()=>{navigate('/profile')}}> Profile </Menu.Item>
+                            <Menu.Item icon={LogOutIcon} onSelect={()=>{toaster.notify("LogOut Successful", {duration: 1.5}); navigate("/")}}> LogOut </Menu.Item>
+                        </Menu.Group>
+                    </Menu>
+                }>
+                    <img src="https://avatars.githubusercontent.com/u/81866624?v=4" alt="User" id={style.profile} 
+                        onClick={()=>{navigate('/profile')}}/>
+                 </Popover>   
             </div>
         </>
     )
