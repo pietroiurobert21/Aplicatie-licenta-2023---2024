@@ -28,7 +28,7 @@ export default function Navbar() {
                     <Menu>
                         <Menu.Group>
                             <Menu.Item icon={UserIcon} onSelect={()=>{navigate('/profile')}}> Profile </Menu.Item>
-                            <Menu.Item icon={LogOutIcon} onSelect={()=>{toaster.notify("LogOut Successful", {duration: 1.5}); navigate("/")}}> LogOut </Menu.Item>
+                            <Menu.Item icon={LogOutIcon} onSelect={()=>{toaster.notify("Logged out Successfully", {duration: 1.5}); navigate("/")}}> LogOut </Menu.Item>
                         </Menu.Group>
                     </Menu>
                 }>
