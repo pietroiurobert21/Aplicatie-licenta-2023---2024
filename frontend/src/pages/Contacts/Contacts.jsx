@@ -1,10 +1,12 @@
-import { Table } from 'evergreen-ui'
+import { Table, toaster } from 'evergreen-ui'
 import { Combobox } from 'evergreen-ui'
 import { TrashIcon } from 'evergreen-ui'
 import { Button } from 'evergreen-ui'
-
+import CheckToken from '../../middlewares/CheckToken.jsx'
 
 export default function Contacts() {
+    CheckToken()
+
     const profiles = [
         {
             id: 1,

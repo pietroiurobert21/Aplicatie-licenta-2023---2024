@@ -9,8 +9,13 @@ const postOrganization = async (req, res) => {
     if (name.trim() === "") 
         return res.status(400).json({ success:false, error: "Organization name is required" });
     try {
-        const organization = await Organization.create({ name });
-        res.status(201).json({ success:true, organization });
+        const existingOrganization = await Organization.findAll({ where: { name } });
+        if  (existingOrganization.length > 0)
+            res.status(400).json({ success:false, error: "Organization already exists" });
+        else {
+            const organization = await Organization.create({ name });
+            res.status(201).json({ success:true, organization });
+        }
     } catch (error) {
         res.status(500).json({ success:false, error });
     } 

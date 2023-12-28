@@ -8,16 +8,19 @@ import Register from './pages/Authentication/Register/Register.jsx'
 import RegisterToCompany from './pages/Authentication/RegisterToCompany/RegisterToCompany.jsx'
 import { useLocation } from 'react-router-dom'
 
+import CheckToken from './middlewares/CheckToken.jsx'
 import Chatbot from './components/Chatbot/Chatbot.jsx'
+import { useEffect } from 'react';
 
 function Main() {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <>
       <Chatbot />
 
-      {location.pathname !== "/login" && location.pathname !== "/" && location.pathname !== "/registerToCompany" && location.pathname !== "/register" && <Navbar />}
+      {location.pathname !== "/login" && location.pathname !== "/" && location.pathname !== "/registerToCompany" && location.pathname !== "/register" 
+        && location.pathname !== "*" && <Navbar />}
       <Routes>
         {/* Authentication */}
         <Route path="/" element={<Login />} /> 

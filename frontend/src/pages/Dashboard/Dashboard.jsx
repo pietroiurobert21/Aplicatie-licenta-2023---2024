@@ -2,8 +2,11 @@ import React, { useState } from "react"
 import style from "./Dashboard.module.css"
 
 import Graph from "../../components/Graph/Graph"
+import CheckToken from '../../middlewares/CheckToken.jsx'
+
 
 export default function Home() {
+    CheckToken()
 
     const [data, setData] = useState([1000,2000,3000,800,1000,2500,400,600,7000,1080, 3000,4000])
 

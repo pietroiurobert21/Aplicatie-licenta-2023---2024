@@ -5,9 +5,12 @@ import { useNavigate } from 'react-router-dom'
 import { TextInput, Button, toaster } from 'evergreen-ui'
 import { useState } from 'react'
 
+import CheckToken from '../../../middlewares/CheckToken';
+
 export default function RegisterToCompany() {
     const navigate = useNavigate()
     // localStorage.removeItem("token")
+    CheckToken()
 
     const [companyName, setCompanyName] = useState("")
     const [companyId, setCompanyId] = useState("")
@@ -43,9 +46,8 @@ export default function RegisterToCompany() {
         const response = await data.json()
         if (data.status == 201) {
             navigate("/")
-        } else {
+        } else
             toaster.danger("Error creating company", { description: response.error })
-        }
     }
 
     return (
