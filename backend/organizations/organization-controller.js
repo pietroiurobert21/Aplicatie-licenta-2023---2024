@@ -21,6 +21,21 @@ const postOrganization = async (req, res) => {
     } 
 }
 
+const getOrganizationByCode = async (req, res) => {
+    const { code } = req.params
+    try {
+        const existingOrganization = await Organization.findAll({where: { code: code }})
+        if (existingOrganization.length === 1) {
+            res.status(200).json({success: true, existingOrganization})
+        } else {
+            res.status(404).json({success: false, error: "no organization found"})
+        }
+    } catch (error) {
+        res.status(500).json({ success:false, error });
+    }
+}
+
 module.exports = {
     postOrganization,
+    getOrganizationByCode
 }

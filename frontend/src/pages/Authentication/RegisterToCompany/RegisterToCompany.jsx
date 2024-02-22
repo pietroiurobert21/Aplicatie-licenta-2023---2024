@@ -14,6 +14,7 @@ export default function RegisterToCompany() {
 
     const [companyName, setCompanyName] = useState("")
     const [companyId, setCompanyId] = useState("")
+    const [companyCode, setCompanyCode] = useState("")
 
     const createCompanyFunc = async () => {
         const data = await fetch("http://localhost:3000/organizations", {
@@ -28,26 +29,41 @@ export default function RegisterToCompany() {
         if (data.status == 201) {
             toaster.success("Company created successfully")
             setCompanyId(response.organization.id)
-            await createUserCompanyFunc(response.organization.id)
+            await createUserCompanyFunc(response.organization.id, "admin")
         } else {
             toaster.danger("Error creating company", { description: response.error })
         }
     }
 
-    const createUserCompanyFunc = async (companyId) => {
+    const createUserCompanyFunc = async (companyId, role) => {
         const data = await fetch("http://localhost:3000/usersOrganization", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken') || ''
             },
-            body: JSON.stringify({ role: "admin", organizationId: companyId,  userId: localStorage.getItem("userId")})
+            body: JSON.stringify({ role: role, organizationId: companyId,  userId: localStorage.getItem("userId")})
         })
         const response = await data.json()
         if (data.status == 201) {
             navigate("/")
         } else
             toaster.danger("Error creating company", { description: response.error })
+    }
+
+    const getOrganizationByCode = async (code) => {
+        const data = await fetch(`http://localhost:3000/organizations/${code}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + localStorage.getItem('accessToken') || ''
+            }
+        })
+        const response = await data.json()
+        if (data.status === 200) {
+            console.log(response.existingOrganization[0].id)
+            createUserCompanyFunc(response.existingOrganization[0].id, "subordinate")
+        }
     }
 
     return (
@@ -58,8 +74,8 @@ export default function RegisterToCompany() {
                     
                     <div className={style2.card1}>
                         <h3> Join a company </h3>
-                        <TextInput name="text-input-code" placeholder="Company Code" />
-                        <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}> Join Company </Button>            
+                        <TextInput name="text-input-code" placeholder="Company Code" onChange={(e)=>{setCompanyCode(e.target.value)}}/>
+                        <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}} onClick={()=>{getOrganizationByCode(companyCode)}}> Join Company </Button>            
                     </div>
 
                     <div className={style2.card2}>
