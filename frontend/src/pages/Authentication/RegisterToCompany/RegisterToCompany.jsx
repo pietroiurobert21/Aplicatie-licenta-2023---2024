@@ -29,7 +29,7 @@ export default function RegisterToCompany() {
         if (data.status == 201) {
             toaster.success("Company created successfully")
             setCompanyId(response.organization.id)
-            await createUserCompanyFunc(response.organization.id, "admin")
+            await createUserCompanyFunc(response.organization.id, "administrator")
         } else {
             toaster.danger("Error creating company", { description: response.error })
         }

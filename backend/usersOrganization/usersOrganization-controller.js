@@ -24,6 +24,22 @@ const postUserOrganization = async (req, res) => {
     }
 }
 
+const getUserOrganizationByUserId = async (req, res) => {
+    const { userId } = req.params;
+    try {
+        const userOrganization = await UserOrganization.findAll({where: { userId: userId }})
+        if (userOrganization && userOrganization[0]) {
+            res.status(200).json({success: true, userOrganization: userOrganization[0]})
+        } else {
+            res.status(404).json({ success:false, error: "userOrganization not found" });
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error retrieving the userOrganization" });
+    }
+}
+
 module.exports = {
     postUserOrganization,
+    getUserOrganizationByUserId
 }
