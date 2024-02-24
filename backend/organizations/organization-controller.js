@@ -1,7 +1,7 @@
 const express = require('express');
 
 const Organization = require('../database/models/organization');
-const UserOrganization = require('../database/models/userOrganization');
+const Employee = require('../database/models/employee');
 
 // create a new organization
 const postOrganization = async (req, res) => {
@@ -35,7 +35,22 @@ const getOrganizationByCode = async (req, res) => {
     }
 }
 
+const getOrganizationMembers = async (req, res) => {
+    const { id } = req.params
+    try {
+        const organizationMembers = await Employee.findAll({where: {organizationId: id}})
+        if (organizationMembers) {
+            res.status(200).json({success: true, organizationMembers})
+        } else {
+            res.status(404).json({success: false, error: "no members found"})
+        }
+    } catch(error) {
+        res.status(500).json({ success:false, error: "error occured" });
+    }
+}
+
 module.exports = {
     postOrganization,
-    getOrganizationByCode
+    getOrganizationByCode,
+    getOrganizationMembers
 }

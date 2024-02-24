@@ -29,8 +29,8 @@ export default function Profile(){
         }
     }
 
-    const getUserRole = async () => {
-        const res = await fetch(`http://localhost:3000/usersOrganization/getUserOrganization/${userId}`, {
+    const getEmployeeRole = async () => {
+        const res = await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -50,7 +50,7 @@ export default function Profile(){
 
     useEffect(()=>{
         getUserById()
-        getUserRole()
+        getEmployeeRole()
     }, [])
 
     return (

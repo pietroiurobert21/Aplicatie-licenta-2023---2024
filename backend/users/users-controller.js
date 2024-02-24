@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 const Users = require("../database/models/user");
 
-const UserOrganization = require("../database/models/userOrganization");
+const Employees = require("../database/models/employee");
 
 // GET all users from Database
 const getUsers = async (req, res) => {
@@ -67,7 +67,7 @@ const belongsToOrganization = async (req, res) => {
         const user = await Users.findOne({ where: { email } });
         if (user) {
             const userId = user.id;
-            const userOrganization = await UserOrganization.findOne({ where: { userId: userId } });
+            const userOrganization = await Employees.findOne({ where: { userId: userId } });
             if (userOrganization) {
                 res.status(200).json({ success: true, message: "User belongs to an organization" });
             } else {

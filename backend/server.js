@@ -2,7 +2,7 @@ const app = require('./app');
 
 const User = require('./database/models/user');
 const Organization = require('./database/models/organization');
-const UserOrganization = require('./database/models/userOrganization');
+const UserOrganization = require('./database/models/employee');
 
 UserOrganization.belongsTo(User, { foreignKey: 'userId' });
 Organization.hasMany(UserOrganization, { foreignKey: 'organizationId' });

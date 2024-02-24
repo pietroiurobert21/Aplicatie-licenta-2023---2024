@@ -36,7 +36,7 @@ export default function RegisterToCompany() {
     }
 
     const createUserCompanyFunc = async (companyId, role) => {
-        const data = await fetch("http://localhost:3000/usersOrganization", {
+        const data = await fetch("http://localhost:3000/employees", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

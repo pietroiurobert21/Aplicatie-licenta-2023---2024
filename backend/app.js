@@ -6,7 +6,7 @@ const app = express();
 
 const user_routes = require('./users/users-routes');
 const organization_routes = require('./organizations/organization-routes');
-const userOrganization_routes = require('./usersOrganization/usersOrganization-routes');
+const employee_routes = require('./employees/employee-routes');
 
 dotenv.config(); // Configure dotenv
 app.use(cors({origin: 'http://localhost:5173'}));
@@ -14,6 +14,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/users', user_routes);
 app.use('/organizations', organization_routes);
-app.use('/usersOrganization', userOrganization_routes);
+app.use('/employees', employee_routes);
 
 module.exports = app;

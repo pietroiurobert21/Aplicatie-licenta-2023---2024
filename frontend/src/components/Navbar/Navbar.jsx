@@ -21,6 +21,7 @@ export default function Navbar() {
                     <li onClick={()=>{navigate('/reports')}}> Reports </li>
                     <li onClick={()=>{navigate('/dashboard')}}> Dashboard </li>
                     <li onClick={()=>{navigate('/deals')}}> Deals </li>
+                    <li onClick={()=>{navigate('/team')}}> Team </li>
                 </ul>
 
 

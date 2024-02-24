@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../server.js');
 
-const UserOrganization = sequelize.define('UserOrganization', {
+const Employee = sequelize.define('Employee', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -17,4 +17,4 @@ const UserOrganization = sequelize.define('UserOrganization', {
     timestamps: false,
 });
 
-module.exports = UserOrganization;
+module.exports = Employee;
