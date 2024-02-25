@@ -6,6 +6,7 @@ const User = require("../database/models/user");
 const { col } = require("sequelize");
 
 Employee.belongsTo(User, { foreignKey: 'userId' });
+User.hasOne(Employee, { foreignKey: 'userId' });
 // create a new employee
 const postEmployee = async (req, res) => {
     const { role, userId, organizationId } = req.body;

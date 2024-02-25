@@ -22,6 +22,7 @@ export default function Navbar() {
                     <li onClick={()=>{navigate('/dashboard')}}> Dashboard </li>
                     <li onClick={()=>{navigate('/deals')}}> Deals </li>
                     <li onClick={()=>{navigate('/team')}}> Team </li>
+                    <li onClick={()=>{navigate('/organization')}} style={{color: "#887B04"}}> Organization </li>
                 </ul>
 
 

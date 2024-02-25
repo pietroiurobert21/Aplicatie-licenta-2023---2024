@@ -2,6 +2,7 @@ const express = require('express');
 
 const Organization = require('../database/models/organization');
 const Employee = require('../database/models/employee');
+const User = require('../database/models/user');
 
 // create a new organization
 const postOrganization = async (req, res) => {
@@ -35,6 +36,40 @@ const getOrganizationByCode = async (req, res) => {
     }
 }
 
+const getOrganizationById = async (req, res) => {
+    const { id } = req.params
+    try {
+        const existingOrganization = await Organization.findByPk(id)
+        if (existingOrganization.length === 1) {
+            res.status(200).json({success: true, existingOrganization})
+        } else {
+            res.status(404).json({success: false, error: "no organization found"})
+        }
+    } catch (error) {
+        res.status(500).json({ success:false, error });
+    }
+}
+
+const getOrganizationByUserId = async (req, res) => {
+    const { userId } = req.params
+    try {
+        const user = await User.findByPk(userId, { include: [Employee] });
+        if (user) {
+            const idOrganization = user.Employee.organizationId;
+            const organization = await Organization.findByPk(idOrganization)
+            if (organization) {
+                res.status(200).json({success:true, organization})
+            } else {
+                res.status(404).json({ success:false, error: "Organization not found" });
+            }
+        } else {
+            res.status(404).json({ success:false, error: "User not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ success:false, error: "error" });
+    }
+}
+
 const getOrganizationMembers = async (req, res) => {
     const { id } = req.params
     try {
@@ -52,5 +87,7 @@ const getOrganizationMembers = async (req, res) => {
 module.exports = {
     postOrganization,
     getOrganizationByCode,
-    getOrganizationMembers
+    getOrganizationMembers,
+    getOrganizationById,
+    getOrganizationByUserId
 }

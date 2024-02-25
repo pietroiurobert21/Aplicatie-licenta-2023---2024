@@ -6,6 +6,7 @@ const { verifyToken } = require("../middlewares/middlewares"); // Import the mid
 
 router.get("/", getUsers)
 router.get("/getUser/:id", verifyToken, getUserById)
+router.get("/getOrganizationByUserId")
 
 router.post("/belongsToOrganization", belongsToOrganization)
 router.post("/", postUser)
