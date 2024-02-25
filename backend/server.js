@@ -4,10 +4,15 @@ const User = require('./database/models/user');
 const Organization = require('./database/models/organization');
 const Employee = require('./database/models/employee');
 const Contact = require('./database/models/contact')
+const Deal = require('./database/models/deals')
 
 User.hasOne(Employee, { foreignKey: 'userId' });
 Organization.hasMany(Employee, { foreignKey: 'organizationId' })
 Organization.hasMany(Contact, { foreignKey: 'organizationId' })
+Organization.hasMany(Deal, { foreignKey: 'organizationId' })
+Employee.hasMany(Deal, { foreignKey: 'employeeId' })
+Contact.hasMany(Deal, { foreignKey: 'contactId' })
+
 
 app.listen(3000, () => {
     console.log(`Server running on port 3000`);

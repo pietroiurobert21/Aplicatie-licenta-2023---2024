@@ -13,78 +13,17 @@ export default function Contacts() {
     const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
 
-    const profiles = [
-        {
-            id: 1,
-            name: "John",
-            lastName: "Michael",
-            professionalTitle: "marketing specialist",
-            company: "Google",
-            email: "jmichael@yahoo.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 2,
-            name: "Sean",
-            lastName: "Doe",
-            professionalTitle: "sales manager",
-            company: "Google",
-            email: "doe2sean@gmail.com",
-            phoneNumber: "1234567890",
-            status: "lead"
-        },
-        {
-            id: 3,
-            name: "Emily",
-            lastName: "Johnson",
-            professionalTitle: "software engineer",
-            company: "Microsoft",
-            email: "emily.j@example.com",
-            phoneNumber: "9876543210",
-            status: "prospect"
-        },
-        {
-            id: 4,
-            name: "Alex",
-            lastName: "Smith",
-            professionalTitle: "finance analyst",
-            company: "Amazon",
-            email: "alex.smith@example.com",
-            phoneNumber: "5551234567",
-            status: "lead"
-        },
-        {
-            id: 5,
-            name: "Sophia",
-            lastName: "Brown",
-            professionalTitle: "product manager",
-            company: "Apple",
-            email: "sophia.b@example.com",
-            phoneNumber: "7890123456",
-            status: "prospect"
-        },
-        {
-            id: 6,
-            name: "Michael",
-            lastName: "Wilson",
-            professionalTitle: "HR coordinator",
-            company: "Facebook",
-            email: "michael.w@example.com",
-            phoneNumber: "1112223333",
-            status: "lead"
-        },
-        {
-            id: 7,
-            name: "Ella",
-            lastName: "Davis",
-            professionalTitle: "graphic designer",
-            company: "Adobe",
-            email: "ella.d@example.com",
-            phoneNumber: "4445556666",
-            status: "prospect"
-        }
-    ]
+    const [newContact, setNewContact] = useState({
+        firstName: '',
+        lastName: '',
+        professionalTitle: '',
+        emailAddress: '',
+        homeAddress: '',
+        phoneNumber: '',
+        companyName: '',
+        pipelineStatus: '',
+        organizationId: organizationId
+    });
 
     const retrieveContacts = async () => {
         const res = await fetch(`http://localhost:3000/contacts/${organizationId}`, {
@@ -102,6 +41,38 @@ export default function Contacts() {
         } 
         setLoading(false)
     }
+
+    const addNewContact = async () => {
+        let missingFields = false;
+        for(let key in newContact)
+            if (newContact[key] == '') {
+                missingFields = true;
+            }
+
+        if (missingFields==false) {
+            const res = await fetch("http://localhost:3000/contacts", {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(newContact)
+            })
+
+            if (res.status == 201) {
+                alert("new contact added")
+            } else {
+                alert("error adding the contact")
+            }
+        } else {
+            toaster.danger('missing fields!');
+        }
+    }
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewContact({ ...newContact, [name]: value });
+    };
 
     useEffect(() => {
         retrieveContacts()
@@ -160,16 +131,64 @@ export default function Contacts() {
                     title="Add new contact"
                     onCloseComplete={() => setIsShown(false)}
                     hasFooter={false}>
-                        <TextInputField label="First name" placeholder="First name" />
-                        <TextInputField label="Last name" placeholder="Last name" />
-                        <TextInputField label="Professional Title" placeholder="professionalTitle" />
-                        <TextInputField label="Email Address" placeholder="emailAddress" />
-                        <TextInputField label="Home Address" placeholder="homeAddress" />
-                        <TextInputField label="Phone Number" placeholder="phoneNumber" />
-                        <TextInputField label="Company Name" placeholder="companyName" />
-                        <TextInputField label="Pipeline Status" placeholder="pipelineStatus" />
+                        <TextInputField
+                            label="First name"
+                            placeholder="First name"
+                            name="firstName"
+                            value={newContact.firstName}
+                            onChange={handleInputChange}
+                        />
+                        <TextInputField
+                            label="Last name"
+                            placeholder="Last name"
+                            name="lastName"
+                            value={newContact.lastName}
+                            onChange={handleInputChange}
+                        />
+                        <TextInputField
+                            label="Professional Title"
+                            placeholder="Professional title"
+                            name="professionalTitle"
+                            value={newContact.professionalTitle}
+                            onChange={handleInputChange}
+                        />
+                        <TextInputField
+                            label="Email Address"
+                            placeholder="Email address"
+                            name="emailAddress"
+                            value={newContact.emailAddress}
+                            onChange={handleInputChange}
+                        />
+                        <TextInputField
+                            label="Home Address"
+                            placeholder="Home address"
+                            name="homeAddress"
+                            value={newContact.homeAddress}
+                            onChange={handleInputChange}
+                        />
+                        <TextInputField
+                            label="Phone Number"
+                            placeholder="Phone number"
+                            name="phoneNumber"
+                            value={newContact.phoneNumber}
+                            onChange={handleInputChange}
+                        />
+                        <TextInputField
+                            label="Company Name"
+                            placeholder="Company name"
+                            name="companyName"
+                            value={newContact.companyName}
+                            onChange={handleInputChange}
+                        />
+                        <TextInputField
+                            label="Pipeline Status"
+                            placeholder="Pipeline status"
+                            name="pipelineStatus"
+                            value={newContact.pipelineStatus}
+                            onChange={handleInputChange}
+                        />
 
-                        <Button appearance="primary" style={{float: "right"}}> confirm </Button>
+                        <Button appearance="primary" style={{float: "right"}} onClick={addNewContact}> confirm </Button>
             </Dialog>
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}>Add Contact</Button>
         </>
