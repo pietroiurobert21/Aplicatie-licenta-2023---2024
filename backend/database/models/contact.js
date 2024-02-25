@@ -15,7 +15,7 @@ const Contact = sequelize.define('Contact', {
         type: Sequelize.STRING,
         allowNull: false,
     },
-    secondName: {
+    lastName: {
         type: Sequelize.STRING,
         allowNull: false,
     },

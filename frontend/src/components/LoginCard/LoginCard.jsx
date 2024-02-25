@@ -29,6 +29,22 @@ export default function LoginCard(props) {
         }
     }
 
+    const getOrganization = async (userId) => {
+        const res = await fetch(`http://localhost:3000/organizations/getByUserId/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        })
+
+        const responseCode = res.status
+        if (responseCode === 200) {
+            const data = await res.json()
+            localStorage.setItem("organizationId", data.organization.id)
+        }
+    }
+
     const checkUserBelongsToOrganization = async () => {
         const data = await fetch('http://localhost:3000/users/belongsToOrganization', {
             method: 'POST',
@@ -40,6 +56,7 @@ export default function LoginCard(props) {
         const response = await data.json();
         if (response.success) {
             navigate('/contacts')
+            getOrganization(localStorage.getItem("userId"))
         } else {
             toaster.notify("You must join or create an organization to continue", { duration: 5 })
             navigate('/registerToCompany')

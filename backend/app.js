@@ -7,7 +7,7 @@ const app = express();
 const user_routes = require('./users/users-routes');
 const organization_routes = require('./organizations/organization-routes');
 const employee_routes = require('./employees/employee-routes');
-const contact_routes = require('./contact/contact-routes')
+const contact_routes = require('./contacts/contact-routes')
 
 dotenv.config(); // Configure dotenv
 app.use(cors({origin: 'http://localhost:5173'}));

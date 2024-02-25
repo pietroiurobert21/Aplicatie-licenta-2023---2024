@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import style from './Team.module.css'
-import { Avatar } from 'evergreen-ui'
+import { Avatar, Button, Dialog, TextInput, toaster } from 'evergreen-ui'
 
 export default function Team() {
     const [team, setTeam] = useState([])
     const [isLoading, setIsLoading] = useState(true)
+
+    const [isShown, setIsShown] =   useState(false)
+    const [email, setEmail] = useState('')
 
     const [organization, setOrganization] = useState({})
 
@@ -44,6 +47,10 @@ export default function Team() {
         }
     }
 
+    const sendInvitationEmail = async () => {
+        
+    }
+
     useEffect(()=>{
         getTeam()
         getOrganization()
@@ -51,7 +58,23 @@ export default function Team() {
 
     return (
         <div className={style.teamContainer}>
-            <p><b> Team members - {organization.name} </b></p>
+            <div className={style.header}>
+                <p><b> Team members - {organization.name} </b></p>
+
+                <Dialog
+                    isShown={isShown}
+                    title="Send invitation code"
+                    onCloseComplete={() => setIsShown(false)}
+                    hasFooter={false}>
+                        <div className={style.invitationContainer}> 
+                            <TextInput name="text-input-name" placeholder="Email" onChange={(e)=>{setEmail(e.target.value)}}/>
+                            <Button appearance="primary" onClick={()=>{sendInvitationEmail();toaster.success('email sent successfully', { duration: 1.5 })}}> send </Button>
+                            <Button appearance="default" onClick={()=>{navigator.clipboard.writeText(organization.code); toaster.success('Code copied to clipboard', { duration: 1.5 });}}> copy code to clipboard </Button>
+                        </div>
+                </Dialog>
+
+                <Button onClick={() => setIsShown(true)}> invite </Button>
+            </div>
 
         {isLoading ? (
             <p>Loading...</p>

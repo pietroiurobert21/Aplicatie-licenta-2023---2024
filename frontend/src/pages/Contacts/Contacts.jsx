@@ -1,11 +1,17 @@
-import { Table, toaster } from 'evergreen-ui'
-import { Combobox } from 'evergreen-ui'
-import { TrashIcon } from 'evergreen-ui'
-import { Button } from 'evergreen-ui'
+import { Table, toaster, Combobox, TrashIcon, Button, Dialog, TextInputField } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
+import { useEffect, useState } from 'react';
 
 export default function Contacts() {
     CheckToken()
+
+    const [contacts, setContacts] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    const [isShown, setIsShown] =   useState(false)
+
+    const organizationId = localStorage.getItem('organizationId')
+    const accessToken = localStorage.getItem('accessToken')
 
     const profiles = [
         {
@@ -80,6 +86,27 @@ export default function Contacts() {
         }
     ]
 
+    const retrieveContacts = async () => {
+        const res = await fetch(`http://localhost:3000/contacts/${organizationId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+
+        if (res.status == 200) {
+            const data = await res.json()
+            console.log(data)
+            setContacts(data.contacts)
+        } 
+        setLoading(false)
+    }
+
+    useEffect(() => {
+        retrieveContacts()
+    }, [])
+
     return (
         <>           
             <Table style={{width:"100vw", padding:"2%", paddingTop: "0"}}>
@@ -95,15 +122,18 @@ export default function Contacts() {
                     <Table.TextHeaderCell> </Table.TextHeaderCell>
                 </Table.Head>
 
+
                 <Table.VirtualBody height={440}>
-                     {profiles.map((profile) => (
+                    { contacts.length==0 ? (<p> No contacts </p>) : 
+
+                    (contacts.map((profile) => (
                         <Table.Row key={profile.id} isSelectable onSelect={() => {}}>
                             <Table.TextCell>{profile.id}</Table.TextCell>
-                            <Table.TextCell>{profile.name}</Table.TextCell>
+                            <Table.TextCell>{profile.firstName}</Table.TextCell>
                             <Table.TextCell>{profile.lastName}</Table.TextCell>
                             <Table.TextCell>{profile.professionalTitle}</Table.TextCell>
-                            <Table.TextCell>{profile.company}</Table.TextCell>
-                            <Table.TextCell>{profile.email}</Table.TextCell>
+                            <Table.TextCell>{profile.companyName}</Table.TextCell>
+                            <Table.TextCell>{profile.emailAddress}</Table.TextCell>
                             <Table.TextCell>{profile.phoneNumber}</Table.TextCell>
 
                             <Table.TextCell>     
@@ -120,11 +150,28 @@ export default function Contacts() {
 
                             <Table.TextCell> <TrashIcon onClick={(event)=>{alert('delete');event.stopPropagation()}}/> </Table.TextCell>
                         </Table.Row>
-                    ))} 
+                    )))
+                    }
                 </Table.VirtualBody>
             </Table>
             
-            <Button appearance="default" intent="none" style={{left:"2%"}}>Add Contact</Button>
+            <Dialog
+                    isShown={isShown}
+                    title="Add new contact"
+                    onCloseComplete={() => setIsShown(false)}
+                    hasFooter={false}>
+                        <TextInputField label="First name" placeholder="First name" />
+                        <TextInputField label="Last name" placeholder="Last name" />
+                        <TextInputField label="Professional Title" placeholder="professionalTitle" />
+                        <TextInputField label="Email Address" placeholder="emailAddress" />
+                        <TextInputField label="Home Address" placeholder="homeAddress" />
+                        <TextInputField label="Phone Number" placeholder="phoneNumber" />
+                        <TextInputField label="Company Name" placeholder="companyName" />
+                        <TextInputField label="Pipeline Status" placeholder="pipelineStatus" />
+
+                        <Button appearance="primary" style={{float: "right"}}> confirm </Button>
+            </Dialog>
+            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}>Add Contact</Button>
         </>
     )
 }

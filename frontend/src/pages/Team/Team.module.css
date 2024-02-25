@@ -11,7 +11,6 @@
 }
 
 .teamContainer p {
-    border-bottom: 1px solid #e6e6e6;
     display: block;
     padding-left: 5%;
 }
@@ -32,6 +31,17 @@
 
 .teamContainer ul li:hover {
     cursor: pointer;
-    background-color:#e3ecff;
+    background-color:#e4eeff;
     transition: 200ms;
+}
+
+.teamContainer .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.invitationContainer {
+    display: flex;
 }
