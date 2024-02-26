@@ -8,6 +8,7 @@ import Register from './pages/Authentication/Register/Register.jsx'
 import RegisterToCompany from './pages/Authentication/RegisterToCompany/RegisterToCompany.jsx'
 import Profile from './pages/profile/Profile.jsx'
 import Team from './pages/Team/Team.jsx'
+import Deals from './pages/Deals/Deals.jsx'
 import { useLocation } from 'react-router-dom'
 
 import CheckToken from './middlewares/CheckToken.jsx'
@@ -33,6 +34,7 @@ function Main() {
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/team" element={<Team />} />
+        <Route path="/deals" element={<Deals />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

@@ -27,6 +27,8 @@ export default function Team() {
             setTeam(data.colleagues)
             console.log(data)
             setIsLoading(false)
+        } else if (res.status == 401) {
+            localStorage.removeItem("accessToken")
         }
     }
 
@@ -44,6 +46,8 @@ export default function Team() {
             const data = await res.json()
             setOrganization(data.organization)
             console.log(data)
+        } else if (res.status == 401) {
+            localStorage.removeItem("accessToken")
         }
     }
 

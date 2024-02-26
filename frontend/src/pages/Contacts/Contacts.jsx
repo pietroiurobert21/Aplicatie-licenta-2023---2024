@@ -1,4 +1,4 @@
-import { Table, toaster, Combobox, TrashIcon, Button, Dialog, TextInputField } from 'evergreen-ui'
+import { Table, toaster, Combobox, TrashIcon, Button, Dialog, TextInputField, NewPersonIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
 
@@ -9,6 +9,8 @@ export default function Contacts() {
     const [loading, setLoading] = useState(true)
 
     const [isShown, setIsShown] =   useState(false)
+    const [isShown_1, setIsShown_1] = useState(false)
+    const [ shownContact, setShownContact ] = useState({})
 
     const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
@@ -38,7 +40,9 @@ export default function Contacts() {
             const data = await res.json()
             console.log(data)
             setContacts(data.contacts)
-        } 
+        } else if (res.status == 401) {
+            localStorage.removeItem("accessToken")
+        }
         setLoading(false)
     }
 
@@ -61,12 +65,18 @@ export default function Contacts() {
 
             if (res.status == 201) {
                 alert("new contact added")
+            } else if (res.status == 401) {
+                localStorage.removeItem("accessToken")
             } else {
                 alert("error adding the contact")
             }
         } else {
             toaster.danger('missing fields!');
         }
+    }
+
+    const updateContact = async () => {
+
     }
 
     const handleInputChange = (e) => {
@@ -98,7 +108,7 @@ export default function Contacts() {
                     { contacts.length==0 ? (<p> No contacts </p>) : 
 
                     (contacts.map((profile) => (
-                        <Table.Row key={profile.id} isSelectable onSelect={() => {}}>
+                        <Table.Row key={profile.id} isSelectable onSelect={() => { setIsShown_1(true); setShownContact(profile) }}>
                             <Table.TextCell>{profile.id}</Table.TextCell>
                             <Table.TextCell>{profile.firstName}</Table.TextCell>
                             <Table.TextCell>{profile.lastName}</Table.TextCell>
@@ -126,6 +136,8 @@ export default function Contacts() {
                 </Table.VirtualBody>
             </Table>
             
+                    {/* TODO: make a new component for Dialog to get rid of repetitive lines of code */}
+
             <Dialog
                     isShown={isShown}
                     title="Add new contact"
@@ -190,7 +202,72 @@ export default function Contacts() {
 
                         <Button appearance="primary" style={{float: "right"}} onClick={addNewContact}> confirm </Button>
             </Dialog>
-            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}>Add Contact</Button>
+
+            <Dialog
+                    isShown={isShown_1}
+                    title="View contact"
+                    onCloseComplete={() => setIsShown_1(false)}
+                    hasFooter={true}>
+                        <TextInputField
+                            label="First name"
+                            placeholder="First name"
+                            name="firstName_edit"
+                            value={shownContact.firstName}
+                            onChange={updateContact}
+                        />
+                        <TextInputField
+                            label="Last name"
+                            placeholder="Last name"
+                            name="lastName_edit"
+                            value={shownContact.lastName}
+                            onChange={updateContact}
+                        />
+                        <TextInputField
+                            label="Professional Title"
+                            placeholder="Professional title"
+                            name="professionalTitle_edit"
+                            value={shownContact.professionalTitle}
+                            onChange={updateContact}
+                        />
+                        <TextInputField
+                            label="Email Address"
+                            placeholder="Email address"
+                            name="emailAddress_edit"
+                            value={shownContact.emailAddress}
+                            onChange={updateContact}
+                        />
+                        <TextInputField
+                            label="Home Address"
+                            placeholder="Home address"
+                            name="homeAddress_edit"
+                            value={shownContact.homeAddress}
+                            onChange={updateContact}
+                        />
+                        <TextInputField
+                            label="Phone Number"
+                            placeholder="Phone number"
+                            name="phoneNumber_edit"
+                            value={shownContact.phoneNumber}
+                            onChange={updateContact}
+                        />
+                        <TextInputField
+                            label="Company Name"
+                            placeholder="Company name"
+                            name="companyName_edit"
+                            value={shownContact.companyName}
+                            onChange={updateContact}
+                        />
+                        <TextInputField
+                            label="Pipeline Status"
+                            placeholder="Pipeline status"
+                            name="pipelineStatus_edit"
+                            value={shownContact.pipelineStatus}
+                            onChange={updateContact}
+                        />
+                        <Button appearance='primary' intent="success" style={{width:"100%"}}> Propose Deal </Button>
+                        <Button appearance='default' intent="danger" style={{width:"100%", marginTop:"1vh"}}> Delete contact </Button>
+            </Dialog>
+            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> Add Contact </Button>
         </>
     )
 }
