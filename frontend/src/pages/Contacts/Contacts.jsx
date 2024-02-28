@@ -105,7 +105,7 @@ export default function Contacts() {
 
 
                 <Table.VirtualBody height={440}>
-                    { contacts.length==0 ? (<p> No contacts </p>) : 
+                    { loading ? (<p> Loading </p>) : 
 
                     (contacts.map((profile) => (
                         <Table.Row key={profile.id} isSelectable onSelect={() => { setIsShown_1(true); setShownContact(profile) }}>

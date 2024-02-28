@@ -15,6 +15,7 @@ import CheckToken from './middlewares/CheckToken.jsx'
 import Chatbot from './components/Chatbot/Chatbot.jsx'
 import { useEffect } from 'react';
 
+
 function Main() {
   const location = useLocation()
 

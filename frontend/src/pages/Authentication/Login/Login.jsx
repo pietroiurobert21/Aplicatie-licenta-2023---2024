@@ -2,14 +2,18 @@ import style from './Login.module.css';
 import { TextInput, Button } from 'evergreen-ui';
 import Background from '../../../assets/background_image.png';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import LoginCard from '../../../components/LoginCard/LoginCard';
 
 export default function Login() {
-    localStorage.removeItem("accessToken")
-    localStorage.removeItem("userId")
-    localStorage.removeItem("organizationId")
+    const navigate = useNavigate()
+    useEffect(() => {
+        const token = localStorage.getItem("accessToken")
+        if (token) {
+            navigate('/contacts')
+        }
+    }, [])
 
     return (
         <>

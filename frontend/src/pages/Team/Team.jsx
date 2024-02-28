@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import style from './Team.module.css'
 import { Avatar, Button, Dialog, TextInput, toaster } from 'evergreen-ui'
+import CheckToken from '../../middlewares/CheckToken'
 
 export default function Team() {
+    CheckToken()
     const [team, setTeam] = useState([])
     const [isLoading, setIsLoading] = useState(true)
 

@@ -35,6 +35,13 @@ export default function Navbar() {
         }
     }
 
+    const emptyLocalstorage = () => {
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("userId")
+        localStorage.removeItem("organizationId")
+        navigate("/")
+    }
+
     useEffect(()=>{
         getUserById()
     }, [])
@@ -62,7 +69,7 @@ export default function Navbar() {
                     <Menu>
                         <Menu.Group>
                             <Menu.Item icon={UserIcon} onSelect={()=>{navigate('/profile')}}> Profile </Menu.Item>
-                            <Menu.Item icon={LogOutIcon} onSelect={()=>{toaster.notify("Logged out Successfully", {duration: 1.5}); navigate("/")}}> LogOut </Menu.Item>
+                            <Menu.Item icon={LogOutIcon} onSelect={()=>{toaster.notify("Logged out Successfully", {duration: 1.5}); emptyLocalstorage()}}> LogOut </Menu.Item>
                         </Menu.Group>
                     </Menu>
                 }>

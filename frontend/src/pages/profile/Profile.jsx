@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import style from "./Profile.module.css"
 import { Avatar, StatusIndicator, Badge } from 'evergreen-ui'
+import CheckToken from '../../middlewares/CheckToken'
 
 export default function Profile(){
+    CheckToken()
+
     const [isLoading, setIsLoading] = useState(true)
     const [userData, setUserData] = useState({})
     const [userRole, setUserRole] = useState('')

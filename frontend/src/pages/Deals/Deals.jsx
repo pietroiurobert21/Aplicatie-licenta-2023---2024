@@ -1,7 +1,9 @@
-import { Table, Button , AddToArtifactIcon, Dialog } from "evergreen-ui"
+import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, Combobox } from "evergreen-ui"
 import { useEffect, useState } from "react";
+import CheckToken from '../../middlewares/CheckToken'
 
 export default function Deals() {
+    CheckToken()
     const [ deals, setDeals ] = useState([])
     const [ loading, setLoading ] = useState(true)
 
@@ -58,7 +60,7 @@ export default function Deals() {
                     <Table.TextHeaderCell> value </Table.TextHeaderCell>
                     <Table.TextHeaderCell> contact </Table.TextHeaderCell>
                     <Table.TextHeaderCell> date </Table.TextHeaderCell>
-                    <Table.TextHeaderCell> employeeId </Table.TextHeaderCell>
+                    <Table.TextHeaderCell> employee </Table.TextHeaderCell>
                     <Table.TextHeaderCell> description </Table.TextHeaderCell>
                     <Table.TextHeaderCell> status </Table.TextHeaderCell>
                 </Table.Head>
@@ -84,9 +86,26 @@ export default function Deals() {
                 isShown={isShown}
                 title="Dialog title"
                 onCloseComplete={() => setIsShown(false)}
-                confirmLabel="Custom Label"
-            >
-                Dialog content
+                confirmLabel="Custom Label">
+                <TextInputField
+                    label="Value"
+                    placeholder="Value"
+                    name="Value"/>
+                {/* <TextInputField
+                    label="Contact"
+                    placeholder="Contact"
+                    name="Contact"/> */}
+                <Combobox
+                    items={['contact_1', 'contact_2']}
+                    // itemToString={item => (item ? item.label : '')}
+                    // onChange={selected => console.log(selected)}
+                    placeholder="select a contact"
+                />
+                <TextInputField
+                    label="Description"
+                    placeholder="Description"
+                    name="Description"/>
+                
             </Dialog>
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </Button>
         </>
