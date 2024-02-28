@@ -38,11 +38,6 @@ body {
     color: #5d8ffc;
 }
 
-#profile {
-    width: 35.93px;
-    border-radius: 50%;
-}
-
 #profile:hover {
     cursor: pointer;
 }

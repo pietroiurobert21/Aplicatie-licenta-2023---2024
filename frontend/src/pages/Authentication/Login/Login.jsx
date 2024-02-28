@@ -8,6 +8,8 @@ import LoginCard from '../../../components/LoginCard/LoginCard';
 
 export default function Login() {
     localStorage.removeItem("accessToken")
+    localStorage.removeItem("userId")
+    localStorage.removeItem("organizationId")
 
     return (
         <>

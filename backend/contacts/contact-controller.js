@@ -30,7 +30,23 @@ const getContactsByOrganizationId = async (req, res) => {
     }
 }
 
+const getContactById = async (req, res) => {
+    const { id } = req.params
+    try {
+        const contact = await Contact.findByPk(id)
+        if (contact) {
+            res.status(200).json({success: true, contact})
+        } else {
+            res.status(404).json({success:false, error: "contact not found"})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error retrieving the contact" });
+    }
+}
+
 module.exports = {
     addContact,
-    getContactsByOrganizationId
+    getContactsByOrganizationId,
+    getContactById
 }

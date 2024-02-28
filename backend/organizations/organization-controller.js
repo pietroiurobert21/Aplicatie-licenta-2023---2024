@@ -3,7 +3,8 @@ const express = require('express');
 const Organization = require('../database/models/organization');
 const Employee = require('../database/models/employee');
 const User = require('../database/models/user');
-const Deal = require('../database/models/deals')
+const Deal = require('../database/models/deals');
+const Contact = require('../database/models/contact');
 
 // create a new organization
 const postOrganization = async (req, res) => {
@@ -88,13 +89,23 @@ const getOrganizationMembers = async (req, res) => {
 const getOrganizationDeals = async (req, res) => {
     const { id } = req.params
     try {
-        const organizationDeals = await Deal.findAll({where: {organizationId: id}})
+        const organizationDeals = await Deal.findAll({where: {organizationId: id}, 
+            include: [
+                { model: Employee , 
+                    include: [
+                        { model: User }
+                    ]
+                },
+                { model: Contact },
+            ]
+        })
         if (organizationDeals) {
             res.status(200).json({success: true, organizationDeals})
         } else {
-            res.status(404).json({success: false, error: "no deals found"})
+            res.status(404).json({success: false, error: "no deals found"});
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({ success:false, error: "error occured" });
     }
 }

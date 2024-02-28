@@ -1,7 +1,8 @@
+import { Avatar } from 'evergreen-ui'
 import { useNavigate } from 'react-router-dom';
 import reactLogo from '../../assets/react.svg';
 import style from './Navbar.module.css';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Popover, Position, Menu, toaster, Button } from 'evergreen-ui' // components
 import { UserIcon, LogOutIcon } from 'evergreen-ui' // icons
@@ -9,6 +10,34 @@ import { UserIcon, LogOutIcon } from 'evergreen-ui' // icons
 export default function Navbar() {
     const navigate = useNavigate();
     const location = window.location.pathname;
+
+    const [ userData, setUserData ] = useState({})
+    const [ isLoading, setIsLoading ] = useState(true)
+
+    const userId = localStorage.getItem("userId")
+    const token = localStorage.getItem("accessToken")
+
+    const getUserById = async () => {
+        const res = await fetch(`http://localhost:3000/users/getUser/${userId}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        
+        const responseCode = res.status
+        if (responseCode === 200) {
+            const data = await res.json()
+            setUserData(data)
+            setIsLoading(false)
+            console.log(userData)
+        }
+    }
+
+    useEffect(()=>{
+        getUserById()
+    }, [])
 
     return (
         <>
@@ -26,6 +55,9 @@ export default function Navbar() {
                 </ul>
 
 
+                {
+                    isLoading ? <p>loading</p> : (
+                
                 <Popover position={Position.BOTTOM_LEFT} content={
                     <Menu>
                         <Menu.Group>
@@ -34,9 +66,13 @@ export default function Navbar() {
                         </Menu.Group>
                     </Menu>
                 }>
-                    <img src="https://avatars.githubusercontent.com/u/81866624?v=4" alt="User" id={style.profile} 
-                        onClick={()=>{navigate('/profile')}}/>
+                    {/* <img src="https://avatars.githubusercontent.com/u/81866624?v=4" alt="User" id={style.profile} 
+                        onClick={()=>{navigate('/profile')}}/> */}
+                    <Avatar id={style.profile} name={`${userData.user.firstName} ${userData.user.lastName}`} size={35.93} onClick={()=>{navigate('/profile')}}/>
+
+
                  </Popover>   
+                    )}
             </div>
         </>
     )

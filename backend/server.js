@@ -13,6 +13,9 @@ Organization.hasMany(Deal, { foreignKey: 'organizationId' })
 Employee.hasMany(Deal, { foreignKey: 'employeeId' })
 Contact.hasMany(Deal, { foreignKey: 'contactId' })
 
+Deal.belongsTo(Employee, {foreignKey: 'employeeId' })
+Deal.belongsTo(Contact, {foreignKey: 'contactId' })
+
 
 app.listen(3000, () => {
     console.log(`Server running on port 3000`);
