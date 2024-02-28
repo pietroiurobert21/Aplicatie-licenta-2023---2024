@@ -1,4 +1,4 @@
-import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, Combobox } from "evergreen-ui"
+import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, Combobox, SelectMenu } from "evergreen-ui"
 import { useEffect, useState } from "react";
 import CheckToken from '../../middlewares/CheckToken'
 
@@ -11,6 +11,7 @@ export default function Deals() {
 
     const [ isShown, setIsShown] = useState(false)
 
+    const userId = localStorage.getItem("userId")
     const accessToken = localStorage.getItem("accessToken")
     const organizationId = localStorage.getItem("organizationId")
 
@@ -30,30 +31,85 @@ export default function Deals() {
         }
     }
 
-    // TODOD: rest API for join: deals + contact + employee
+    const [ contacts, setContacts ] = useState([])
+    const [ loadingContacts, setLoadingContacts ] = useState(true)
 
-    // const getContactById = async () => {
-    //     const res = await fetch(`http://localhost:3000/contacts/id/1`, {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-type': 'application/json',
-    //             'Authorization': `Bearer ${accessToken}`
-    //         }
-    //     })
-    //     if (res.status == 200) {
-    //         const data = await res.json()
-    //         setContact(data.contact)
-    //     }
+    const retrieveContacts = async () => {
+        const res = await fetch(`http://localhost:3000/contacts/${organizationId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
 
-    // }
+        if (res.status == 200) {
+            const data = await res.json()
+            console.log(data)
+            setContacts(data.contacts)
+        } else if (res.status == 401) {
+            localStorage.removeItem("accessToken")
+        }
+        setLoadingContacts(false)
+    }
+
+    const saveNewDeal = async () => {
+        await fetch(`http://localhost:3000/deals`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(newDeal)
+        })
+    }
+
+    const [newDeal, setNewDeal] = useState({
+        "value": "",
+        "status": "ongoing",
+        "date": new Date().toLocaleString(),
+        "description": "",
+        "employeeId": "",
+        "organizationId": +organizationId,
+        "contactId": 1
+    })
+
+    const [loadingEmployee, setLoadingEmployee] = useState(true)
+
+    const getEmployeeByUserId = async () => {
+        await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(data=>data.json())
+        .then(data=>{ 
+            setLoadingEmployee(false)
+            setNewDeal({...newDeal, ["employeeId"]: data.userOrganization.id})
+        })
+    }
 
     useEffect(() => {
         getDeals()
-        // getContactById()
+        retrieveContacts()
+        getEmployeeByUserId()
     }, [])
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        if (name == "contactId")
+            setNewDeal({ ...newDeal, [name]: +value });
+        else 
+            setNewDeal({ ...newDeal, [name]: value });
+    };
+
+    const [selected, setSelected] = useState(null)
     return (
-        <>
+        <>  
+            {
+                loading ? <p>loading</p> : (
+            <>
             <Table style={{width:"100vw", padding:"2%", paddingTop: "0"}}>
                 <Table.Head>
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
@@ -85,29 +141,33 @@ export default function Deals() {
             <Dialog
                 isShown={isShown}
                 title="Dialog title"
-                onCloseComplete={() => setIsShown(false)}
+                onCloseComplete={() => {setIsShown(false); saveNewDeal()    }}
                 confirmLabel="Custom Label">
+                <SelectMenu
+                    title="Select name"
+                    options={contacts.map(contact => ({ label: contact.firstName, value: contact.firstName, key: contact.id }))}
+                    selected={selected}
+                    onSelect={(item) => {setSelected(item.value);  setNewDeal({ ...newDeal, ["contactId"]: +item.key }); }}>
+                        
+                    <TextInputField 
+                        label="Contact"
+                        value={selected || 'Select name...'}/>
+                </SelectMenu>
                 <TextInputField
                     label="Value"
                     placeholder="Value"
-                    name="Value"/>
-                {/* <TextInputField
-                    label="Contact"
-                    placeholder="Contact"
-                    name="Contact"/> */}
-                <Combobox
-                    items={['contact_1', 'contact_2']}
-                    // itemToString={item => (item ? item.label : '')}
-                    // onChange={selected => console.log(selected)}
-                    placeholder="select a contact"
-                />
+                    name="value"
+                    type="number"
+                    onChange={handleInputChange}/>
                 <TextInputField
                     label="Description"
                     placeholder="Description"
-                    name="Description"/>
-                
+                    name="description"
+                    onChange={handleInputChange}/>
             </Dialog>
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </Button>
+                </>
+            )}
         </>
     )
 }

@@ -3,6 +3,7 @@ import style from "./Dashboard.module.css"
 
 import Graph from "../../components/Graph/Graph"
 import CheckToken from '../../middlewares/CheckToken.jsx'
+import { Button } from "evergreen-ui";
 
 
 export default function Home() {
@@ -33,6 +34,8 @@ export default function Home() {
                 <Graph type={'radar'} labels={labels} label={label} data={data} id={"d"} />
             </div>
             </div>
+
+            <Button> generate graph </Button>
         </>
     )
 }

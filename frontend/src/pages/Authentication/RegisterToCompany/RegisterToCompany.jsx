@@ -46,6 +46,7 @@ export default function RegisterToCompany() {
         })
         const response = await data.json()
         if (data.status == 201) {
+            localStorage.setItem("organizationId", companyId)
             navigate("/")
         } else
             toaster.danger("Error creating company", { description: response.error })
