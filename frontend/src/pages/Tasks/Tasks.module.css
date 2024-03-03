@@ -1,0 +1,11 @@
+.tasks {
+    width: 70vw;
+    height: 80vh;
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    margin: auto;
+    border-radius: 20px;
+    padding: 2%;
+
+    font-family: 'Roboto', sans-serif;
+}

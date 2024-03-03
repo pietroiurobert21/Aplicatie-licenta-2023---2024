@@ -12,7 +12,6 @@ export default function GoogleGraph(props) {
         })
     }, [])
 
-    // Prepare data in the correct format
     const chartData = [['Month', 'Euro']];
     values.map((element, index) => {
         chartData.push([labels[index], element]);
@@ -20,7 +19,10 @@ export default function GoogleGraph(props) {
 
     var options = {'title':'sales',
     'width':400,
-    'height':300}
+    'height':300,
+    legend: { position: "bottom" }}
+
+    // https://www.react-google-charts.com/examples/line-chart
 
     return (
         <>

@@ -17,6 +17,5 @@ body, html {
 }
 
 .yearGraph {
-    border: 1px solid;
     display: flex;
 }
