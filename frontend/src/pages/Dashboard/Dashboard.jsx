@@ -1,5 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import style from "./Dashboard.module.css"
+
+import GoogleGraph from "../../components/GoogleGraph/GoogleGraph.jsx"
 
 import Graph from "../../components/Graph/Graph"
 import CheckToken from '../../middlewares/CheckToken.jsx'
@@ -8,34 +10,72 @@ import { Button } from "evergreen-ui";
 
 export default function Home() {
     CheckToken()
+    const [yearlySum, setYearlySum] = useState({});
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-    const [data, setData] = useState([1000,2000,3000,800,1000,2500,400,600,7000,1080, 3000,4000])
+    const accessToken = localStorage.getItem("accessToken");
+    const organizationId = localStorage.getItem("organizationId");
+    const [ loading, setLoading ] = useState(true);
 
-    const type = 'bar'
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'Novemeber', 'December']
-    const label = 'Sales 2023'
+    const getDeals = async () => {
+        const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        if (res.status === 200) {
+            const deals = await res.json();
 
-    const collectData = (str) => {
-        const arr = str.split(',').map((item) => parseInt(item))
-        setData(arr)
+            const updatedYearlySum = {};
+            deals.organizationDeals.forEach(deal => {
+                const year = new Date(deal.date).getFullYear();
+                const month = new Date(deal.date).getMonth();
+                if (!updatedYearlySum[year]) {
+                    updatedYearlySum[year] = new Array(12).fill(0);
+                }
+                updatedYearlySum[year][month] += deal.value;
+            });
+            setYearlySum(updatedYearlySum);
+
+            setLoading(false);
+            console.log(yearlySum);
+        }
     }
 
-    console.log("https://quickchart.io/documentation/chart-types/")
+    useEffect(()=>{
+        getDeals()
+    }, [])
 
     return (
-        <>
-            <div className={style.page_container}>
-            {/* <input type="text" onChange={(e)=>{collectData(e.target.value)}}/> */}
-            
-            <div className={style.graph_container}>
-                <Graph type={'bar'} labels={labels} label={label} data={data} id={"a"} />
-                <Graph type={'pie'} labels={labels} label={label} data={data} id={"b"} />
-                <Graph type={'line'} labels={labels} label={label} data={data} id={"c"} />
-                <Graph type={'radar'} labels={labels} label={label} data={data} id={"d"} />
-            </div>
-            </div>
+        <div className={style.page_container}>
+            {loading ? <p>loading</p> : (
+                <div className={style.graph_container}>
+                    {Object.entries(yearlySum).sort(([year1], [year2]) => year2 - year1).map(([year, monthlySums]) => (
+                        <div>
+                        <h3>{year}</h3>
+                        <div className={style.yearGraph}>
+                            <GoogleGraph data={monthlySums} year={year} />
+                        </div>
+                        </div>
 
-            <Button> generate graph </Button>
-        </>
-    )
+                    ))}
+                </div>
+            )}
+        </div>
+    );
 }
+
+// const Graphs = ({ yearlySum, year }) => {
+//     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+//     return (
+//         <>
+//             <Graph type={'bar'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-a`} />
+//             <Graph type={'pie'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-b`} />
+//             <Graph type={'line'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-c`} />
+//             <Graph type={'radar'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-d`} />
+//         </>
+//     );
+// }

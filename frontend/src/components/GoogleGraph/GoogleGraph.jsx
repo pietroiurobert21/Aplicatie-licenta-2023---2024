@@ -1,0 +1,42 @@
+import { useEffect } from "react";
+import { Chart } from "react-google-charts";
+
+export default function GoogleGraph(props) {
+    const values = props.data;
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    useEffect(()=>{
+        console.log(values)
+        values.map((element, index) => {
+            console.log([labels[index], element])
+        })
+    }, [])
+
+    // Prepare data in the correct format
+    const chartData = [['Month', 'Euro']];
+    values.map((element, index) => {
+        chartData.push([labels[index], element]);
+    });
+
+    var options = {'title':'sales',
+    'width':400,
+    'height':300}
+
+    return (
+        <>
+            <Chart
+                chartType="BarChart"
+                data={chartData}
+                options={options}
+                />
+            <Chart
+                chartType="PieChart"
+                data={chartData}
+                options={options}/>
+            <Chart
+                chartType="LineChart"
+                data={chartData}
+                options={options}/>
+        </>
+    )
+}

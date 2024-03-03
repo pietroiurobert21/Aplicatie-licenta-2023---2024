@@ -1,4 +1,4 @@
-import { Table, toaster, Combobox, TrashIcon, Button, Dialog, TextInputField, NewPersonIcon } from 'evergreen-ui'
+import { Table, toaster, Combobox, TrashIcon, Button, Dialog, TextInputField, NewPersonIcon, Badge } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
 
@@ -117,19 +117,25 @@ export default function Contacts() {
                             <Table.TextCell>{profile.emailAddress}</Table.TextCell>
                             <Table.TextCell>{profile.phoneNumber}</Table.TextCell>
 
-                            <Table.TextCell>     
+                            <Table.TextCell onClick={(event)=>{event.stopPropagation()}}>     
                                 <Combobox
-                                    initialSelectedItem={{ label: 'customer' }}
-                                    items={[{ label: 'prospect' }, { label: 'lead' }, { label: 'contacted' }, { label: 'customer'}]}
-                                    itemToString={item => (item ? item.label : '')}
+                                    placeholder='Status'
+                                    items={['prospect', 'lead', 'contacted', 'customer']}
+                                    // itemToString={item => (item ? item.label : '')}
                                     onChange={selected => console.log(selected)}
                                     style={{width:"7rem"}}
+                                    autocompleteProps={{
+                                        // Used for the title in the autocomplete.
+                                        title: 'Pipeline Status'
+                                      }}
                                 />
                             </Table.TextCell>
 
                             {/* <Table.TextCell>{profile.status}</Table.TextCell> */}
 
-                            <Table.TextCell> <TrashIcon onClick={(event)=>{alert('delete');event.stopPropagation()}}/> </Table.TextCell>
+                            <Table.TextCell> 
+                                <TrashIcon onClick={(event)=>{alert('delete');event.stopPropagation()}}/> 
+                                </Table.TextCell>
                         </Table.Row>
                     )))
                     }
@@ -267,7 +273,8 @@ export default function Contacts() {
                         <Button appearance='primary' intent="success" style={{width:"100%"}}> Propose Deal </Button>
                         <Button appearance='default' intent="danger" style={{width:"100%", marginTop:"1vh"}}> Delete contact </Button>
             </Dialog>
-            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> Add Contact </Button>
+            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
+            <Button appearance="default" intent="success" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> Import from csv </Button>
         </>
     )
 }

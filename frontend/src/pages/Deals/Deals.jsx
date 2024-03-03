@@ -1,4 +1,5 @@
-import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, Combobox, SelectMenu } from "evergreen-ui"
+import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, Combobox, SelectMenu, Badge } from "evergreen-ui"
+
 import { useEffect, useState } from "react";
 import CheckToken from '../../middlewares/CheckToken'
 
@@ -66,7 +67,7 @@ export default function Deals() {
 
     const [newDeal, setNewDeal] = useState({
         "value": "",
-        "status": "ongoing",
+        "status": "proposed",
         "date": new Date().toLocaleString(),
         "description": "",
         "employeeId": "",
@@ -104,6 +105,7 @@ export default function Deals() {
             setNewDeal({ ...newDeal, [name]: value });
     };
 
+
     const [selected, setSelected] = useState(null)
     return (
         <>  
@@ -131,7 +133,21 @@ export default function Deals() {
                             <Table.TextCell> {deal.date} </Table.TextCell>
                             <Table.TextCell> {deal.Employee.User.firstName} {deal.Employee.User.lastName} </Table.TextCell>
                             <Table.TextCell> {deal.description} </Table.TextCell>
-                            <Table.TextCell> {deal.status} </Table.TextCell>
+                             
+                            <Table.TextCell onClick={(event)=>{event.stopPropagation()}} style={{color:"Red"}}>
+                                <Badge color={deal.status === 'accepted' ? 'green' : deal.status === 'rejected' ? 'red' : 'inherit'}> {deal.status} </Badge>
+                                {/* <Combobox
+                                    initialSelectedItem={deal.status ? { label: deal.status } : null}
+                                    items={[
+                                        { label: 'proposed' },
+                                        { label: 'accepted' },
+                                        { label: 'rejected'}
+                                    ]}
+                                    itemToString={item => (item ? item.label : '')}
+                                    onChange={selected => console.log(selected)}
+                                    style={{width:"7rem"}}
+                                /> */}
+                            </Table.TextCell>
                         </Table.Row>
                     ))}
 

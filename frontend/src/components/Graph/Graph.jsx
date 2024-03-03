@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import style from './Graph.module.css';
 import {Spinner} from 'evergreen-ui';
+import { Chart } from "react-google-charts";
 //npm install evergreen-ui
 
 export default function Graph(props) {
