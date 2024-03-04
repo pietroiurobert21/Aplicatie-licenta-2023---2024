@@ -7,8 +7,9 @@ const app = express();
 const user_routes = require('./users/users-routes');
 const organization_routes = require('./organizations/organization-routes');
 const employee_routes = require('./employees/employee-routes');
-const contact_routes = require('./contacts/contact-routes')
-const deal_routes = require('./deals/deals-routes')
+const contact_routes = require('./contacts/contact-routes');
+const deal_routes = require('./deals/deals-routes');
+const task_routes = require('./tasks/tasks-routes');
 
 dotenv.config(); // Configure dotenv
 app.use(cors({origin: 'http://localhost:5173'}));
@@ -19,5 +20,6 @@ app.use('/organizations', organization_routes);
 app.use('/employees', employee_routes);
 app.use('/contacts', contact_routes);
 app.use('/deals', deal_routes);
+app.use('/tasks', task_routes)
 
 module.exports = app;
