@@ -18,7 +18,7 @@ export default function Home() {
     const [ loading, setLoading ] = useState(true);
 
     const getDeals = async () => {
-        const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, { // TODO add querry parameter to choose what data to retrieve (accepted deals, failed, accepted+proposed)
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',

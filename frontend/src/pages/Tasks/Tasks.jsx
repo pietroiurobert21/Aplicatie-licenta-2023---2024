@@ -29,6 +29,10 @@ export default function Tasks() {
         retrieveTasks()
     }, [])
 
+    
+    // TODO MOVE BOTH TABLES IN DIFFERENT .JSX FILES AS INDIVIDUAL COMPONENTS
+
+    
     const [checked, setChecked] = useState(false)
     return (
         <>
@@ -36,18 +40,20 @@ export default function Tasks() {
             <div className={style.todo}>
                 <h5> Todo-list </h5>
                     <Table width={400}>
-                        <Table.Head>
+                        <Table.Head backgroundColor="#fcfbda">
                             <Table.TextHeaderCell maxWidth={80}>  </Table.TextHeaderCell>
                             <Table.TextHeaderCell> Description </Table.TextHeaderCell>
                         </Table.Head>    
-                        <Table.VirtualBody height={440}>
+                        <Table.VirtualBody height={390}>
                             <Table.Row key={1} isSelectable>
                                 <Table.TextCell maxWidth={80}> 
                                     <Checkbox checked={checked} display='flex' justifyContent='center' alignItems='center' onChange={e => setChecked(e.target.checked)}/> 
                                 </Table.TextCell>
                                 <Table.TextCell> some description  awdddddadaaaaaaaaaaaaaaa</Table.TextCell>
                             </Table.Row>
-                            <Table.Row key={2} isSelectable>
+                        </Table.VirtualBody>
+                        <Table.VirtualBody height={50}>
+                            <Table.Row key={"newTask"} backgroundColor="#fcfbda">
                                 <Table.TextCell> <TextInput name="text-input-name" placeholder="New todo task..." width={"100%"} style={{border: 0}}/> </Table.TextCell> 
                             </Table.Row>
                         </Table.VirtualBody>
@@ -60,12 +66,12 @@ export default function Tasks() {
                     loading ? <p> loading </p> : (
 
                             <Table>
-                                <Table.Head width={800}>
+                                <Table.Head width={800} backgroundColor="#dafce9">
                                     <Table.SearchHeaderCell />
                                     <Table.TextHeaderCell>Description</Table.TextHeaderCell>
-                                    <Table.TextHeaderCell>Assigned by:</Table.TextHeaderCell>
+                                    <Table.TextHeaderCell>Assigned to:</Table.TextHeaderCell>
                                 </Table.Head>    
-                                <Table.VirtualBody height={440}>
+                                <Table.VirtualBody height={390}>
                                     {
                                         (tasks.map((task)=> (
                                             <>
@@ -77,6 +83,11 @@ export default function Tasks() {
                                             </>
                                         )))
                                     }
+                                </Table.VirtualBody>
+                                <Table.VirtualBody height={50}>
+                                    <Table.Row key={"newTask"} backgroundColor="#dafce9">
+                                        <Table.TextCell> <TextInput name="text-input-name" placeholder="New todo task..." width={"100%"} style={{border: 0}}/> </Table.TextCell> 
+                                    </Table.Row>
                                 </Table.VirtualBody>
                             </Table>
                     )
