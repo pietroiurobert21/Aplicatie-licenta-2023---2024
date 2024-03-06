@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import style from "./Profile.module.css"
-import { Avatar, StatusIndicator, Badge } from 'evergreen-ui'
+import { useNavigate } from 'react-router-dom';
+
+import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
 
+
 export default function Profile(){
+    const navigate = useNavigate();
     CheckToken()
 
     const [isLoading, setIsLoading] = useState(true)
@@ -51,6 +55,13 @@ export default function Profile(){
         }
     }
 
+    const emptyLocalstorage = () => {
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("userId")
+        localStorage.removeItem("organizationId")
+        navigate("/")
+    }
+
     useEffect(()=>{
         getUserById()
         getEmployeeRole()
@@ -69,6 +80,7 @@ export default function Profile(){
                                     <StatusIndicator color="success" marginRight={16} fontSize={16}> Online </StatusIndicator>
                                     <Badge color={color} fontSize={13} margin={0} marginLeft={16}> {userRole} </Badge>
                                 </p>
+                                <p id={style.logout} onClick={()=>{toaster.notify("Logged out Successfully", {duration: 1.5}); emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
                             </div>
 
                             <div className={style.contactInfoContainer}>
