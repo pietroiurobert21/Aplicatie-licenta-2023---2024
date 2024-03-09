@@ -52,17 +52,6 @@ export default function Deals() {
         setLoadingContacts(false)
     }
 
-    const saveNewDeal = async () => {
-        await fetch(`http://localhost:3000/deals`, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-            body: JSON.stringify(newDeal)
-        })
-    }
-
     const [newDeal, setNewDeal] = useState({
         "value": "",
         "status": "proposed",
@@ -103,6 +92,18 @@ export default function Deals() {
         else 
             setNewDeal({ ...newDeal, [name]: value });
     };
+
+    const saveNewDeal = async () => {
+        await fetch(`http://localhost:3000/deals`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(newDeal)
+        })
+        setUpdated(shownDeal.id + " " + shownDeal.status);
+    }
 
     const updateDealStatus = async () => {
         await fetch(`http://localhost:3000/deals/${shownDeal.id}`, {
@@ -159,7 +160,9 @@ export default function Deals() {
             <Dialog
                 isShown={isShown}
                 title="Dialog title"
-                onCloseComplete={() => {setIsShown_1(false); saveNewDeal()}}
+                onConfirm={() => {setIsShown(false); saveNewDeal()}}
+                onCancel={()=>{setIsShown(false)}}
+                onCloseComplete={() => setIsShown(false)}
                 confirmLabel="Custom Label">
                 <SelectMenu
                     title="Select name"
@@ -191,7 +194,8 @@ export default function Deals() {
                     isShown={isShown_1}
                     title={shownDeal.Employee ? shownDeal.Employee.User.firstName + " " + shownDeal.Employee.User.lastName + "'s deal since " + new Date(shownDeal.date).toLocaleDateString("en-US") : "Loading"}
                     onConfirm={() => {setIsShown_1(false); updateDealStatus(newStatus); }}
-                    onCancel={()=>setIsShown_1(false)}
+                    onCancel={() => setIsShown_1(false)}
+                    onCloseComplete={() => setIsShown_1(false)}
                     confirmLabel="Update deal">
                     <TextInputField
                         label="Contact"
@@ -214,7 +218,7 @@ export default function Deals() {
                         value={shownDeal.description}/>
                     <Combobox
                         initialSelectedItem={shownDeal.status}
-                        items={['ongoing', 'accepted', 'rejected']}
+                        items={['proposed', 'accepted', 'rejected']}
                         onChange={selected => {console.log(selected); setNewStatus(selected)}}
                         placeholder="Status"
                         autocompleteProps={{
