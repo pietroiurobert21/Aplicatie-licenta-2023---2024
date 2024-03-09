@@ -29,6 +29,10 @@ const Employee = sequelize.define('Employee', {
             model: Organization,
             key: 'id'
         }
+    }, 
+    points: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
     }
 }, {
     timestamps: false,

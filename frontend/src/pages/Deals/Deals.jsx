@@ -1,4 +1,4 @@
-import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, Combobox, SelectMenu, Badge } from "evergreen-ui"
+import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox } from "evergreen-ui"
 
 import { useEffect, useState } from "react";
 import CheckToken from '../../middlewares/CheckToken'
@@ -7,10 +7,8 @@ export default function Deals() {
     CheckToken()
     const [ deals, setDeals ] = useState([])
     const [ loading, setLoading ] = useState(true)
-
-    const [ contact, setContact ] = useState({})
-
     const [ isShown, setIsShown] = useState(false)
+    const [ isShown_1, setIsShown_1] = useState(false)
 
     const userId = localStorage.getItem("userId")
     const accessToken = localStorage.getItem("accessToken")
@@ -91,11 +89,12 @@ export default function Deals() {
         })
     }
 
+    const [ updated, setUpdated ] = useState('')
     useEffect(() => {
         getDeals()
         retrieveContacts()
         getEmployeeByUserId()
-    }, [])
+    }, [updated])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -105,8 +104,22 @@ export default function Deals() {
             setNewDeal({ ...newDeal, [name]: value });
     };
 
+    const updateDealStatus = async () => {
+        await fetch(`http://localhost:3000/deals/${shownDeal.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({status: newStatus})
+        });
+        setUpdated(shownDeal.id + " " + newStatus);
+    }
 
-    const [selected, setSelected] = useState(null)
+
+    const [ selected, setSelected ] = useState({})
+    const [ shownDeal, setShownDeal ] = useState({})
+    const [ newStatus, setNewStatus ] = useState('')
     return (
         <>  
             {
@@ -126,7 +139,7 @@ export default function Deals() {
                 <Table.VirtualBody height={440}>
 
                     {deals.map((deal) => ( 
-                        <Table.Row key={deal.id} isSelectable onSelect={() => {}}>
+                        <Table.Row key={deal.id} isSelectable onSelect={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status) }}>
                             <Table.TextCell> {deal.id} </Table.TextCell>
                             <Table.TextCell> {deal.value} </Table.TextCell>
                             <Table.TextCell> {deal.Contact.firstName} {deal.Contact.lastName} </Table.TextCell>
@@ -136,17 +149,6 @@ export default function Deals() {
                              
                             <Table.TextCell onClick={(event)=>{event.stopPropagation()}} style={{color:"Red"}}>
                                 <Badge color={deal.status === 'accepted' ? 'green' : deal.status === 'rejected' ? 'red' : 'inherit'}> {deal.status} </Badge>
-                                {/* <Combobox
-                                    initialSelectedItem={deal.status ? { label: deal.status } : null}
-                                    items={[
-                                        { label: 'proposed' },
-                                        { label: 'accepted' },
-                                        { label: 'rejected'}
-                                    ]}
-                                    itemToString={item => (item ? item.label : '')}
-                                    onChange={selected => console.log(selected)}
-                                    style={{width:"7rem"}}
-                                /> */}
                             </Table.TextCell>
                         </Table.Row>
                     ))}
@@ -157,7 +159,7 @@ export default function Deals() {
             <Dialog
                 isShown={isShown}
                 title="Dialog title"
-                onCloseComplete={() => {setIsShown(false); saveNewDeal()    }}
+                onCloseComplete={() => {setIsShown_1(false); saveNewDeal()}}
                 confirmLabel="Custom Label">
                 <SelectMenu
                     title="Select name"
@@ -181,6 +183,49 @@ export default function Deals() {
                     name="description"
                     onChange={handleInputChange}/>
             </Dialog>
+
+
+
+
+                <Dialog
+                    isShown={isShown_1}
+                    title={shownDeal.Employee ? shownDeal.Employee.User.firstName + " " + shownDeal.Employee.User.lastName + "'s deal since " + new Date(shownDeal.date).toLocaleDateString("en-US") : "Loading"}
+                    onConfirm={() => {setIsShown_1(false); updateDealStatus(newStatus); }}
+                    onCancel={()=>setIsShown_1(false)}
+                    confirmLabel="Update deal">
+                    <TextInputField
+                        label="Contact"
+                        placeholder="Contact"
+                        name="contact"
+                        disabled
+                        value={shownDeal.Contact ? shownDeal.Contact.firstName + " " + shownDeal.Contact.lastName : "Loading"}/>
+                    <TextInputField
+                        label="Value"
+                        placeholder="Value"
+                        name="value"
+                        type="number"
+                        disabled
+                        value={shownDeal.value}/>
+                    <TextInputField
+                        label="Description"
+                        placeholder="Description"
+                        name="description"
+                        disabled
+                        value={shownDeal.description}/>
+                    <Combobox
+                        initialSelectedItem={shownDeal.status}
+                        items={['ongoing', 'accepted', 'rejected']}
+                        onChange={selected => {console.log(selected); setNewStatus(selected)}}
+                        placeholder="Status"
+                        autocompleteProps={{
+                            // Used for the title in the autocomplete.
+                            title: 'Status'
+                        }}/>
+                </Dialog>
+
+
+
+
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </Button>
                 </>
             )}

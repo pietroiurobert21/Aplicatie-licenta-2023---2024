@@ -21,6 +21,10 @@ const Organization = sequelize.define('Organization', {
         unique: true,
         defaultValue: () => uuidv4(), 
     },
+    points: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0
+    }
 }, {
     timestamps: false,
 });

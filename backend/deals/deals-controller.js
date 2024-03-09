@@ -16,6 +16,23 @@ const addDeal = async (req, res) => {
     }
 }
 
+const updateDeal = async (req, res) => {
+    const { id } = req.params
+    const body = req.body
+    try {
+        const deal = await Deal.findByPk(id)
+        if (deal) {
+            deal.status = body.status
+            await deal.save({fields: ['status']})
+            res.status(200).json({success:true, deal})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error updating deal" });
+    }
+}
+
 module.exports = {
-    addDeal
+    addDeal,
+    updateDeal
 }

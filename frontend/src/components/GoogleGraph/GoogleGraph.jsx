@@ -17,7 +17,7 @@ export default function GoogleGraph(props) {
         chartData.push([labels[index], element]);
     });
 
-    var options = {'title':'sales',
+    var options = {'title':'sales value',
     'width':400,
     'height':300,
     legend: { position: "bottom" }}
@@ -26,19 +26,21 @@ export default function GoogleGraph(props) {
 
     return (
         <>
-            <Chart
-                chartType="BarChart"
-                data={chartData}
-                options={options}
-                />
-            <Chart
-                chartType="PieChart"
-                data={chartData}
-                options={options}/>
-            <Chart
-                chartType="LineChart"
-                data={chartData}
-                options={options}/>
+            <div className="">
+                <Chart
+                    chartType="BarChart"
+                    data={chartData}
+                    options={options}
+                    />
+                <Chart
+                    chartType="PieChart"
+                    data={chartData}
+                    options={options}/>
+                <Chart
+                    chartType="LineChart"
+                    data={chartData}
+                    options={options}/>
+            </div>
         </>
     )
 }
