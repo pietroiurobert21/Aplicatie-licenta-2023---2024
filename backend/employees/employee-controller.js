@@ -42,6 +42,7 @@ const getEmployeeByUserId = async (req, res) => {
     }
 }
 
+
 const getColleagues = async (req, res) => {
     const { userId } = req.params;
     try {

@@ -28,12 +28,20 @@ const updateDeal = async (req, res) => {
 
             // update organization points
             const organization = await Organization.findByPk(deal.organizationId)
+            const employee = await Employee.findByPk(deal.employeeId)
             if (organization) {
                 if (body.status == 'accepted')
                     organization.points++
                 else if (organization.points > 0)
                     organization.points--
                 await organization.save({fields: ['points']})
+            }
+            if (employee) {
+                if (body.status == 'accepted') 
+                    employee.points++
+                else if (employee.points > 0)
+                    employee.points--
+                await employee.save({fields: ['points']})
             }
         }
     } catch (error) {

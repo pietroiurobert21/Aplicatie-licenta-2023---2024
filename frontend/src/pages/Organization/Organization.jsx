@@ -48,6 +48,8 @@ export default function Organization() {
                 <li> {organization.name}  </li>
                 <li className={style.itemName}> Points </li>
                 <li> {organization.points}  </li>
+                <li className={style.itemName}> Revenue </li>
+                <li> $$$  </li>
                 <li className={style.itemName}> Invitation code </li>
                 <li> {organization.code}  </li>
                 <li className={style.itemName}> Active on platform since </li>

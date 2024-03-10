@@ -13,6 +13,7 @@ export default function Profile(){
     const [isLoading, setIsLoading] = useState(true)
     const [userData, setUserData] = useState({})
     const [userRole, setUserRole] = useState('')
+    const [ points, setPoints ] = useState()
 
     const userId = localStorage.getItem("userId")
     const token = localStorage.getItem("accessToken")
@@ -32,6 +33,7 @@ export default function Profile(){
             const data = await res.json()
             setUserData(data)
             setIsLoading(false)
+            console.log(data)
             console.log(userData)
         }
     }
@@ -52,6 +54,7 @@ export default function Profile(){
             if (data.userOrganization.role != 'administrator') {
                 setColor('blue')
             }
+            setPoints(data.userOrganization.points)
         }
     }
 
@@ -94,6 +97,8 @@ export default function Profile(){
                                     <li>{userData.user.firstName}</li>
                                     <li className={style.itemName}>Last name</li>
                                     <li>{userData.user.lastName}</li>
+                                    <li className={style.itemName}>Points</li>
+                                    <li> {points} </li>
                                 </ul>
                             </div>
                         </div>
