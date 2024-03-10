@@ -3,7 +3,7 @@ import BasicLineChart from "./MaterialUI/LinesChart.jsx";
 import BarChart from './MaterialUI/BarChart.jsx'
 import style from "./Chart.module.css";
 import { useState, useEffect } from 'react';
-
+import Typography from '@mui/material/Typography';
 
 export default function Chart() {
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -45,16 +45,16 @@ export default function Chart() {
         <div style={{display: 'flex', justifyContent: "space-around", alignItems: 'center', width: "100vw"}}>
             <div style={{display: 'flex', flexDirection: 'column', height:'92vh', justifyContent: 'space-between', alignItems: 'center'}}>
               <div className={style.item3}>
-                  <h3> Closed this year </h3>
-                  <h3> 18k </h3>
+                <Typography> Closed this year </Typography>
+                <Typography> 18k </Typography>
               </div>
               <div className={style.item3}>
-                  <h3> Closed this month </h3>
-                  <h3> 7.8k </h3>
+                <Typography> Closed this month </Typography>
+                <Typography> 7.8k </Typography>
               </div>
               <div className={style.item3}>
-                  <h3> Completed activities </h3>
-                  <h3> 215 </h3>
+                <Typography> Completed activities </Typography>
+                <Typography> 215 </Typography>
               </div>
             </div>
 

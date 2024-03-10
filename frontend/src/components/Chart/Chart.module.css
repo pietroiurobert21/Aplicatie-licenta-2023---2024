@@ -2,7 +2,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 60vw;
-    grid-gap: 1%;
+    grid-gap: 2%;
+    height: 92vh;
 }
 
 .item1 {
@@ -36,7 +37,7 @@
 }
 
 .item3 {
-    width: 30vw;
+    width: 25vw;
     height: 29vh;
     background-color: #fff;
     border: 1px solid #e6e6e6;

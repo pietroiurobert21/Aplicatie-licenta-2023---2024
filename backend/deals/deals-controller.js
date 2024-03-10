@@ -21,10 +21,20 @@ const updateDeal = async (req, res) => {
     const body = req.body
     try {
         const deal = await Deal.findByPk(id)
-        if (deal) {
+        if (deal && deal.status!=body.status) {
             deal.status = body.status
             await deal.save({fields: ['status']})
             res.status(200).json({success:true, deal})
+
+            // update organization points
+            const organization = await Organization.findByPk(deal.organizationId)
+            if (organization) {
+                if (body.status == 'accepted')
+                    organization.points++
+                else if (organization.points > 0)
+                    organization.points--
+                await organization.save({fields: ['points']})
+            }
         }
     } catch (error) {
         console.log(error)

@@ -13,6 +13,7 @@ export default function Navbar() {
 
     const [ userData, setUserData ] = useState({})
     const [ isLoading, setIsLoading ] = useState(true)
+    const [ role, setRole ] = useState('')
 
     const userId = localStorage.getItem("userId")
     const token = localStorage.getItem("accessToken")
@@ -30,8 +31,8 @@ export default function Navbar() {
         if (responseCode === 200) {
             const data = await res.json()
             setUserData(data)
-            setIsLoading(false)
             console.log(userData)
+            setIsLoading(false)
         }
     }
 
@@ -42,8 +43,25 @@ export default function Navbar() {
         navigate("/")
     }
 
+    const getEmployeeRole = async () => {
+        const res = await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+
+        const responseCode = res.status
+        if (responseCode === 200) {
+            const data = await res.json()
+            setRole(data.userOrganization.role)
+        }
+    }
+
     useEffect(()=>{
         getUserById()
+        getEmployeeRole()
     }, [])
 
     return (
@@ -58,7 +76,9 @@ export default function Navbar() {
                     <li onClick={()=>{navigate('/dashboard')}}> Dashboard </li>
                     <li onClick={()=>{navigate('/deals')}}> Deals </li>
                     <li onClick={()=>{navigate('/team')}}> Team </li>
-                    <li onClick={()=>{navigate('/organization')}} style={{color: "#887B04"}}> Organization </li>
+                    {
+                        role=='administrator' && <li onClick={()=>{navigate('/organization')}} style={{color: "#887B04"}}> Organization </li>
+                    }
                 </ul>
 
 

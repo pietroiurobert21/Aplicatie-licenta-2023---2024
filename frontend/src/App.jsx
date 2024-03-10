@@ -10,6 +10,7 @@ import Profile from './pages/profile/Profile.jsx'
 import Team from './pages/Team/Team.jsx'
 import Deals from './pages/Deals/Deals.jsx'
 import Tasks from './pages/Tasks/Tasks.jsx'
+import Organization from './pages/Organization/Organization.jsx'
 import { useLocation } from 'react-router-dom'
 
 import CheckToken from './middlewares/CheckToken.jsx'
@@ -38,6 +39,7 @@ function Main() {
         <Route path="/team" element={<Team />} />
         <Route path="/deals" element={<Deals />} />
         <Route path="/tasks" element={<Tasks />} />
+        <Route path="/organization" element={<Organization />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
