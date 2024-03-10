@@ -139,6 +139,33 @@ const getStructuredOrganizationDeals = async (req, res) => {
     } 
 }
 
+const getOrganizationDealsYears = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const years = await Deal.findAll({
+            attributes: [
+                [sequelize.literal("EXTRACT('year' FROM date)"), 'year']
+            ],
+            group: sequelize.literal("EXTRACT('year' FROM date)"),
+            where: {
+                organizationId: id
+            },
+            raw: true
+        });
+
+        if (years.length) {
+            const yearsArray = years.map(yearObj => yearObj.year);
+            res.status(200).json({ success: true, years: yearsArray });
+        } else {
+            res.status(200).json({ success: true, years: [] });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, error: "Error occurred" });
+    }
+}
+
+
 module.exports = {
     postOrganization,
     getOrganizationByCode,
@@ -146,5 +173,6 @@ module.exports = {
     getOrganizationById,
     getOrganizationByUserId,
     getOrganizationDeals,
-    getStructuredOrganizationDeals
+    getStructuredOrganizationDeals,
+    getOrganizationDealsYears
 }

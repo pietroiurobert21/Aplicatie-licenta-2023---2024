@@ -12,9 +12,10 @@ export default function Chart() {
     const [ xAxis, setxAxis] = useState([])
     const [ yAxis, setyAxis] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
     const accessToken = localStorage.getItem('accessToken')
+    const organizationId = localStorage.getItem('organizationId')
 
     const retrieveStructuredData = async () => {
-      const res = await fetch(`http://localhost:3000/organizations/structuredDeals/1`, {
+      const res = await fetch(`http://localhost:3000/organizations/structuredDeals/${organizationId}`, {
         method: 'GET',
         headers: { 
           'Content-type': 'application/json',
@@ -39,8 +40,6 @@ export default function Chart() {
       retrieveStructuredData()
     }, [])
 
-
-    
     return (
         <div style={{display: 'flex', justifyContent: "space-around", alignItems: 'center', width: "100vw"}}>
             <div style={{display: 'flex', flexDirection: 'column', height:'92vh', justifyContent: 'space-between', alignItems: 'center'}}>
