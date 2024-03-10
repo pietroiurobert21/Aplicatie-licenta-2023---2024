@@ -6,6 +6,7 @@ import GoogleGraph from "../../components/GoogleGraph/GoogleGraph.jsx"
 import Graph from "../../components/Graph/Graph"
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { Button } from "evergreen-ui";
+import Chart from "../../components/Chart/Chart.jsx"
 
 
 export default function Home() {
@@ -50,7 +51,8 @@ export default function Home() {
 
     return (
         <div className={style.page_container}>
-            {loading ? <p>loading</p> : (
+            <Chart/>
+            {/* {loading ? <p>loading</p> : (
                 <div className={style.graph_container}>
                     {Object.entries(yearlySum).sort(([year1], [year2]) => year2 - year1).map(([year, monthlySums]) => (
                         <div>
@@ -62,20 +64,7 @@ export default function Home() {
 
                     ))}
                 </div>
-            )}
+            )} */}
         </div>
     );
 }
-
-// const Graphs = ({ yearlySum, year }) => {
-//     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-//     return (
-//         <>
-//             <Graph type={'bar'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-a`} />
-//             <Graph type={'pie'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-b`} />
-//             <Graph type={'line'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-c`} />
-//             <Graph type={'radar'} labels={labels} label="sales" data={yearlySum} id={`graph-${year}-d`} />
-//         </>
-//     );
-// }

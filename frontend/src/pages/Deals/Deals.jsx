@@ -217,6 +217,7 @@ export default function Deals() {
                         disabled
                         value={shownDeal.description}/>
                     <Combobox
+                        style={{width: "100%"}}
                         initialSelectedItem={shownDeal.status}
                         items={['proposed', 'accepted', 'rejected']}
                         onChange={selected => {console.log(selected); setNewStatus(selected)}}
@@ -225,11 +226,8 @@ export default function Deals() {
                             // Used for the title in the autocomplete.
                             title: 'Status'
                         }}/>
+                    <Button appearance='primary' intent='danger' style={{width: "100%", marginTop: "20vh"}}> Delete deal </Button>
                 </Dialog>
-
-
-
-
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </Button>
                 </>
             )}

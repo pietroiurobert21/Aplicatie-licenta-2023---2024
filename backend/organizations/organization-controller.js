@@ -1,4 +1,5 @@
 const express = require('express');
+const sequelize = require('sequelize')
 
 const Organization = require('../database/models/organization');
 const Employee = require('../database/models/employee');
@@ -110,11 +111,40 @@ const getOrganizationDeals = async (req, res) => {
     }
 }
 
+const getStructuredOrganizationDeals = async (req, res) => {
+    const { id } = req.params
+    try {
+        const organizationDeals = await Deal.findAll({
+            where: {
+                organizationId: id
+            },
+            attributes: [
+              'organizationId',
+              [sequelize.literal("EXTRACT('YEAR' FROM date)"), 'YEAR'],
+              [sequelize.literal("EXTRACT('MONTH' FROM date)"), 'MONTH'],
+              [sequelize.literal('SUM(value)'), 'SUM_VALUE'],
+              [sequelize.literal('COUNT(value)'), 'COUNT_VALUE']
+            ],
+            group: ['organizationId', sequelize.literal("EXTRACT('YEAR' FROM date)"), sequelize.literal("EXTRACT('MONTH' FROM date)")],
+          });
+
+        if (organizationDeals) {
+            res.status(200).json({success: true, organizationDeals})
+        } else {
+            res.status(404).json({success: false, error: "no deals found"});
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error occured" });
+    } 
+}
+
 module.exports = {
     postOrganization,
     getOrganizationByCode,
     getOrganizationMembers,
     getOrganizationById,
     getOrganizationByUserId,
-    getOrganizationDeals
+    getOrganizationDeals,
+    getStructuredOrganizationDeals
 }
