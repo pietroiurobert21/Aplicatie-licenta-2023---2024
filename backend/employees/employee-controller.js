@@ -66,8 +66,23 @@ const getColleagues = async (req, res) => {
     }
 }
 
+const deleteEmployee = async (req, res) => {
+    const { employeeId } = req.params
+    try {
+        const employee = await Employee.findByPk(employeeId)
+        if (employee) {
+            await employee.destroy()
+            res.status(200).json({success: true, message: 'employee deleted'})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error deleting the employee" });
+    }
+}
+
 module.exports = {
     postEmployee,
     getEmployeeByUserId,
-    getColleagues
+    getColleagues,
+    deleteEmployee
 }

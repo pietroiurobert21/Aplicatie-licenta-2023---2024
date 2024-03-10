@@ -53,15 +53,45 @@ export default function Team() {
             localStorage.removeItem("accessToken")
         }
     }
-
+    
     const sendInvitationEmail = async () => {
         
+    }
+
+    const [ employeeFired, setEmployeeFired ] = useState('')
+    const fireEmployee = async (id) => {
+        await fetch(`http://localhost:3000/employees/deleteEmployee/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        setEmployeeFired('true' + id)
+    }
+
+    const [ userRole, setUserRole ] = useState()
+    const getEmployeeRole = async () => {
+        const res = await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+
+        const responseCode = res.status
+        if (responseCode === 200) {
+            const data = await res.json()
+            setUserRole(data.userOrganization.role)
+        }
     }
 
     useEffect(()=>{
         getTeam()
         getOrganization()
-    }, [])
+        getEmployeeRole()
+    }, [employeeFired])
 
     return (
         <div className={style.teamContainer}>
@@ -93,7 +123,9 @@ export default function Team() {
                             <Avatar name={`${colleague.User.firstName} ${colleague.User.lastName}`} size={40} marginRight={10}/>
                             {colleague.User.firstName} {colleague.User.lastName} - {colleague.role}
                         </p>
-                        { colleague.role!='administrator' && <p style={{color: 'red', paddingRight: '2vw'}} onClick={()=>{alert('remove member?')}}> <RemoveIcon/> </p> }
+                        { 
+                           userRole=='administrator' &&  colleague.role!='administrator' && <p style={{color: 'red', paddingRight: '2vw'}} onClick={()=>{alert('remove member?'); fireEmployee(colleague.id)}}> <RemoveIcon/> </p> 
+                        }
                     </li>
                 ))}
             </ul>
