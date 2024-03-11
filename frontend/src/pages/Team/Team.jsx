@@ -113,25 +113,28 @@ export default function Team() {
                 <Button onClick={() => setIsShown(true)}> invite </Button>
             </div>
 
-        {isLoading ? (
-            <p>Loading...</p>
-        ) : team.length > 0 ? (
-            <ul>
-                {team.map((colleague, index) => (
-                    <li key={index} style={{display: 'flex', justifyContent: 'space-between', height: '8vh'}}>
-                        <p> 
-                            <Avatar name={`${colleague.User.firstName} ${colleague.User.lastName}`} size={40} marginRight={10}/>
-                            {colleague.User.firstName} {colleague.User.lastName} - {colleague.role}
-                        </p>
-                        { 
-                           userRole=='administrator' &&  colleague.role!='administrator' && <p style={{color: 'red', paddingRight: '2vw'}} onClick={()=>{alert('remove member?'); fireEmployee(colleague.id)}}> <RemoveIcon/> </p> 
-                        }
-                    </li>
-                ))}
-            </ul>
-        ) : (
-            <p>No colleagues found.</p>
-        )}
+            <div className={style.teamBody}>
+
+                {isLoading ? (
+                    <p>Loading...</p>
+                ) : team.length > 0 ? (
+                    <ul>
+                        {team.map((colleague, index) => (
+                            <li key={index} style={{display: 'flex', justifyContent: 'space-between', height: '8vh'}}>
+                                <p> 
+                                    <Avatar name={`${colleague.User.firstName} ${colleague.User.lastName}`} size={40} marginRight={10}/>
+                                    {colleague.User.firstName} {colleague.User.lastName} - {colleague.role}
+                                </p>
+                                { 
+                                userRole=='administrator' &&  colleague.role!='administrator' && <p style={{color: 'red', paddingRight: '2vw'}} onClick={()=>{alert('remove member?'); fireEmployee(colleague.id)}}> <RemoveIcon/> </p> 
+                                }
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    <p>No colleagues found.</p>
+                )}
+            </div>
     </div>
     )
 }

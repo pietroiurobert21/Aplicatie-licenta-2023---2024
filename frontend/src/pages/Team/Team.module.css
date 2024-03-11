@@ -10,6 +10,13 @@
     font-family: 'Roboto', sans-serif;
 }
 
+.teamBody {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    width: 70vw;
+    height: 75vh;
+}
+
 .teamContainer p {
     display: block;
     padding-left: 5%;

@@ -30,7 +30,7 @@ export default function Chart() {
 
         setyAxis(prevData => {
             const newData = [...prevData];
-            newData[+value.MONTH-1] = +value.SUM_VALUE;
+            newData[+value.MONTH-1] = +value.COUNT_VALUE;
             return newData; 
         });
       })
