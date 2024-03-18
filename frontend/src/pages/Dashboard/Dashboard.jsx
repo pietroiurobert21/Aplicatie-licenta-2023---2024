@@ -39,22 +39,21 @@ export default function Home() {
     }, [selected])
 
     return (
-        <>
+      <div className={style.page_container}>
+        <div style={{display:"flex", flexDirection:"column", alignItems:"start"}}>
             {
                 years.length > 0 && <SelectMenu
                                     title="Select year"
                                     options={years.map((label) => ({ label, value: label }))}
                                     selected={selected}
                                     onSelect={(item) => setSelected(item.value)}>
-                                        <Button>{selected || 'Select year...'}</Button>
+                                        <Button style={{float:"left"}}>{"Selected year: " + selected || 'Select year...'}</Button>
                                 </SelectMenu>
             }
             {
-              selected &&              
-                      (<div className={style.page_container}>
-                          <Chart year={selected}/>
-                      </div>)
+              selected && <Chart year={selected}/>
             }
-        </>
+        </div>
+      </div>
     );
 }

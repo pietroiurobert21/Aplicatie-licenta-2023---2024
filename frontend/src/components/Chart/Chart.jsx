@@ -14,8 +14,11 @@ export default function Chart(props) {
     const accessToken = localStorage.getItem('accessToken')
     const organizationId = localStorage.getItem('organizationId')
 
+    const [ closedDeals, setClosedDeals ] = useState(0)
+
     const retrieveStructuredData = async () => {
       setData1([])
+      setClosedDeals(0)
       const res = await fetch(`http://localhost:3000/organizations/structuredDeals/${organizationId}`, {
         method: 'GET',
         headers: { 
@@ -24,7 +27,8 @@ export default function Chart(props) {
         }
       }).then(data=>data.json())
 
-      
+      console.log(res)
+
       res.acceptedDeals
         .filter(value => value.YEAR === props.year)
         .map((value, index) => {
@@ -39,7 +43,15 @@ export default function Chart(props) {
             newData[+value.MONTH-1] = +value.SUM_VALUE;
             return newData; 
         });
+
+        setClosedDeals(prev => prev+ (+value.COUNT_VALUE))
       })
+
+      res.rejectedDeals
+        .filter(value => value.YEAR === props.year)
+        .map((value, index) => {
+          setClosedDeals(prev => prev+ (+value.COUNT_VALUE))
+        })
     }
   
     useEffect(()=>{
@@ -48,11 +60,11 @@ export default function Chart(props) {
     }, [props.year])
 
     return (
-        <div style={{display: 'flex', justifyContent: "space-around", alignItems: 'center', width: "90vw"}}>
+        <div style={{display: 'flex', justifyContent: "space-between", alignItems: 'center', width: "90vw"}}>
             <div style={{display: 'flex', flexDirection: 'column', height:'92vh', justifyContent: 'space-between', alignItems: 'center'}}>
               <div className={style.item3}>
                 <Typography> Closed this year </Typography>
-                <Typography> 18k </Typography>
+                <Typography> {closedDeals} </Typography>
               </div>
               <div className={style.item3}>
                 <Typography> Closed this month </Typography>
