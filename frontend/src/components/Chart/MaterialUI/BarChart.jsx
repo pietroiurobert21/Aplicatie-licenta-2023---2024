@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 
-export default function BasicBars() {
+export default function BasicBars(props) {
   return (
     <BarChart
       xAxis={[{ scaleType: 'band', data: ['group A', 'group B', 'group C'] }]}

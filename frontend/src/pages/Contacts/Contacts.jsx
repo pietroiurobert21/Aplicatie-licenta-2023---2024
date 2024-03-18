@@ -85,7 +85,7 @@ export default function Contacts() {
     };
 
     useEffect(() => {
-        retrieveContacts()
+        organizationId && retrieveContacts()
     }, [])
 
     return (

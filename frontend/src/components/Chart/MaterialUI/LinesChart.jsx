@@ -13,7 +13,7 @@ export default function BasicLineChart(props) {
         xAxis.length ? 
           (     
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}> 
-              <Typography paddingRight={10}> Profit in 2024 </Typography>
+              <Typography paddingRight={10}> Profit in {props.year} </Typography>
 
               <LineChart
               xAxis={[{ data: [1,2,3,4,5,6,7,8,9,10,11,12] }]}

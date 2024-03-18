@@ -11,9 +11,10 @@ import Chart from "../../components/Chart/Chart.jsx"
 
 export default function Home() {
     CheckToken()
-    const [selected, setSelected] = useState(null)
+    const [ selected, setSelected] = useState(null)
 
     const [ years, setYears ] = useState([])
+
     const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
     const getYears = async () => {
@@ -33,10 +34,14 @@ export default function Home() {
         console.log(years)
     }, [])
 
+    useEffect(() => {
+      console.log(selected)
+    }, [selected])
+
     return (
         <>
             {
-                years.length>0 && <SelectMenu
+                years.length > 0 && <SelectMenu
                                     title="Select year"
                                     options={years.map((label) => ({ label, value: label }))}
                                     selected={selected}
@@ -44,9 +49,12 @@ export default function Home() {
                                         <Button>{selected || 'Select year...'}</Button>
                                 </SelectMenu>
             }
-            <div className={style.page_container}>
-                <Chart/>
-            </div>
+            {
+              selected &&              
+                      (<div className={style.page_container}>
+                          <Chart year={selected}/>
+                      </div>)
+            }
         </>
     );
 }

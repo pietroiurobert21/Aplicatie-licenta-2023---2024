@@ -11,7 +11,7 @@ export default function PieChart(props) {
       {
         data1.length ? (
           <>
-          <Typography paddingRight={10}> Number of sales in 2024 </Typography>
+          <Typography paddingRight={10}> Number of sales in {props.year} </Typography>
           <Chart
             series={[
               {
