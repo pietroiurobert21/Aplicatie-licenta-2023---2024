@@ -1,12 +1,5 @@
-body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: fit-content;
-}
-
 .page_container {
-    width: 100%;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;

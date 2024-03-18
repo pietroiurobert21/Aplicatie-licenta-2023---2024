@@ -114,9 +114,10 @@ const getOrganizationDeals = async (req, res) => {
 const getStructuredOrganizationDeals = async (req, res) => {
     const { id } = req.params
     try {
-        const organizationDeals = await Deal.findAll({
+        const acceptedDeals = await Deal.findAll({
             where: {
-                organizationId: id
+                organizationId: id,
+                status: 'accepted'
             },
             attributes: [
               'organizationId',
@@ -126,10 +127,41 @@ const getStructuredOrganizationDeals = async (req, res) => {
               [sequelize.literal('COUNT(value)'), 'COUNT_VALUE']
             ],
             group: ['organizationId', sequelize.literal("EXTRACT('YEAR' FROM date)"), sequelize.literal("EXTRACT('MONTH' FROM date)")],
-          });
+        });
 
-        if (organizationDeals) {
-            res.status(200).json({success: true, organizationDeals})
+        const rejectedDeals = await Deal.findAll({
+            where: {
+                organizationId: id,
+                status: 'rejected'
+            },
+            attributes: [
+              'organizationId',
+              [sequelize.literal("EXTRACT('YEAR' FROM date)"), 'YEAR'],
+              [sequelize.literal("EXTRACT('MONTH' FROM date)"), 'MONTH'],
+              [sequelize.literal('SUM(value)'), 'SUM_VALUE'],
+              [sequelize.literal('COUNT(value)'), 'COUNT_VALUE']
+            ],
+            group: ['organizationId', sequelize.literal("EXTRACT('YEAR' FROM date)"), sequelize.literal("EXTRACT('MONTH' FROM date)")],
+        });
+
+        const proposedDeals = await Deal.findAll({
+            where: {
+                organizationId: id,
+                status: 'proposed'
+            },
+            attributes: [
+              'organizationId',
+              [sequelize.literal("EXTRACT('YEAR' FROM date)"), 'YEAR'],
+              [sequelize.literal("EXTRACT('MONTH' FROM date)"), 'MONTH'],
+              [sequelize.literal('SUM(value)'), 'SUM_VALUE'],
+              [sequelize.literal('COUNT(value)'), 'COUNT_VALUE']
+            ],
+            group: ['organizationId', sequelize.literal("EXTRACT('YEAR' FROM date)"), sequelize.literal("EXTRACT('MONTH' FROM date)")],
+        });
+        
+
+        if (acceptedDeals || proposedDeals || rejectedDeals) {
+            res.status(200).json({success: true, acceptedDeals, rejectedDeals, proposedDeals})
         } else {
             res.status(404).json({success: false, error: "no deals found"});
         }

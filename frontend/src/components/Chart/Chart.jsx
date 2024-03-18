@@ -23,7 +23,9 @@ export default function Chart(props) {
           'Authorization': `Bearer ${accessToken}`
         }
       }).then(data=>data.json())
-      res.organizationDeals
+
+      
+      res.acceptedDeals
         .filter(value => value.YEAR === props.year)
         .map((value, index) => {
         const newDataObject = {id: index, value: +value.COUNT_VALUE, label: labels[+value.MONTH - 1]}
@@ -34,7 +36,7 @@ export default function Chart(props) {
 
         setyAxis(prevData => {
             const newData = [...prevData];
-            newData[+value.MONTH-1] = +value.COUNT_VALUE;
+            newData[+value.MONTH-1] = +value.SUM_VALUE;
             return newData; 
         });
       })
@@ -46,7 +48,7 @@ export default function Chart(props) {
     }, [props.year])
 
     return (
-        <div style={{display: 'flex', justifyContent: "space-around", alignItems: 'center', width: "100vw"}}>
+        <div style={{display: 'flex', justifyContent: "space-around", alignItems: 'center', width: "90vw"}}>
             <div style={{display: 'flex', flexDirection: 'column', height:'92vh', justifyContent: 'space-between', alignItems: 'center'}}>
               <div className={style.item3}>
                 <Typography> Closed this year </Typography>
