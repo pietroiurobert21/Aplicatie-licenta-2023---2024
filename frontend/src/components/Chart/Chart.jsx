@@ -14,11 +14,16 @@ export default function Chart(props) {
     const accessToken = localStorage.getItem('accessToken')
     const organizationId = localStorage.getItem('organizationId')
 
-    const [ closedDeals, setClosedDeals ] = useState(0)
+    const [ closedDealsYear, setClosedDealsYear ] = useState(0)
+    const [ closedDealsMonth, setClosedDealsMonth ] = useState(0)
 
     const retrieveStructuredData = async () => {
       setData1([])
-      setClosedDeals(0)
+      setClosedDealsYear(0)
+      setClosedDealsMonth(0)
+
+      const localMonth = new Date().getMonth();
+
       const res = await fetch(`http://localhost:3000/organizations/structuredDeals/${organizationId}`, {
         method: 'GET',
         headers: { 
@@ -44,13 +49,19 @@ export default function Chart(props) {
             return newData; 
         });
 
-        setClosedDeals(prev => prev+ (+value.COUNT_VALUE))
+        setClosedDealsYear(prev => prev+ (+value.COUNT_VALUE))
+
+        if (value.MONTH == localMonth+1)
+          setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
       })
 
       res.rejectedDeals
         .filter(value => value.YEAR === props.year)
         .map((value, index) => {
-          setClosedDeals(prev => prev+ (+value.COUNT_VALUE))
+          setClosedDealsYear(prev => prev+ (+value.COUNT_VALUE))
+
+          if (value.MONTH == localMonth+1)
+          setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
         })
     }
   
@@ -64,11 +75,11 @@ export default function Chart(props) {
             <div style={{display: 'flex', flexDirection: 'column', height:'92vh', justifyContent: 'space-between', alignItems: 'center'}}>
               <div className={style.item3}>
                 <Typography> Closed this year </Typography>
-                <Typography> {closedDeals} </Typography>
+                <Typography> {closedDealsYear} </Typography>
               </div>
               <div className={style.item3}>
                 <Typography> Closed this month </Typography>
-                <Typography> 7.8k </Typography>
+                <Typography> {closedDealsMonth} </Typography>
               </div>
               <div className={style.item3}>
                 <Typography> Completed activities </Typography>
