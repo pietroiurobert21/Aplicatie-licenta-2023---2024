@@ -90,7 +90,7 @@ export default function Contacts() {
 
     return (
         <>           
-            <Table style={{width:"100vw", padding:"2%", paddingTop: "0"}}>
+            <Table style={{width:"100vw", padding:"2%", paddingTop: "0", marginTop: "16px"}}>
                 <Table.Head>
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
                     <Table.TextHeaderCell>First Name</Table.TextHeaderCell>

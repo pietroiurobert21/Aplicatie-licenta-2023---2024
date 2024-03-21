@@ -16,3 +16,12 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+#yearSelector {
+    float: left;
+}
+
+#yearSelector:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}

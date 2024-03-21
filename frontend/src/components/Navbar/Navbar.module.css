@@ -6,7 +6,7 @@ body {
 }
 
 .navbar {
-    background-color: #fff;
+    background-color: #384c5c;
     border-bottom: 1px solid #e6e6e6;
     height: 55px;
     top: 0;
@@ -30,7 +30,13 @@ body {
 .navbar ul li {
     margin: 0 10px;
     font-size: 1rem;
-    color: #333;
+    color: #fff;
+}
+
+.navbar p {
+    margin: 0 10px;
+    font-size: 1rem;
+    color: #fff;
 }
 
 .navbar li:hover {

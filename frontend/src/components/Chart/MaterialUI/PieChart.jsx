@@ -20,7 +20,7 @@ export default function PieChart(props) {
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
               },
             ]}
-            height={200}
+            height={150}
           />
           </>
         ) : <p> loading </p>

@@ -71,19 +71,15 @@ export default function Chart(props) {
     }, [props.year])
 
     return (
-        <div style={{display: 'flex', justifyContent: "space-between", alignItems: 'center', width: "90vw"}}>
-            <div style={{display: 'flex', flexDirection: 'column', height:'92vh', justifyContent: 'space-between', alignItems: 'center'}}>
+        <div style={{display: 'flex', justifyContent: "center", alignItems: 'start', width: "75vw"}}>
+            <div style={{display: 'flex', flexDirection: 'column', height:'50vh', justifyContent: 'space-between', alignItems: 'center'}}>
               <div className={style.item3}>
-                <Typography> Closed this year </Typography>
+                <Typography> Deals closed this year </Typography>
                 <Typography> {closedDealsYear} </Typography>
               </div>
               <div className={style.item3}>
-                <Typography> Closed this month </Typography>
+                <Typography> Deals closed this month </Typography>
                 <Typography> {closedDealsMonth} </Typography>
-              </div>
-              <div className={style.item3}>
-                <Typography> Completed activities </Typography>
-                <Typography> 215 </Typography>
               </div>
             </div>
 

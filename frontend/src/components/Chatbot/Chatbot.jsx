@@ -13,6 +13,7 @@ const Chatbot = () => {
         hostUrl: 'https://cdn.botpress.cloud/webchat/v1',
         messagingUrl: 'https://messaging.botpress.cloud',
         clientId: import.meta.env.VITE_clientId,
+        exposeStore: true
       })
     }
   }, [])

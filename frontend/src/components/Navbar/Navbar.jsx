@@ -67,12 +67,15 @@ export default function Navbar() {
     return (
         <>
             <div className={style.navbar}>
-                <img src={reactLogo} alt="React Logo" />
+                <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+                    <img src={reactLogo} alt="React Logo" />
+                    <p>CRMLite</p>
+                </div>
                 <ul>
-                    <li onClick={()=>{navigate('/leads')}}> Leads </li>
+                    {/* <li onClick={()=>{navigate('/leads')}}> Leads </li> */}
                     <li onClick={()=>{navigate('/contacts')}}> Contacts </li>
                     <li onClick={()=>{navigate('/tasks')}}> Tasks </li>
-                    <li onClick={()=>{navigate('/reports')}}> Reports </li>
+                    {/* <li onClick={()=>{navigate('/reports')}}> Reports </li> */}
                     <li onClick={()=>{navigate('/dashboard')}}> Dashboard </li>
                     <li onClick={()=>{navigate('/deals')}}> Deals </li>
                     <li onClick={()=>{navigate('/team')}}> Team </li>

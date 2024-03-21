@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from "react"
 import style from "./Dashboard.module.css"
-
-import GoogleGraph from "../../components/GoogleGraph/GoogleGraph.jsx"
-
-import Graph from "../../components/Graph/Graph"
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { Button, SelectMenu } from "evergreen-ui";
 import Chart from "../../components/Chart/Chart.jsx"
@@ -40,14 +36,14 @@ export default function Home() {
 
     return (
       <div className={style.page_container}>
-        <div style={{display:"flex", flexDirection:"column", alignItems:"start"}}>
+        <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
             {
                 years.length > 0 && <SelectMenu
                                     title="Select year"
                                     options={years.map((label) => ({ label, value: label }))}
                                     selected={selected}
                                     onSelect={(item) => setSelected(item.value)}>
-                                        <Button style={{float:"left"}}>{"Selected year: " + selected || 'Select year...'}</Button>
+                                        <p id={style.yearSelector}>{"Selected year: " + selected || 'Select year...'}</p>
                                 </SelectMenu>
             }
             {
