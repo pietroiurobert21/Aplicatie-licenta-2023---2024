@@ -8,9 +8,20 @@ import Typography from '@mui/material/Typography';
 export default function Chart(props) {
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+
+    // for PieChart
     const [ data1, setData1 ] = useState([])
+
+    // for LineChart
     const [ xAxis, setxAxis] = useState([])
     const [ yAxis, setyAxis] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
+
+    // for BarChart
+    const [ barValues, setBarValues ] = useState([])
+    const [ acceptedDeals, setAcceptedDeals ] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
+    const [ rejectedDeals, setRejectedDeals ] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
+    const [ proposedDeals, setProposedDeals ] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
+
     const accessToken = localStorage.getItem('accessToken')
     const organizationId = localStorage.getItem('organizationId')
 
@@ -21,6 +32,10 @@ export default function Chart(props) {
       setData1([])
       setClosedDealsYear(0)
       setClosedDealsMonth(0)
+
+      setAcceptedDeals([0,0,0,0,0,0,0,0,0,0,0,0])
+      setRejectedDeals([0,0,0,0,0,0,0,0,0,0,0,0])
+      setProposedDeals([0,0,0,0,0,0,0,0,0,0,0,0])
 
       const localMonth = new Date().getMonth();
 
@@ -53,6 +68,11 @@ export default function Chart(props) {
 
         if (value.MONTH == localMonth+1)
           setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
+
+        // for barchart
+        const prevData = acceptedDeals
+        prevData[+value.MONTH-1] = +value.COUNT_VALUE;
+        setAcceptedDeals(prevData)
       })
 
       res.rejectedDeals
@@ -61,18 +81,33 @@ export default function Chart(props) {
           setClosedDealsYear(prev => prev+ (+value.COUNT_VALUE))
 
           if (value.MONTH == localMonth+1)
-          setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
-        })
+            setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
+        
+            // for barchart
+        const prevData = rejectedDeals
+        prevData[+value.MONTH-1] = +value.COUNT_VALUE;
+        setRejectedDeals(prevData)      
+      })
+
+      res.proposedDeals
+        .filter(value => value.YEAR === props.year)
+        .map((value, index)=>{
+            // for barchart
+        const prevData = proposedDeals
+        prevData[+value.MONTH-1] = +value.COUNT_VALUE;
+        setProposedDeals(prevData)    
+      })
+        
+      setBarValues([{ data: acceptedDeals}, {data: rejectedDeals}, {data: proposedDeals}])
     }
   
     useEffect(()=>{
-      console.log("YEARRRRRRRRRRR" + props.year)
       retrieveStructuredData()
     }, [props.year])
 
     return (
         <div style={{display: 'flex', justifyContent: "center", alignItems: 'start', width: "75vw"}}>
-            <div style={{display: 'flex', flexDirection: 'column', height:'50vh', justifyContent: 'space-between', alignItems: 'center'}}>
+            <div style={{display: 'flex', flexDirection: 'column', height:'45vh', justifyContent: 'space-between', alignItems: 'center'}}>
               <div className={style.item3}>
                 <Typography> Deals closed this year </Typography>
                 <Typography> {closedDealsYear} </Typography>
@@ -90,11 +125,10 @@ export default function Chart(props) {
                 <div className={style.item2}>
                     <PieChart data={data1} year={props.year}/>
                 </div>
-                <div className={style.item2}>
-                    <BarChart year={props.year}/>
+                <div className={style.item2} style={{gridColumn: "span 2"}}>
+                    <BarChart year={props.year} data={barValues}/>
                 </div>
             </div>
         </div>
-
     )
 }

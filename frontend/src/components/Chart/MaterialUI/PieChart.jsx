@@ -11,7 +11,7 @@ export default function PieChart(props) {
       {
         data1.length ? (
           <>
-          <Typography paddingRight={10}> Closed won deals in {props.year} </Typography>
+          <Typography> Closed won deals in {props.year} </Typography>
           <Chart
             series={[
               {
@@ -20,7 +20,7 @@ export default function PieChart(props) {
                 faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
               },
             ]}
-            height={150}
+            height={200}
           />
           </>
         ) : <p> loading </p>

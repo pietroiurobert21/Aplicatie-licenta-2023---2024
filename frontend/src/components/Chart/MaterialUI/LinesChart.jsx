@@ -15,7 +15,7 @@ export default function BasicLineChart(props) {
         xAxis.length ? 
           (     
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}> 
-              <Typography paddingRight={10}> Revenue in {props.year} </Typography>
+              <Typography paddingRight={10}> Revenue in {props.year} (EUR)</Typography>
 
               <div className={style.lineChart}>
                 <LineChart

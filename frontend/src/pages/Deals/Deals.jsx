@@ -126,7 +126,7 @@ export default function Deals() {
             {
                 loading ? <p>loading</p> : (
             <>
-            <Table style={{width:"100vw", padding:"2%", paddingTop: "0"}}>
+            <Table style={{width:"100vw", padding:"2%", paddingTop: "0", marginTop: "16px"}}>
                 <Table.Head>
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
                     <Table.TextHeaderCell> value </Table.TextHeaderCell>
