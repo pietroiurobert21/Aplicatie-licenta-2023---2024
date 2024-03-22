@@ -24,7 +24,7 @@ body {
     align-items: center;
     justify-content: start;
     flex-direction: row;
-    width: 80vw;
+    width: 70vw;
 }
 
 .navbar ul li {
@@ -43,6 +43,7 @@ body {
     cursor: pointer;
     color: #5d8ffc;
 }
+
 
 #profile:hover {
     cursor: pointer;

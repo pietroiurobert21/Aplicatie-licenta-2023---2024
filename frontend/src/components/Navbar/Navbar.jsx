@@ -101,7 +101,7 @@ export default function Navbar() {
                     <Avatar id={style.profile} name={`${userData.user.firstName} ${userData.user.lastName}`} size={35.93} onClick={()=>{navigate('/profile')}}/>
 
 
-                 </Popover>   
+                </Popover>   
                     )}
             </div>
         </>
