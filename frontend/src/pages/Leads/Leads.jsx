@@ -1,14 +1,53 @@
 import { useEffect, useState } from "react";
 import TableComponent from "../../components/Table/TableComponent.jsx"
+import { Button, NewPersonIcon, toaster } from "evergreen-ui";
+import DialogComponent from "../../components/Dialog/DialogComponent.jsx";
 
 export default function Leads() {
-
-    //const contacts = [{"id": "1", "firstName": "Robert", "lastName": "Pietroiu", "professionalTitle": "web developer", "companyName": "LENOVO", "emailAddress": "pietroiurobert65@gmail.com", "phoneNumber": "0765126291"}]
-
+    
     const [ leads, setLeads ] = useState([])
 
     const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
+
+    const [ isShown, setIsShown ] =   useState(false)
+
+    const [ shownLead, setShownLead ] = useState({})
+    const [ updated, setUpdated ] = useState('')
+
+    const [newLead, setNewLead] = useState({
+        firstName: '',
+        lastName: '',
+        professionalTitle: '',
+        emailAddress: '',
+        homeAddress: '',
+        phoneNumber: '',
+        companyName: '',
+        pipelineStatus: 'lead',
+        organizationId: organizationId
+    });
+
+    const addNewLead = async () => {
+        let missingFields = false;
+        for(let key in newLead)
+            if (newLead[key] == '') {
+                missingFields = true;
+            }
+
+        if (missingFields==false) {
+            await fetch("http://localhost:3000/contacts", {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(newLead)
+            })
+            setUpdated(newLead.id + ' ' + newLead.firstName + ' ' + newLead.lastName)
+        } else {
+            toaster.danger('missing fields!');
+        }
+    }
 
     const retrieveLeads = async () => {
         await fetch(`http://localhost:3000/leads/${organizationId}`, {
@@ -21,15 +60,25 @@ export default function Leads() {
         .then(data=>setLeads(data.leads))
     }
 
+
     useEffect(()=>{
         retrieveLeads()
-    }, [])
+    }, [updated])
 
     return (
         <>
             {
-                leads.length > 0 ? <TableComponent data={leads} /> : <p> loading </p>
+                leads.length > 0 ? 
+                (
+                    <>
+                        <TableComponent data={leads} /> 
+                        <DialogComponent data={shownLead} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewLead} newContact={newLead} handleConfirm={addNewLead}/> 
+                    </>
+                )
+                : 
+                <p> loading </p>
             }
+            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New lead </Button>
         </>
     )
 }

@@ -1,9 +1,12 @@
 import { Table } from 'evergreen-ui'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import DialogComponent from "../Dialog/DialogComponent.jsx"
 
 export default function TableComponent(props) {
     
     const data = props.data
+    const [ isShown, setIsShown ] = useState(false)
+    const [ shownProfile, setShownProfile ] = useState({})
 
     useEffect(()=>{
         console.log(data)
@@ -26,7 +29,7 @@ export default function TableComponent(props) {
                 <Table.VirtualBody height={440}>
                     {
                         data.map((profile)=>(
-                            <Table.Row key={profile.id}>
+                            <Table.Row key={profile.id} isSelectable onSelect={() => { setIsShown(true); setShownProfile(profile) }}>
                                 <Table.TextCell>{profile.id}</Table.TextCell>
                                 <Table.TextCell>{profile.firstName}</Table.TextCell>
                                 <Table.TextCell>{profile.lastName}</Table.TextCell>
@@ -39,6 +42,8 @@ export default function TableComponent(props) {
                     }
                 </Table.VirtualBody>
             </Table>
+
+            <DialogComponent data={shownProfile} isShown={isShown} setIsShown={setIsShown}/>
         </>
     )
 }
