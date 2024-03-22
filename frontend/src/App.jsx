@@ -52,7 +52,7 @@ function App() {
   return (
     <Router>
       <Main />
-      <p style={{color:'red'}}> <h1>todo</h1>:  customer satisfaction (model, back, front); update/delete for contacts/leads/customers; delete for deals; tasks page reworked  </p>
+      <p style={{color:'red'}}> <h1>todo</h1>:  customer satisfaction (model, back, front); update/delete for contacts/leads/customers; delete for deals; tasks page reworked; users/organizations leaderboard  </p>
     </Router>
   )
 }
