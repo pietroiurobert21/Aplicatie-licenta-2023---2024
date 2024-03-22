@@ -9,6 +9,12 @@ const addDeal = async (req, res) => {
     const dealInfo = req.body
     try {
         const newDeal = await Deal.create(dealInfo)
+
+        // now the lead becomes customer:
+        const contact = await Contact.findByPk(newDeal.contactId)
+        contact.pipelineStatus = 'customer'
+        await contact.save({fields: ['pipelineStatus']})
+ 
         res.status(201).json({success: true, deal: newDeal})
     } catch (error) {
         console.log(error)

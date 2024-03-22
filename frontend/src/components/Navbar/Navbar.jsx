@@ -73,7 +73,7 @@ export default function Navbar() {
                 </div>
                 <ul>
                     <li onClick={()=>{navigate('/leads')}}> Leads </li>
-                    <li onClick={()=>{navigate('/contacts')}}> Contacts </li>
+                    <li onClick={()=>{navigate('/contacts')}}> Contacts(Customers) </li>
                     <li onClick={()=>{navigate('/tasks')}}> Tasks </li>
                     {/* <li onClick={()=>{navigate('/reports')}}> Reports </li> */}
                     <li onClick={()=>{navigate('/dashboard')}}> Dashboard </li>
