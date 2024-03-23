@@ -10,18 +10,31 @@ export default function Tasks() {
 
     const [employees, setEmployees] = useState([])
     const userId = localStorage.getItem('userId')
+    const [employeeId, setEmployeeId] = useState()
 
     const [newTask, setNewTask] = useState({
         "description": "",
-        "assignedToEmployeeId": 0,
+        "assignedToEmployeeId": "",
         "isDone": false,
         "assignedByEmployeeId": userId
     })
 
-
+    const getEmployeeByUserId = async (userId) => {
+        await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }})
+            .then(data=>data.json())
+            .then(data=> {
+                setNewTask({ ...newTask, "assignedByEmployeeId": data.userOrganization.id })
+                setEmployeeId(data.userOrganization.id)
+            })
+    }
 
     const retrieveTaskAssignedBy = async () => {
-        await fetch(`http://localhost:3000/tasks/assignedBy/${userId}`, {
+        await fetch(`http://localhost:3000/tasks/assignedBy/${employeeId}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -66,6 +79,8 @@ export default function Tasks() {
             })
             setEffect(Math.floor(Math.random() * 1000))
         }
+
+        console.log(newTask)
     }
 
     const [role, setRole] = useState('')
@@ -84,11 +99,13 @@ export default function Tasks() {
     useEffect(() => {
         retrieveEmployees()
         getEmployeeRole()
+        getEmployeeByUserId(userId)
     }, [effect])
 
     useEffect(()=>{
         role == "administrator" ? retrieveTaskAssignedBy() : retrieveTaskAssignedTo()
-    }, [role, effect])
+    }, [employeeId, effect])
+
     
     const [selected, setSelected] = useState()
 
@@ -121,7 +138,7 @@ export default function Tasks() {
                                     </Table.VirtualBody>
                                 </Table>
                             ) : (
-                                <p> { role==="administrator" ? <p> No tasks have been assigned yet </p> : <p> You have no tasks </p>} </p>
+                                <p> { role==="administrator" ? <p style={{height: '390px'}}> No tasks have been assigned yet </p> : <p style={{height: '390px'}}> You have no tasks </p>} </p>
                             )}
 
                             {
@@ -131,7 +148,7 @@ export default function Tasks() {
                                         title="Select name"
                                         options={employees.filter(employee => employee.User.id !== userId).map(employee => ({ label: employee.User.firstName + " " + employee.User.lastName, value: employee.User.firstName + " " + employee.User.lastName, key: employee.id }))}
                                         selected={selected}
-                                        onSelect={(item) => { setSelected(item.value); setNewTask({ ...newTask, "assignedToEmployeeId": +item.key }); }}
+                                        onSelect={(item) => { setSelected(item.value); setNewTask({ ...newTask, "assignedToEmployeeId": +item.key }) }}
                                         label={""}>
                                         <Button>{selected || 'Select name...'}</Button>
                                     </SelectMenu>

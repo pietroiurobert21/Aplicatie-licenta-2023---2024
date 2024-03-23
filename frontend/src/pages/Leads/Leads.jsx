@@ -74,7 +74,7 @@ export default function Leads() {
     return (
         <>
             {
-                leads == -1 ? <p> no leads found </p> :
+                leads == -1 ? <p style={{width:"100vw", textAlign:'center'}}> No leads found </p> :
                 <>
                     {
                         leads ? 

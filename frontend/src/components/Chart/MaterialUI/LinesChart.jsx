@@ -32,7 +32,7 @@ export default function BasicLineChart(props) {
               </div>
           </div>
         ) 
-        : <p>loading</p>
+        : <p> not enough data found </p>
       }
     </>
   );

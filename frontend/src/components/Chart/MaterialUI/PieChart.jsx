@@ -23,7 +23,7 @@ export default function PieChart(props) {
             height={200}
           />
           </>
-        ) : <p> loading </p>
+        ) : <p> not enough data found </p>
       }
     </div>
   );

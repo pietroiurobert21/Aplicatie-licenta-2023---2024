@@ -32,9 +32,9 @@ const postEmployee = async (req, res) => {
 const getEmployeeByUserId = async (req, res) => {
     const { userId } = req.params;
     try {
-        const userOrganization = await Employee.findAll({where: {userId: userId}})
-        if (userOrganization && userOrganization.length) {
-            res.status(200).json({success: true, userOrganization: userOrganization[0]})
+        const userOrganization = await Employee.findOne({where: {userId: userId}})
+        if (userOrganization) {
+            res.status(200).json({success: true, userOrganization: userOrganization})
         } else {
             res.status(404).json({ success:false, error: "employee not found" });
         }

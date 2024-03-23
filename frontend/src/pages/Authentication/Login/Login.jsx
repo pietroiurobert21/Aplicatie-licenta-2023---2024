@@ -11,7 +11,7 @@ export default function Login() {
     useEffect(() => {
         const token = localStorage.getItem("accessToken")
         if (token) {
-            navigate('/contacts')
+            navigate('/profile')
         }
     }, [])
 

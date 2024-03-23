@@ -77,7 +77,7 @@ export default function Contacts() {
     return (
         <>  
         {
-            contacts == -1 ? <p> no contacts found </p> :
+            contacts == -1 ? <p style={{width:"100vw", textAlign:'center'}}> No contacts found </p> :
                 <>
                 {
                     contacts ? (
