@@ -121,7 +121,7 @@ export default function Tasks() {
                                     </Table.VirtualBody>
                                 </Table>
                             ) : (
-                                <p> You have no tasks </p>
+                                <p> { role==="administrator" ? <p> No tasks have been assigned yet </p> : <p> You have no tasks </p>} </p>
                             )}
 
                             {

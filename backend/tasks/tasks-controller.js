@@ -25,10 +25,12 @@ const getTasksAssignedByUserId = async (req, res) => {
                 const assignedToEmployee = await Employee.findByPk(task.assignedToEmployeeId);
                 const assignedByEmployee = await Employee.findByPk(task.assignedByEmployeeId);
 
-                const assignedToUser = await User.findByPk(assignedToEmployee.userId)
-                const assignedByUser = await User.findByPk(assignedByEmployee.userId)
+                if (assignedToEmployee && assignedByEmployee) {
+                    const assignedToUser = await User.findByPk(assignedToEmployee.userId)
+                    const assignedByUser = await User.findByPk(assignedByEmployee.userId)
 
-                return { ...task.toJSON(), assignedTo:assignedToUser, assignedBy: assignedByUser };
+                    return { ...task.toJSON(), assignedTo:assignedToUser, assignedBy: assignedByUser };
+                }
             }));
             res.status(200).json({ success: true, tasks: tasksWithAllProperties });
         } else {

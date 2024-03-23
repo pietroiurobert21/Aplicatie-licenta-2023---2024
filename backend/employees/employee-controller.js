@@ -4,6 +4,8 @@ const Employee = require("../database/models/employee");
 const Organization = require("../database/models/organization");
 const User = require("../database/models/user");
 const { col } = require("sequelize");
+const Task = require("../database/models/task");
+const { getTasksAssignedToUserId } = require("../tasks/tasks-controller");
 
 Employee.belongsTo(User, { foreignKey: 'userId' });
 User.hasOne(Employee, { foreignKey: 'userId' });
@@ -30,9 +32,9 @@ const postEmployee = async (req, res) => {
 const getEmployeeByUserId = async (req, res) => {
     const { userId } = req.params;
     try {
-        const userOrganization = await Employee.findByPk(userId)
-        if (userOrganization) {
-            res.status(200).json({success: true, userOrganization: userOrganization})
+        const userOrganization = await Employee.findAll({where: {userId: userId}})
+        if (userOrganization && userOrganization.length) {
+            res.status(200).json({success: true, userOrganization: userOrganization[0]})
         } else {
             res.status(404).json({ success:false, error: "employee not found" });
         }
@@ -71,6 +73,11 @@ const deleteEmployee = async (req, res) => {
     try {
         const employee = await Employee.findByPk(employeeId)
         if (employee) {
+            const employeeTasks = await Task.findAll({where: {assignedToEmployeeId:employee.id}})
+            if (employeeTasks.length > 0) {
+                await Promise.all(employeeTasks.map(task => task.destroy()));
+            }
+
             await employee.destroy()
             res.status(200).json({success: true, message: 'employee deleted'})
         }
