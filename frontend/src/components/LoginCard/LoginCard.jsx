@@ -56,7 +56,7 @@ export default function LoginCard(props) {
         const response = await data.json();
         if (response.success) {
             getOrganization(localStorage.getItem("userId"))
-            navigate('/contacts')
+            navigate('/profile')
         } else {
             toaster.notify("You must join or create an organization to continue", { duration: 5 })
             navigate('/registerToCompany')
