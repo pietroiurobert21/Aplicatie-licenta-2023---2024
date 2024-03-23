@@ -18,8 +18,21 @@ export default function Tasks() {
         "assignedByEmployeeId": userId
     })
 
-    const retrieveTasks = async () => {
-        await fetch(`http://localhost:3000/tasks`, {
+
+
+    const retrieveTaskAssignedBy = async () => {
+        await fetch(`http://localhost:3000/tasks/assignedBy/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(data=>data.json())
+        .then(data=> setTasks(data.tasks));
+    }
+
+    const retrieveTaskAssignedTo = async () => {
+        await fetch(`http://localhost:3000/tasks/assignedTo/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -69,10 +82,13 @@ export default function Tasks() {
 
     const [effect, setEffect] = useState('')
     useEffect(() => {
-        retrieveTasks()
         retrieveEmployees()
         getEmployeeRole()
     }, [effect])
+
+    useEffect(()=>{
+        role == "administrator" ? retrieveTaskAssignedBy() : retrieveTaskAssignedTo()
+    }, [role, effect])
     
     const [selected, setSelected] = useState()
 
@@ -80,17 +96,13 @@ export default function Tasks() {
         <>
             <div className={style.tasksContainer}>
                 <div className={style.tasks}>
-                    <h5> Tasks </h5>
-                    {role !== 'administrator' ? (
-                        <p> You have no tasks </p>
-                    ) : (
-                        <>
+                    { role==="administrator" ? <h5> Tasks </h5> : <h5> My Tasks </h5>}
                             {tasks.length > 0 && employees.length ? (
                                 <Table style={{ width: "90vw" }}>
                                     <Table.Head>
                                         <Table.SearchHeaderCell />
                                         <Table.TextHeaderCell> Description </Table.TextHeaderCell>
-                                        <Table.TextHeaderCell> Assigned to </Table.TextHeaderCell>
+                                        { role==="administrator" && <Table.TextHeaderCell> Assigned to </Table.TextHeaderCell> }
                                         <Table.TextHeaderCell> IsDone </Table.TextHeaderCell>
                                         <Table.TextHeaderCell> Assigned by </Table.TextHeaderCell>
                                     </Table.Head>
@@ -100,7 +112,7 @@ export default function Tasks() {
                                                 <Table.Row isSelectable>
                                                     <Table.TextCell>{task.id}</Table.TextCell>
                                                     <Table.TextCell>{task.description}</Table.TextCell>
-                                                    <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>
+                                                    { role==="administrator" && <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>}
                                                     <Table.TextCell> {task.isDone.toString()} </Table.TextCell>
                                                     <Table.TextCell isNumber>{task.assignedBy.firstName} {task.assignedBy.lastName}</Table.TextCell>
                                                 </Table.Row>
@@ -109,23 +121,23 @@ export default function Tasks() {
                                     </Table.VirtualBody>
                                 </Table>
                             ) : (
-                                <p> no tasks found </p>
+                                <p> You have no tasks </p>
                             )}
 
-                            <div style={{display:'flex',justifyContent:'start',width:'100%',alignItems:'center', paddingLeft:'10%'}}>
-                                <TextInput name="text-input-name" placeholder="Description..." style={{ width: "40vw" }} onChange={(e) => { setNewTask({ ...newTask, "description": e.target.value }) }} />
-                                <SelectMenu
-                                    title="Select name"
-                                    options={employees.filter(employee => employee.User.id !== userId).map(employee => ({ label: employee.User.firstName + " " + employee.User.lastName, value: employee.User.firstName + " " + employee.User.lastName, key: employee.id }))}
-                                    selected={selected}
-                                    onSelect={(item) => { setSelected(item.value); setNewTask({ ...newTask, "assignedToEmployeeId": +item.key }); }}
-                                    label={""}>
-                                    <Button>{selected || 'Select name...'}</Button>
-                                </SelectMenu>
-                                <Button onClick={addNewTask}> add task </Button>
-                            </div>
-                        </>
-                    )}
+                            {
+                            role==="administrator" && <div style={{display:'flex',justifyContent:'start',width:'100%',alignItems:'center', paddingLeft:'10%'}}>
+                                    <TextInput name="text-input-name" placeholder="Description..." style={{ width: "40vw" }} onChange={(e) => { setNewTask({ ...newTask, "description": e.target.value }) }} />
+                                    <SelectMenu
+                                        title="Select name"
+                                        options={employees.filter(employee => employee.User.id !== userId).map(employee => ({ label: employee.User.firstName + " " + employee.User.lastName, value: employee.User.firstName + " " + employee.User.lastName, key: employee.id }))}
+                                        selected={selected}
+                                        onSelect={(item) => { setSelected(item.value); setNewTask({ ...newTask, "assignedToEmployeeId": +item.key }); }}
+                                        label={""}>
+                                        <Button>{selected || 'Select name...'}</Button>
+                                    </SelectMenu>
+                                    <Button onClick={addNewTask}> add task </Button>
+                                </div>
+                            }
                 </div>
             </div>
         </>

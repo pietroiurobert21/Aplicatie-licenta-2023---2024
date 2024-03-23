@@ -16,9 +16,34 @@ const postTask = async (req, res) => {
     }
 }
 
-const getTasks = async (req, res) => {
+const getTasksAssignedByUserId = async (req, res) => {
+    const { id } = req.params
     try {
-        const tasks = await Tasks.findAll();
+        const tasks = await Tasks.findAll({where: {assignedByEmployeeId: id}});
+        if(tasks) {
+            const tasksWithAllProperties = await Promise.all(tasks.map(async task => {
+                const assignedToEmployee = await Employee.findByPk(task.assignedToEmployeeId);
+                const assignedByEmployee = await Employee.findByPk(task.assignedByEmployeeId);
+
+                const assignedToUser = await User.findByPk(assignedToEmployee.userId)
+                const assignedByUser = await User.findByPk(assignedByEmployee.userId)
+
+                return { ...task.toJSON(), assignedTo:assignedToUser, assignedBy: assignedByUser };
+            }));
+            res.status(200).json({ success: true, tasks: tasksWithAllProperties });
+        } else {
+            res.status(404).json({ success: false,  error: "No tasks found"});
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success:false, error: "Error retrieving tasks" });
+    }
+}
+
+const getTasksAssignedToUserId = async (req, res) => {
+    const { id } = req.params
+    try {
+        const tasks = await Tasks.findAll({where: {assignedToEmployeeId: id}})
         if(tasks) {
             const tasksWithAllProperties = await Promise.all(tasks.map(async task => {
                 const assignedToEmployee = await Employee.findByPk(task.assignedToEmployeeId);
@@ -43,5 +68,6 @@ const getTasks = async (req, res) => {
 
 module.exports = {
     postTask,
-    getTasks
+    getTasksAssignedByUserId,
+    getTasksAssignedToUserId
 }
