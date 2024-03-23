@@ -6,9 +6,6 @@
     padding: 2%;
 
     font-family: 'Roboto', sans-serif;
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 1fr;
 }
 
 .todo {

@@ -26,19 +26,25 @@ export default function Contacts() {
         homeAddress: '',
         phoneNumber: '',
         companyName: '',
-        pipelineStatus: 'contact',
+        pipelineStatus: 'customer',
         organizationId: organizationId
     });
 
     const retrieveContacts = async () => {
-        await fetch(`http://localhost:3000/contacts/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/contacts/customers/${organizationId}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             }
-        }).then(data=>data.json())
-        .then(data=>setContacts(data.contacts))
+        })
+
+        if (res.status==404)
+            setContacts(-1)
+        else {
+            const data = await res.json()
+            setContacts(data.contacts)
+        }
     }
 
     const addNewContact = async () => {
@@ -71,13 +77,18 @@ export default function Contacts() {
     return (
         <>  
         {
-            contacts.length > 0 ? (
+            contacts == -1 ? <p> no contacts found </p> :
                 <>
-                    <TableComponent data={contacts}/>
-                    <DialogComponent data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
+                {
+                    contacts ? (
+                        <>
+                            <TableComponent data={contacts}/>
+                        </>
+                    ) : <p> loading </p>
+                }
                 </>
-            ) : <p> loading </p>
         }
+        <DialogComponent data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
         <Button appearance="default" intent="success" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> Import from csv </Button>
         </>

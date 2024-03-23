@@ -1,12 +1,22 @@
 import { useEffect, useState } from 'react';
 import style from './Tasks.module.css'
-import { Table, TextInput, Checkbox } from 'evergreen-ui'
+import { Table, TextInput, Checkbox, Button, SelectMenu, TextInputField  } from 'evergreen-ui'
 
 
 export default function Tasks() {
 
     const [tasks, setTasks] = useState([])
     const accessToken = localStorage.getItem("accessToken")
+
+    const [employees, setEmployees] = useState([])
+    const userId = localStorage.getItem('userId')
+
+    const [newTask, setNewTask] = useState({
+        "description": "",
+        "assignedToEmployeeId": 0,
+        "isDone": false,
+        "assignedByEmployeeId": userId
+    })
 
     const retrieveTasks = async () => {
         await fetch(`http://localhost:3000/tasks`, {
@@ -19,52 +29,106 @@ export default function Tasks() {
         .then(data=> setTasks(data.tasks));
     }
 
+    const retrieveEmployees = async () => {
+        await fetch(`http://localhost:3000/employees/getColleagues/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        }).then(data=>data.json())
+        .then(data=>setEmployees(data.colleagues))
+    }
+
+    const addNewTask = async () => {
+        if (newTask.description == "" || newTask.assignedByEmployeeId==0)
+            alert("missing fields")
+        else {
+            await fetch('http://localhost:3000/tasks', {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(newTask)
+            })
+            setEffect(Math.floor(Math.random() * 1000))
+        }
+    }
+
+    const [role, setRole] = useState('')
+    const getEmployeeRole = async () => {
+        await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(data=>data.json())
+        .then(data=>setRole(data.userOrganization.role))
+    }
+
+    const [effect, setEffect] = useState('')
     useEffect(() => {
         retrieveTasks()
-    }, [])
+        retrieveEmployees()
+        getEmployeeRole()
+    }, [effect])
     
+    const [selected, setSelected] = useState()
+
     return (
         <>
-        <div className={style.tasksContainer}>
-            <div className={style.tasks}>
-                <h5> Tasks </h5>
-
-                {
-                    tasks.length > 0 ?  (
-
-                            <Table>
-                                <Table.Head width={800} backgroundColor="#dafce9">
-                                    <Table.SearchHeaderCell />
-                                    <Table.TextHeaderCell>  Description   </Table.TextHeaderCell>
-                                    <Table.TextHeaderCell>  Assigned to   </Table.TextHeaderCell>
-                                    <Table.TextHeaderCell>  IsDone        </Table.TextHeaderCell>
-                                    <Table.TextHeaderCell>  Assigned by   </Table.TextHeaderCell>
-                                </Table.Head>    
-                                <Table.VirtualBody height={390}>
-                                    {
-                                        (tasks.map((task, index)=> (
-                                            <>
-                                                <Table.Row key={task.id} isSelectable>
+            <div className={style.tasksContainer}>
+                <div className={style.tasks}>
+                    <h5> Tasks </h5>
+                    {role !== 'administrator' ? (
+                        <p> You have no tasks </p>
+                    ) : (
+                        <>
+                            {tasks.length > 0 && employees.length ? (
+                                <Table style={{ width: "90vw" }}>
+                                    <Table.Head>
+                                        <Table.SearchHeaderCell />
+                                        <Table.TextHeaderCell> Description </Table.TextHeaderCell>
+                                        <Table.TextHeaderCell> Assigned to </Table.TextHeaderCell>
+                                        <Table.TextHeaderCell> IsDone </Table.TextHeaderCell>
+                                        <Table.TextHeaderCell> Assigned by </Table.TextHeaderCell>
+                                    </Table.Head>
+                                    <Table.VirtualBody height={390}>
+                                        {tasks.map((task, index) => (
+                                            
+                                                <Table.Row isSelectable>
                                                     <Table.TextCell>{task.id}</Table.TextCell>
                                                     <Table.TextCell>{task.description}</Table.TextCell>
-                                                    <Table.TextCell isNumber>{task.assignedToEmployeeId}</Table.TextCell>
+                                                    <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>
                                                     <Table.TextCell> {task.isDone.toString()} </Table.TextCell>
-                                                    <Table.TextCell isNumber>{task.assignedByEmployeeId}</Table.TextCell>
+                                                    <Table.TextCell isNumber>{task.assignedBy.firstName} {task.assignedBy.lastName}</Table.TextCell>
                                                 </Table.Row>
-                                            </>
-                                        )))
-                                    }
-                                </Table.VirtualBody>
-                                <Table.VirtualBody height={50}>
-                                    <Table.Row key={"newTask"} backgroundColor="#dafce9">
-                                        <Table.TextCell> <TextInput name="text-input-name" placeholder="New todo task..." width={"100%"} style={{border: 0}}/> </Table.TextCell> 
-                                    </Table.Row>
-                                </Table.VirtualBody>
-                            </Table>
-                    ) : <p> loading </p>
-                }
+                                            
+                                        ))}
+                                    </Table.VirtualBody>
+                                </Table>
+                            ) : (
+                                <p> no tasks found </p>
+                            )}
+
+                            <div style={{display:'flex',justifyContent:'start',width:'100%',alignItems:'center', paddingLeft:'10%'}}>
+                                <TextInput name="text-input-name" placeholder="Description..." style={{ width: "40vw" }} onChange={(e) => { setNewTask({ ...newTask, "description": e.target.value }) }} />
+                                <SelectMenu
+                                    title="Select name"
+                                    options={employees.filter(employee => employee.User.id !== userId).map(employee => ({ label: employee.User.firstName + " " + employee.User.lastName, value: employee.User.firstName + " " + employee.User.lastName, key: employee.id }))}
+                                    selected={selected}
+                                    onSelect={(item) => { setSelected(item.value); setNewTask({ ...newTask, "assignedToEmployeeId": +item.key }); }}
+                                    label={""}>
+                                    <Button>{selected || 'Select name...'}</Button>
+                                </SelectMenu>
+                                <Button onClick={addNewTask}> add task </Button>
+                            </div>
+                        </>
+                    )}
+                </div>
             </div>
-        </div>
         </>
-    )
+    );
+    
 }

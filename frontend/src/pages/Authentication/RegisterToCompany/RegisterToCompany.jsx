@@ -85,7 +85,7 @@ export default function RegisterToCompany() {
                         <TextInput name="text-input-employees" type="number" placeholder="Number of employees"/>
                         <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}} onClick={createCompanyFunc}> Create Company </Button>
                         <Button appearance="default" intent="danger" style={{width: "17.5rem", fontSize:"1rem"}}
-                            onClick={()=>{navigate('/')}}> LogOut </Button>
+                            onClick={()=>{navigate('/'); localStorage.removeItem('accessToken')}}> LogOut </Button>
                     </div>
 
                 </div>

@@ -18,7 +18,7 @@ const addContact = async (req, res) => {
 const getContactsByOrganizationId = async (req, res) => {
     const { organizationId } = req.params
     try {
-        const contacts = await Contact.findAll({where: {organizationId: organizationId, pipelineStatus: 'customer'}})
+        const contacts = await Contact.findAll({where: {organizationId: organizationId}})
         if (contacts.length > 0) {
             res.status(200).json({success: true, contacts})
         } else {
@@ -29,6 +29,22 @@ const getContactsByOrganizationId = async (req, res) => {
         res.status(500).json({ success:false, error: "error retrieving the contacts" });
     }
 }
+
+const getCustomersByOrganizationId = async (req, res) => {
+    const { organizationId } = req.params
+    try {
+        const contacts = await Contact.findAll({where: {organizationId: organizationId, pipelineStatus: 'customer'}})
+        if (contacts.length > 0) {
+            res.status(200).json({success: true, contacts})
+        } else {
+            res.status(404).json({success: false, error: "no customers found"})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error retrieving the customers" });
+    }
+}
+
 
 const getContactById = async (req, res) => {
     const { id } = req.params
@@ -48,5 +64,6 @@ const getContactById = async (req, res) => {
 module.exports = {
     addContact,
     getContactsByOrganizationId,
-    getContactById
+    getContactById,
+    getCustomersByOrganizationId
 }

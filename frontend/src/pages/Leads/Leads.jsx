@@ -50,34 +50,45 @@ export default function Leads() {
     }
 
     const retrieveLeads = async () => {
-        await fetch(`http://localhost:3000/leads/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/leads/${organizationId}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             }
-        }).then(data => data.json())
-        .then(data=>setLeads(data.leads))
+        })
+        
+        if (res.status==404)
+            setLeads(-1)
+        else {
+            const data = await res.json()
+            setLeads(data.leads)
+        }
     }
 
 
     useEffect(()=>{
-        retrieveLeads()
+        organizationId && retrieveLeads()
     }, [updated])
 
     return (
         <>
             {
-                leads.length > 0 ? 
-                (
-                    <>
-                        <TableComponent data={leads} /> 
-                        <DialogComponent data={shownLead} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewLead} newContact={newLead} handleConfirm={addNewLead}/> 
-                    </>
-                )
-                : 
-                <p> loading </p>
+                leads == -1 ? <p> no leads found </p> :
+                <>
+                    {
+                        leads ? 
+                        (
+                            <>
+                                <TableComponent data={leads} /> 
+                            </>
+                        )
+                        : 
+                        <p> loading </p>
+                    }
+            </>
             }
+            <DialogComponent data={shownLead} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewLead} newContact={newLead} handleConfirm={addNewLead}/> 
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New lead </Button>
         </>
     )
