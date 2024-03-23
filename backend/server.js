@@ -12,13 +12,14 @@ Organization.hasMany(Employee, { foreignKey: 'organizationId' })
 Organization.hasMany(Contact, { foreignKey: 'organizationId' })
 Organization.hasMany(Deal, { foreignKey: 'organizationId' })
 Employee.hasMany(Deal, { foreignKey: 'employeeId' })
-Employee.hasMany(Task, { foreignKey: 'employeeId' })
+Employee.hasMany(Task, { foreignKey: 'assignedByEmployeeId' })
 Contact.hasMany(Deal, { foreignKey: 'contactId' })
 
 
-Deal.belongsTo(Employee, {foreignKey: 'employeeId' })
-Deal.belongsTo(Contact, {foreignKey: 'contactId' })
-Task.belongsTo(Employee, { foreignKey: 'employeeId' })
+Deal.belongsTo(Employee, { foreignKey: 'employeeId' })
+Deal.belongsTo(Contact, { foreignKey: 'contactId' })
+
+Task.belongsTo(Employee, { foreignKey: 'assignedByEmployeeId' })
 
 app.listen(3000, () => {
     console.log(`Server running on port 3000`);

@@ -2,7 +2,8 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 
 const Tasks = require("../database/models/task");
-const Employees = require("../database/models/employee");
+const Employee = require("../database/models/employee");
+const User = require("../database/models/user");
 
 const postTask = async (req, res) => {
     const body = req.body;
@@ -18,16 +19,27 @@ const postTask = async (req, res) => {
 const getTasks = async (req, res) => {
     try {
         const tasks = await Tasks.findAll();
-        if (tasks) {
-            res.status(200).json({ success: true, tasks})
+        if(tasks) {
+            const tasksWithAllProperties = await Promise.all(tasks.map(async task => {
+                const assignedToEmployee = await Employee.findByPk(task.assignedToEmployeeId);
+                const assignedByEmployee = await Employee.findByPk(task.assignedByEmployeeId);
+
+                const assignedToUser = await User.findByPk(assignedToEmployee.userId)
+                const assignedByUser = await User.findByPk(assignedByEmployee.userId)
+
+                return { ...task.toJSON(), assignedTo:assignedToUser, assignedBy: assignedByUser };
+            }));
+            res.status(200).json({ success: true, tasks: tasksWithAllProperties });
         } else {
-            res.status(404).json({ success: false,  error: "No tasks found"})
+            res.status(404).json({ success: false,  error: "No tasks found"});
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({ success:false, error: "Error retrieving tasks" });
     }
 }
+
+
 
 module.exports = {
     postTask,

@@ -15,6 +15,15 @@ const Task = sequelize.define('Task', {
         type: Sequelize.STRING,
         allowNull: true
     },
+    assignedToEmployeeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+    },
+    isDone: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    }
 },
 {
     timestamps: false,
