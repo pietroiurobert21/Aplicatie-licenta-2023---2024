@@ -34,7 +34,7 @@ export default function Tasks() {
     }
 
     const retrieveTaskAssignedBy = async () => {
-        await fetch(`http://localhost:3000/tasks/assignedBy/${employeeId}`, {
+        employeeId && await fetch(`http://localhost:3000/tasks/assignedBy/${employeeId}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -45,7 +45,7 @@ export default function Tasks() {
     }
 
     const retrieveTaskAssignedTo = async () => {
-        await fetch(`http://localhost:3000/tasks/assignedTo/${userId}`, {
+        employeeId && await fetch(`http://localhost:3000/tasks/assignedTo/${employeeId}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -103,7 +103,7 @@ export default function Tasks() {
     }, [effect])
 
     useEffect(()=>{
-        role == "administrator" ? retrieveTaskAssignedBy() : retrieveTaskAssignedTo()
+        role === "administrator" ? retrieveTaskAssignedBy() : retrieveTaskAssignedTo()
     }, [employeeId, effect])
 
     
