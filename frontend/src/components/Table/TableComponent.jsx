@@ -1,4 +1,4 @@
-import { Table } from 'evergreen-ui'
+import { Table, IconButton, TrashIcon } from 'evergreen-ui'
 import { useEffect, useState } from 'react';
 import DialogComponent from "../Dialog/DialogComponent.jsx"
 
@@ -23,6 +23,7 @@ export default function TableComponent(props) {
                     <Table.TextHeaderCell>Company</Table.TextHeaderCell>
                     <Table.TextHeaderCell>Email Address</Table.TextHeaderCell>
                     <Table.TextHeaderCell>Phone Number</Table.TextHeaderCell>
+                    <Table.TextHeaderCell> </Table.TextHeaderCell>
                 </Table.Head>
 
 
@@ -37,6 +38,7 @@ export default function TableComponent(props) {
                                 <Table.TextCell>{profile.companyName}</Table.TextCell>
                                 <Table.TextCell>{profile.emailAddress}</Table.TextCell>
                                 <Table.TextCell>{profile.phoneNumber}</Table.TextCell>
+                                <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={50} onClick={()=>{}}/> </Table.TextCell>
                             </Table.Row>
                         ))
                     }

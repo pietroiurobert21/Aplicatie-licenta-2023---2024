@@ -1,4 +1,4 @@
-import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox } from "evergreen-ui"
+import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox, IconButton, TrashIcon } from "evergreen-ui"
 
 import { useEffect, useState } from "react";
 import CheckToken from '../../middlewares/CheckToken'
@@ -135,6 +135,7 @@ export default function Deals() {
                     <Table.TextHeaderCell> employee </Table.TextHeaderCell>
                     <Table.TextHeaderCell> description </Table.TextHeaderCell>
                     <Table.TextHeaderCell> status </Table.TextHeaderCell>
+                    <Table.TextHeaderCell>  </Table.TextHeaderCell>
                 </Table.Head>
 
                 <Table.VirtualBody height={440}>
@@ -151,6 +152,7 @@ export default function Deals() {
                             <Table.TextCell onClick={(event)=>{event.stopPropagation()}} style={{color:"Red"}}>
                                 <Badge color={deal.status === 'accepted' ? 'green' : deal.status === 'rejected' ? 'red' : 'inherit'}> {deal.status} </Badge>
                             </Table.TextCell>
+                            <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={100} onClick={()=>{}}/> </Table.TextCell>
                         </Table.Row>
                     ))}
 
