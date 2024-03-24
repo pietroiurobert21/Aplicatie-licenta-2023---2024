@@ -17,6 +17,21 @@ const postTask = async (req, res) => {
     }
 }
 
+const deleteTask = async (req, res) => {
+    const { id } = req.params
+    try {
+        const task = await Tasks.findByPk(id)
+        if (task) {
+            await task.destroy()
+        } else {
+            res.status(404).json({ success: false, error: "Task not found" });
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success: false, error: "Error deleting task" });
+    }
+}
+
 const getTasksAssignedByUserId = async (req, res) => {
     const { id } = req.params
     try {
@@ -92,5 +107,6 @@ module.exports = {
     postTask,
     getTasksAssignedByUserId,
     getTasksAssignedToUserId,
-    updateIsDone
+    updateIsDone,
+    deleteTask
 }

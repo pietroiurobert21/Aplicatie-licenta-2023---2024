@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from './Tasks.module.css'
-import { Table, TextInput, Badge, Button, SelectMenu, TextInputField  } from 'evergreen-ui'
+import { Table, TextInput, Badge, Button, SelectMenu, IconButton, TrashIcon  } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 
 
@@ -107,6 +107,17 @@ export default function Tasks() {
         setEffect(Math.floor(Math.random() * 1000))
     }
 
+    const deleteTask = async (taskId) => {
+        await fetch(`http://localhost:3000/tasks/${taskId}`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        setEffect(Math.floor(Math.random() * 1000))
+    }
+
     const [effect, setEffect] = useState('')
     useEffect(() => {
         retrieveEmployees()
@@ -134,11 +145,12 @@ export default function Tasks() {
                                         { role==="administrator" && <Table.TextHeaderCell> Assigned to </Table.TextHeaderCell> }
                                         <Table.TextHeaderCell> IsDone </Table.TextHeaderCell>
                                         <Table.TextHeaderCell> Assigned by </Table.TextHeaderCell>
+                                        <Table.TextHeaderCell>  </Table.TextHeaderCell>
                                     </Table.Head>
                                     <Table.VirtualBody height={390}>
                                         {tasks.map((task, index) => (
                                             
-                                                <Table.Row isSelectable onClick={()=>{updateTaskStatus(task.id)}}>
+                                                <Table.Row isSelectable onClick={(e)=>{if (e.target.classList!="IconButton") updateTaskStatus(task.id) }}>
                                                     <Table.TextCell>{task.id}</Table.TextCell>
                                                     <Table.TextCell>{task.description}</Table.TextCell>
                                                     { role==="administrator" && <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>}
@@ -146,8 +158,8 @@ export default function Tasks() {
                                                         <Badge color={task.isDone === true ? 'green' : task.isDone === false ? 'red' : 'inherit'}> {task.isDone.toString()} </Badge>
                                                     </Table.TextCell>
                                                     <Table.TextCell isNumber>{task.assignedBy.firstName} {task.assignedBy.lastName}</Table.TextCell>
+                                                    <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={100} onClick={()=>{deleteTask(task.id)}}/> </Table.TextCell>
                                                 </Table.Row>
-                                            
                                         ))}
                                     </Table.VirtualBody>
                                 </Table>
