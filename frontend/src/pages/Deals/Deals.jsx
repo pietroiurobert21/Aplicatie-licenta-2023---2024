@@ -118,7 +118,7 @@ export default function Deals() {
     }
 
 
-    const [ selected, setSelected ] = useState({})
+    const [ selected, setSelected ] = useState()
     const [ shownDeal, setShownDeal ] = useState({})
     const [ newStatus, setNewStatus ] = useState('')
     return (
