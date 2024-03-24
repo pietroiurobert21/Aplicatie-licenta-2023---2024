@@ -10,13 +10,15 @@ export default function BasicBars(props) {
   return (
     <div style={{display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center'}}>
       <Typography> Deals for {props.year} </Typography>
-      <BarChart
-        xAxis={[{ scaleType: 'band', data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] }]}
-        series={props.data.map((item, index) => ({ ...item, label: status[index] + " deals" }))}
-        colors={["blue", "red", "gray"]}
-        width={600}
-        height={200}
-      />
+      <div style={{zoom: '80%'}}>
+        <BarChart
+          xAxis={[{ scaleType: 'band', data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] }]}
+          series={props.data.map((item, index) => ({ ...item, label: status[index] + " deals" }))}
+          colors={["blue", "red", "gray"]}
+          width={600}
+          height={200}
+        />
+      </div>
     </div>
   );
 }

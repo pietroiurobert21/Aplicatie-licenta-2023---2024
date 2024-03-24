@@ -7,21 +7,24 @@ export default function PieChart(props) {
   const data1 = props.data
   
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: "100%"}}>
       {
         data1.length ? (
           <>
           <Typography> Closed won deals in {props.year} </Typography>
-          <Chart
-            series={[
-              {
-                data: data1,
-                highlightScope: { faded: 'global', highlighted: 'item' },
-                faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-              },
-            ]}
-            height={200}
-          />
+          <div style={{zoom: '80%'}}>
+            <Chart 
+              series={[
+                {
+                  data: data1,
+                  highlightScope: { faded: 'global', highlighted: 'item' },
+                  faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+                },
+              ]}
+              height={200}
+              width={500}
+            />
+            </div>
           </>
         ) : <p> not enough data found </p>
       }

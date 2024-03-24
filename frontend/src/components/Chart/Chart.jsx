@@ -122,10 +122,10 @@ export default function Chart(props) {
                 <div className={style.item1}>
                     <BasicLineChart data={[xAxis, yAxis]} year={props.year}/>
                 </div>
-                <div className={style.item2}>
+                <div className={style.item2} style={{gridColumn: "span 3"}}>
                     <PieChart data={data1} year={props.year}/>
                 </div>
-                <div className={style.item2} style={{gridColumn: "span 2"}}>
+                <div className={style.item2} style={{gridColumn: "span 4"}}>
                     <BarChart year={props.year} data={barValues}/>
                 </div>
             </div>
