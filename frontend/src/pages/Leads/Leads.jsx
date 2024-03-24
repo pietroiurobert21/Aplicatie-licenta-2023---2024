@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import TableComponent from "../../components/Table/TableComponent.jsx"
 import { Button, NewPersonIcon, toaster } from "evergreen-ui";
 import DialogComponent from "../../components/Dialog/DialogComponent.jsx";
+import CheckToken from '../../middlewares/CheckToken.jsx'
 
 export default function Leads() {
-    
+    CheckToken()    
     const [ leads, setLeads ] = useState([])
 
     const organizationId = localStorage.getItem('organizationId')

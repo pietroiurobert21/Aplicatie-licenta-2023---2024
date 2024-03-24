@@ -20,7 +20,10 @@ const postTask = async (req, res) => {
 const getTasksAssignedByUserId = async (req, res) => {
     const { id } = req.params
     try {
-        const tasks = await Tasks.findAll({where: {assignedByEmployeeId: id}});
+        const tasks = await Tasks.findAll({
+            where: {assignedByEmployeeId: id},
+            order: [ ['id', 'ASC'] ]
+        });
         if(tasks) {
             const tasksWithAllProperties = await Promise.all(tasks.map(async task => {
                 const assignedToEmployee = await Employee.findByPk(task.assignedToEmployeeId);
@@ -67,10 +70,27 @@ const getTasksAssignedToUserId = async (req, res) => {
     }
 }
 
+const updateIsDone = async (req, res) => {
+    const { id } = req.params
+    try {
+        const task = await Tasks.findByPk(id)
+        if (task) {
+            task.isDone = !task.isDone
+            await task.save()
+            res.status(200).json({success:true, task})
+        } else {
+            res.status(404).json({success:false, error:"task not found"})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success:false, error: "Error updating task" });
+    }
+}
 
 
 module.exports = {
     postTask,
     getTasksAssignedByUserId,
-    getTasksAssignedToUserId
+    getTasksAssignedToUserId,
+    updateIsDone
 }

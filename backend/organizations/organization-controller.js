@@ -98,7 +98,8 @@ const getOrganizationDeals = async (req, res) => {
                     ]
                 },
                 { model: Contact },
-            ]
+            ],
+            order: [ ['id', 'ASC'] ]
         })
         if (organizationDeals) {
             res.status(200).json({success: true, organizationDeals})

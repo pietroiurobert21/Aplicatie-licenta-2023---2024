@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import style from './Tasks.module.css'
-import { Table, TextInput, Checkbox, Button, SelectMenu, TextInputField  } from 'evergreen-ui'
+import { Table, TextInput, Badge, Button, SelectMenu, TextInputField  } from 'evergreen-ui'
+import CheckToken from '../../middlewares/CheckToken.jsx'
 
 
 export default function Tasks() {
-
+    CheckToken()
     const [tasks, setTasks] = useState([])
     const accessToken = localStorage.getItem("accessToken")
 
@@ -95,6 +96,17 @@ export default function Tasks() {
         .then(data=>setRole(data.userOrganization.role))
     }
 
+    const updateTaskStatus = async (taskId) => {
+        await fetch(`http://localhost:3000/tasks/${taskId}`, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        setEffect(Math.floor(Math.random() * 1000))
+    }
+
     const [effect, setEffect] = useState('')
     useEffect(() => {
         retrieveEmployees()
@@ -126,11 +138,13 @@ export default function Tasks() {
                                     <Table.VirtualBody height={390}>
                                         {tasks.map((task, index) => (
                                             
-                                                <Table.Row isSelectable>
+                                                <Table.Row isSelectable onClick={()=>{updateTaskStatus(task.id)}}>
                                                     <Table.TextCell>{task.id}</Table.TextCell>
                                                     <Table.TextCell>{task.description}</Table.TextCell>
                                                     { role==="administrator" && <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>}
-                                                    <Table.TextCell> {task.isDone.toString()} </Table.TextCell>
+                                                    <Table.TextCell>  
+                                                        <Badge color={task.isDone === true ? 'green' : task.isDone === false ? 'red' : 'inherit'}> {task.isDone.toString()} </Badge>
+                                                    </Table.TextCell>
                                                     <Table.TextCell isNumber>{task.assignedBy.firstName} {task.assignedBy.lastName}</Table.TextCell>
                                                 </Table.Row>
                                             
