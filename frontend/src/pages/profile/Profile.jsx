@@ -85,7 +85,6 @@ export default function Profile(){
                                 </p>
                                 <p id={style.logout} onClick={()=>{toaster.notify("Logged out Successfully", {duration: 1.5}); emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
                             </div>
-
                             <div className={style.contactInfoContainer}>
                                 <b> Contact Information </b>
                                 <ul>
@@ -97,8 +96,8 @@ export default function Profile(){
                                     <li>{userData.user.firstName}</li>
                                     <li className={style.itemName}>Last name</li>
                                     <li>{userData.user.lastName}</li>
-                                    <li className={style.itemName}>Points</li>
-                                    <li> {points} </li>
+                                        <li className={style.itemName}>Points</li>
+                                        <li> {points} </li>
                                 </ul>
                             </div>
                         </div>

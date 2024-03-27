@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from './Team.module.css'
-import { Avatar, Button, Dialog, TextInput, toaster } from 'evergreen-ui'
+import { Avatar, Button, Dialog, TextInput, toaster, Tooltip } from 'evergreen-ui'
 import { RemoveIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
 
@@ -122,8 +122,14 @@ export default function Team() {
                         {team.map((colleague, index) => (
                             <li key={index} style={{display: 'flex', justifyContent: 'space-between', height: '8vh'}}>
                                 <p> 
-                                    <Avatar name={`${colleague.User.firstName} ${colleague.User.lastName}`} size={40} marginRight={10}/>
-                                    {colleague.User.firstName} {colleague.User.lastName} - {colleague.role}
+                                    <div style={{display:'flex', alignItems:'center', width:'20vw'}}> <Avatar name={`${colleague.User.firstName} ${colleague.User.lastName}`} size={40} marginRight={10}/> {colleague.User.firstName} {colleague.User.lastName} </div>
+                                    <div style={{display:'flex', alignItems:'center', width:'15vw'}}>{colleague.role}</div>
+                                    <Tooltip content="Points are calculated as the number of accepted deals initiated by the user." showDelay={1000}>
+                                        <div style={{display:'flex', alignItems:'center', justifyContent:'start', gap: '3%', height: '8vh', width:'fit-content'}}>
+                                            <div style={{display:'flex', alignItems:'center', justifyContent:'end', width:'3vw'}}>{colleague.points}</div>
+                                            <div style={{display:'flex', alignItems:'center', justifyContent:'start'}}> points </div>
+                                        </div>
+                                    </Tooltip>
                                 </p>
                                 { 
                                 userRole=='administrator' &&  colleague.role!='administrator' && <p style={{color: 'red', paddingRight: '2vw'}} onClick={()=>{alert('remove member?'); fireEmployee(colleague.id)}}> <RemoveIcon/> </p> 

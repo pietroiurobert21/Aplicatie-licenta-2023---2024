@@ -48,10 +48,10 @@ const getEmployeeByUserId = async (req, res) => {
 const getColleagues = async (req, res) => {
     const { userId } = req.params;
     try {
-        const employee = (await Employee.findAll({where: { userId: userId }}))
-        const organizationId = employee[0].organizationId
+        const employee = await Employee.findOne({where: {userId: userId}})
+        const organizationId = employee.organizationId
         if (organizationId) {
-            const colleagues = await Employee.findAll({where: { organizationId: organizationId}, include: [User] })
+            const colleagues = await Employee.findAll({where: { organizationId: organizationId}, include: [User], order: [ ['points', 'DESC'] ] })
 
             if (colleagues) {
                 res.status(200).json({success: true, colleagues: colleagues})

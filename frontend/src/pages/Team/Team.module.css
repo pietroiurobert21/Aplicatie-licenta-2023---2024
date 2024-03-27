@@ -19,22 +19,16 @@
 }
 
 .teamContainer p {
-    display: block;
+    display: flex;
+    justify-content: start;
+    gap: 10%;
+    align-items: center;
     padding-left: 5%;
 }
 
 .teamContainer ul {
     list-style: none;
     padding: 0;
-}
-
-.teamContainer ul li p {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 1vw;
-
-    border-radius: 5px;
 }
 
 .teamContainer ul li:hover {
