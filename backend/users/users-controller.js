@@ -48,7 +48,7 @@ const loginUser = async (req, res) => {
         const user = await Users.findOne({ where: { email } });
         if (user) {
             if (user.password === password) {
-                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
                 res.status(200).json({ success:true, token, user });
             } else {
                 res.status(401).json({ success:false, error: "Invalid password" });
