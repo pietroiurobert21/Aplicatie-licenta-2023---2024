@@ -5,10 +5,6 @@ import CheckToken from '../../middlewares/CheckToken'
 
 export default function Organization() {
     CheckToken()
-    const [team, setTeam] = useState([])
-    const [isLoading, setIsLoading] = useState(true)
-
-    const [isShown, setIsShown] =   useState(false)
 
     const [organization, setOrganization] = useState({})
 
