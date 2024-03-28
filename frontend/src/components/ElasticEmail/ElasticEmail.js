@@ -5,7 +5,7 @@ export default function sendEmail(emailAddress, subject, content) {
         let defaultClient = ApiClient.instance;
             
         let apikey = defaultClient.authentications['apikey'];
-        apikey.apiKey = "1EB808870A7BA065254A9CAC8B7A5E26CF4F6FEABC07CD7EEAD2ACD1D345146C793F62E2D26AC5BCD7320E7C3CD68777"
+        apikey.apiKey = import.meta.env.VITE_emailApiId
             
         let api = new EmailsApi()
 
