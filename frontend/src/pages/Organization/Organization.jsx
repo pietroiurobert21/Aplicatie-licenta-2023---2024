@@ -34,9 +34,35 @@ export default function Organization() {
         }
     }
 
+    const organizationId = localStorage.getItem('organizationId')
+    const [ updated, setUpdated ] = useState('')
+    const [ totalRevenue, setTotalRevenue ] = useState(-1)
+    const getDeals = async () => {
+        const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        })
+        if (res.status == 200) {
+            setTotalRevenue(0)
+            const organization = await res.json()
+            const deals = organization.organizationDeals
+            console.log(deals)
+
+            deals.map((deal, index)=>{
+                if (deal.status === 'accepted') {
+                    setTotalRevenue(prev => prev + deal.value)
+                }
+            })
+        }
+    }
+
     useEffect(()=>{
         getOrganization()
-    }, [])
+        getDeals()
+    }, [updated])
 
     return (
         <div className={style.organizationContainer}>
@@ -48,8 +74,12 @@ export default function Organization() {
                 <li> {organization.name}  </li>
                 <li className={style.itemName}> Points </li>
                 <li> {organization.points}  </li>
-                <li className={style.itemName}> Revenue </li>
-                <li> $$$  </li>
+                <li className={style.itemName}> Total revenue </li>
+                <li> 
+                    {
+                        totalRevenue>-1 ? <> {totalRevenue} EUR</> : <>loading</>
+                    }    
+                </li>
                 <li className={style.itemName}> Invitation code </li>
                 <li> {organization.code} <Button> change </Button> </li>
                 <li className={style.itemName}> Active on platform since </li>
