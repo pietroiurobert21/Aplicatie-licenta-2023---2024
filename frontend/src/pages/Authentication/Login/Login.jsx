@@ -1,6 +1,7 @@
 import style from './Login.module.css';
 import { TextInput, Button } from 'evergreen-ui';
 import Background from '../../../assets/background_image.png';
+import CRMImage from '../../../assets/crmimage.png';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -18,7 +19,7 @@ export default function Login() {
     return (
         <>
             <div className={style.login}>
-                <img src={Background}/>
+                <img src={CRMImage}/>
                 <div className={style.login_container}>
                     <LoginCard/>
                 </div>
