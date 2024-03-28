@@ -1,6 +1,6 @@
 import { ApiClient, EmailsApi, EmailMessageData, EmailRecipient, BodyPart } from '@elasticemail/elasticemail-client';
 
-export default function sendEmail(emailAddress, name) {
+export default function sendEmail(emailAddress, subject, content) {
     return new Promise((resolve, reject) => {
         let defaultClient = ApiClient.instance;
             
@@ -18,7 +18,7 @@ export default function sendEmail(emailAddress, name) {
                     {
                         ContentType: "HTML",
                         Charset: "utf-8",
-                        Content: `<h4>Hi, ${name}!</h4><p>Please consider completing this survey so we can improve our services!</p>https://docs.google.com/forms/d/e/1FAIpQLSfF-yTDEMSpV-hqfpxML32D_HNXiFisB0Z2uLjjZH6f9iddow/viewform?usp=sf_link`
+                        Content: content
                     },
                     {
                         ContentType: "PlainText",
@@ -27,7 +27,7 @@ export default function sendEmail(emailAddress, name) {
                     }
                 ],
                 From: "resourcewise70@gmail.com",
-                Subject: "CRMLite Survey"
+                Subject: subject
             }
         };
                     

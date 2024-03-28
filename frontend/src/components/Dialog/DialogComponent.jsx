@@ -15,16 +15,16 @@ export default function DialogComponent(props) {
         props.setNewContact({ ...props.newContact, [name]: value });
     };
 
-    const handleEmailSender = async (emailAddress, name) => {
+    const handleEmailSender = async (emailAddress, content) => {
         try {
-            await sendEmail(emailAddress, name)
+            await sendEmail(emailAddress, "CRMLite Survey", content)
             toaster.success("email sent successfully!")   
         } catch (error) {
             toaster.warning("email could not be sent!")   
         }
     }
 
-    const [ratingValue, setRatingValue] = useState(1)
+    const [ratingValue, setRatingValue] = useState(4)
     return (
         <>
             <Dialog
@@ -42,7 +42,9 @@ export default function DialogComponent(props) {
                                     value={ratingValue}
                                     readOnly
                                 />
-                                <Button onClick={() => {handleEmailSender(profileData.emailAddress, profileData.firstName)}}> send a survey </Button>
+                                <Button onClick={() => {
+                                    handleEmailSender(profileData.emailAddress, `<h4>Hi, ${profileData.firstName}!</h4><p>Please consider completing this survey so we can improve our services!</p>https://docs.google.com/forms/d/e/1FAIpQLSfF-yTDEMSpV-hqfpxML32D_HNXiFisB0Z2uLjjZH6f9iddow/viewform?usp=sf_link`)
+                                }}> send a survey </Button>
                                 </div>
                             </>)
                         }

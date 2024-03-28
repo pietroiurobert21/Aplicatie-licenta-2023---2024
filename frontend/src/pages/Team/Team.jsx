@@ -3,6 +3,7 @@ import style from './Team.module.css'
 import { Avatar, Button, Dialog, TextInput, toaster, Tooltip, InfoSignIcon } from 'evergreen-ui'
 import { RemoveIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
+import sendEmail from "../../components/ElasticEmail/ElasticEmail.js"
 
 export default function Team() {
     CheckToken()
@@ -53,10 +54,16 @@ export default function Team() {
             localStorage.removeItem("accessToken")
         }
     }
-    
-    const sendInvitationEmail = async () => {
-        
+
+    const handleEmailSender = async (emailAddress, content) => {
+        try {
+            await sendEmail(emailAddress, "Invitation code to CRMLite" ,content)
+            toaster.success("email sent successfully!")   
+        } catch (error) {
+            toaster.warning("email could not be sent!")   
+        }
     }
+
 
     const [ employeeFired, setEmployeeFired ] = useState('')
     const fireEmployee = async (id) => {
@@ -105,7 +112,10 @@ export default function Team() {
                     hasFooter={false}>
                         <div className={style.invitationContainer}> 
                             <TextInput name="text-input-name" placeholder="Email" onChange={(e)=>{setEmail(e.target.value)}}/>
-                            <Button appearance="primary" onClick={()=>{sendInvitationEmail();toaster.success('email sent successfully', { duration: 1.5 })}}> send </Button>
+                            <Button appearance="primary" onClick={()=>{
+                                handleEmailSender(email, `<p>You have been invited to join the organization ${organization.name} within the CRMLite application. Below is the invitation code: </p><p>${organization.code}</p>`);
+                                toaster.success('email sent successfully', { duration: 1.5 })}
+                            }> send </Button>
                             <Button appearance="default" onClick={()=>{navigator.clipboard.writeText(organization.code); toaster.success('Code copied to clipboard', { duration: 1.5 });}}> copy code to clipboard </Button>
                         </div>
                 </Dialog>
