@@ -66,18 +66,18 @@ export default function LoginCard(props) {
     return (
         <>
             <div className={style.card}>
-            <h1>Login</h1>
-            <TextInput name="text-input-email" placeholder="Email" 
-                onChange={(e)=>setEmail(e.target.value)}/>
+                <h1>Login</h1>
+                <TextInput name="text-input-email" placeholder="Email" 
+                    onChange={(e)=>setEmail(e.target.value)}/>
 
-            <TextInput name="text-input-password" type="password" placeholder="Password" 
-                 onChange={(e)=>setPassword(e.target.value)}/>
+                <TextInput name="text-input-password" type="password" placeholder="Password" 
+                    onChange={(e)=>setPassword(e.target.value)}/>
 
-            <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
-                 onClick={loginFunction}> Login </Button>
+                <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
+                    onClick={loginFunction}> Login </Button>
 
-            <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
-                onClick={()=>{navigate('/register')}}> Register </Button>
+                <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
+                    onClick={()=>{navigate('/register')}}> Register </Button>
             </div>
         </>
     )

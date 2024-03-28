@@ -2,6 +2,7 @@ import style1 from '../Login/Login.module.css';
 import style2 from './Register.module.css';
 import { TextInput, Button, toaster } from 'evergreen-ui';
 import Background from '../../../assets/background_image.png';
+import CRMImage from '../../../assets/crmimage.png';
 import { useNavigate } from 'react-router-dom';
 
 export default function Register() {
@@ -35,7 +36,7 @@ export default function Register() {
     return (
         <>
             <div className={style1.login}>
-                <img src={Background}/>
+                <img src={CRMImage}/>
                 <div className={style1.login_container}>
                 <div className={style2.card}>
                     <h1>Register</h1>

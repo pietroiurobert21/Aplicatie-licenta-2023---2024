@@ -1,6 +1,7 @@
 import style1 from '../Login/Login.module.css';
 import style2 from './RegisterToCompany.module.css';
 import Background from '../../../assets/background_image.png';
+import CRMImage from '../../../assets/crmimage.png';
 import { useNavigate } from 'react-router-dom'
 import { TextInput, Button, toaster } from 'evergreen-ui'
 import { useState } from 'react'
@@ -70,7 +71,7 @@ export default function RegisterToCompany() {
     return (
         <>
             <div className={style1.login}>
-                <img src={Background}/>
+                <img src={CRMImage}/>
                 <div className={style1.login_container}>
                     
                     <div className={style2.card1}>
