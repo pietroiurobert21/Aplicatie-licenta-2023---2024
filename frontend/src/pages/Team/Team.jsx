@@ -114,8 +114,8 @@ export default function Team() {
                             <TextInput name="text-input-name" placeholder="Email" onChange={(e)=>{setEmail(e.target.value)}}/>
                             <Button appearance="primary" onClick={()=>{
                                 handleEmailSender(email, `<p>You have been invited to join the organization  <b>${organization.name}</b>  within the  <b>CRMLite</b>  website. Below is the invitation code: </p><p>${organization.code}</p>`);
-                                toaster.success('email sent successfully', { duration: 1.5 })}
-                            }> send </Button>
+                                setIsShown(false)
+                            }}> send </Button>
                             <Button appearance="default" onClick={()=>{navigator.clipboard.writeText(organization.code); toaster.success('Code copied to clipboard', { duration: 1.5 });}}> copy code to clipboard </Button>
                         </div>
                 </Dialog>
