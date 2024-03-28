@@ -45,7 +45,7 @@ export default function TableComponent(props) {
                 </Table.VirtualBody>
             </Table>
 
-            <DialogComponent data={shownProfile} isShown={isShown} setIsShown={setIsShown}/>
+            <DialogComponent data={shownProfile} isShown={isShown} setIsShown={setIsShown} showSatisfaction={props.showSatisfaction}/>
         </>
     )
 }

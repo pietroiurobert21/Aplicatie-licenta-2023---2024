@@ -81,7 +81,7 @@ export default function Leads() {
                         leads ? 
                         (
                             <>
-                                <TableComponent data={leads} /> 
+                                <TableComponent data={leads} showSatisfaction={false}/> 
                             </>
                         )
                         : 

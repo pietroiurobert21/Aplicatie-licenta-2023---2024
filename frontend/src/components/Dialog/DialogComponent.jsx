@@ -1,4 +1,8 @@
-import { Dialog, TextInputField, Button } from 'evergreen-ui' 
+import { Dialog, TextInputField, Button, toaster } from 'evergreen-ui' 
+import Rating from '@mui/material/Rating';
+import { useState } from 'react';
+
+import sendEmail from "../ElasticEmail/ElasticEmail.js"
 
 export default function DialogComponent(props) {
 
@@ -11,6 +15,16 @@ export default function DialogComponent(props) {
         props.setNewContact({ ...props.newContact, [name]: value });
     };
 
+    const handleEmailSender = async (emailAddress, name) => {
+        try {
+            await sendEmail(emailAddress, name)
+            toaster.success("email sent successfully!")   
+        } catch (error) {
+            toaster.warning("email could not be sent!")   
+        }
+    }
+
+    const [ratingValue, setRatingValue] = useState(1)
     return (
         <>
             <Dialog
@@ -19,6 +33,20 @@ export default function DialogComponent(props) {
                     onConfirm={()=>{props.handleConfirm(), props.setIsShown(false)}}
                     onCloseComplete={() => props.setIsShown(false)}
                     >
+                        {
+                            props.showSatisfaction && (<>
+                                <h5> Satisfaction: </h5>
+                                <div style={{marginBottom: '5vh', display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
+                                <Rating
+                                    name="simple-controlled"
+                                    value={ratingValue}
+                                    readOnly
+                                />
+                                <Button onClick={() => {handleEmailSender(profileData.emailAddress, profileData.firstName)}}> send a survey </Button>
+                                </div>
+                            </>)
+                        }
+
                         <TextInputField
                             label="First name"
                             placeholder="First name"

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from './Team.module.css'
-import { Avatar, Button, Dialog, TextInput, toaster, Tooltip } from 'evergreen-ui'
+import { Avatar, Button, Dialog, TextInput, toaster, Tooltip, InfoSignIcon } from 'evergreen-ui'
 import { RemoveIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
 
@@ -128,6 +128,7 @@ export default function Team() {
                                     <div style={{display:'flex', alignItems:'center', width:'15vw'}}>{colleague.role}</div>
                                     <Tooltip content="Points are calculated as the number of accepted deals initiated by the user." showDelay={1000}>
                                         <div style={{display:'flex', alignItems:'center', justifyContent:'start', gap: '3%', height: '8vh', width:'fit-content'}}>
+                                            <InfoSignIcon/>
                                             <div style={{display:'flex', alignItems:'center', justifyContent:'end', width:'3vw'}}>{colleague.points}</div>
                                             <div style={{display:'flex', alignItems:'center', justifyContent:'start'}}> points </div>
                                         </div>
