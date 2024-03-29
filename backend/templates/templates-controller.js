@@ -18,8 +18,16 @@ const getTemplatesByOrganizationID = async (req,res) => {
 const postTemplate = async (req, res) => { 
     const body = req.body
     try {
-        const template = await Templates.create(body)
-        res.status(201).json({success: true, template})
+        const sameNameTemplate = await Templates.findOne({where: {organizationId: body.organizationId, name: body.name}})
+        if (sameNameTemplate) {
+            sameNameTemplate.design = body.design
+            sameNameTemplate.html = body.html
+            await sameNameTemplate.save()
+            res.status(200).json({success: true, sameNameTemplate})
+        } else {
+            const template = await Templates.create(body)
+            res.status(201).json({success: true, template})
+        }
     } catch (error) {
         console.log(error)
         res.status(500).json({ success: false, error: "Error creating template" });
@@ -36,7 +44,6 @@ const getTemplateById = async (req, res) => {
             res.status(404).json({success: false, error: "template not found"})
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({ success: false, error: "Error retrieving template" });
     }
 }

@@ -26,7 +26,6 @@ export default function EmailTemplates(props) {
         retrieveTemplates()
     }, [])
 
-    const [selected, setSelected]=useState()
     return (
         <div style={{width:'fix-content'}}>
             { 

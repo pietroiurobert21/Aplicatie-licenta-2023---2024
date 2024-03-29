@@ -46,7 +46,7 @@ export default function EmailTemplate(props) {
         'Authorization': `Bearer ${accessToken}`
       }
     }).then(data=>data.json())
-    .then(data=>{ setShowTemplate(data.template.name); emailEditorRef.current.editor.loadDesign(JSON.parse(data.template.design))})
+    .then(data=>{setShowTemplate(data.template.name); setTemplateName(data.template.name);  emailEditorRef.current.editor.loadDesign(JSON.parse(data.template.design))})
   }
 
   const onLoad = () => {
@@ -65,13 +65,23 @@ export default function EmailTemplate(props) {
     getTemplateById(shownTemplateId)
   }, [shownTemplateId])
 
+  useEffect(()=>{
+
+  }, [templateName])
+
   return (
     <div>
-      <div style={{display:'flex', justifyContent:'start'}}>
-        <EmailTemplates setShowTemplateId={setShowTemplateId }/>
-        <TextInput name="template-input-name" defaultValue={shownTemplate} placeholder="Template name..." onChange={(e)=>setTemplateName(e.target.value)}/>
-        <button onClick={exportTemplate}> Save template design </button>
+      <div style={{display:'flex', justifyContent:'space-between'}}>
+        <EmailTemplates setShowTemplateId={setShowTemplateId}/>
+
+        <div style={{display:'flex'}}>
+          <TextInput name="template-input-name" defaultValue={shownTemplate} placeholder="Template name..." onChange={(e)=>setTemplateName(e.target.value)}/>
+          <button onClick={exportTemplate}>
+            save design
+          </button>
+        </div>
       </div>
+
       
       <EmailEditor
         ref={emailEditorRef}
