@@ -2,12 +2,11 @@ import { Pane, Tablist, Tab, Paragraph } from 'evergreen-ui'
 import { useState } from 'react'
 
 import Contacts from '../Contacts/Contacts'
-import EmailTemplates from '../EmailTemplates/EmailTemplates'
 import EmailEditor from '../../components/EmailEditor/EmailEditor.jsx'
 
 export default function TabsContact() {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [tabs] = useState(['Customers list', 'Email Templates', 'Template editor'])
+  const [tabs] = useState(['Customers list', 'Template editor'])
   return (
     <Pane >
       <Tablist display={'flex'} justifyContent={'center'} alignItems={'center'} fontSize={400}>
@@ -33,7 +32,6 @@ export default function TabsContact() {
             role="tabpanel"
           >
             {tab == 'Customers list' && <Contacts/>}
-            {tab == 'Email Templates' && <EmailTemplates/>}
             {tab == 'Template editor' && <EmailEditor/>}
           </Pane>
         ))}
