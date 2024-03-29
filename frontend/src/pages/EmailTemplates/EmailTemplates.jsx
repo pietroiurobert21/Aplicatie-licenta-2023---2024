@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Combobox } from 'evergreen-ui'
 
 export default function EmailTemplates(props) {
     
@@ -25,20 +26,23 @@ export default function EmailTemplates(props) {
         retrieveTemplates()
     }, [])
 
+    const [selected, setSelected]=useState()
     return (
-        <>
+        <div style={{width:'fix-content'}}>
             { 
                 templates.length > 0 ? (
-                    <ul style={{listStyle:'none'}}>
-                        {templates.map((value, index) => 
-                            {
-                                return <li key={index}> {value.name} </li>; // added return statement and key prop
-                            }
-                        )}
-                    </ul>
+                    <Combobox
+                    items={templates.map((template, index) => ({ label: template.name, id: template.id }))}
+                    itemToString={item => (item ? item.label : '')}
+                    onChange={selected => {console.log(selected), props.setShowTemplateId(selected.id)}}    
+                    placeholder="Template"
+                    autocompleteProps={{
+                        title: 'Template'
+                    }}
+                />
                 ) : <p> loading </p>
             }
-        </>
+        </div>
     );
     
 }

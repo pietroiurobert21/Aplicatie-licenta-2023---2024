@@ -43,8 +43,7 @@ export default function DialogComponent(props) {
                                     readOnly
                                 />
                                 <Button onClick={() => {
-                                    handleEmailSender(profileData.emailAddress, `<h4>Hi, ${profileData.firstName}!</h4><p>Please consider completing this survey so we can improve our services!</p>https://docs.google.com/forms/d/e/1FAIpQLSfF-yTDEMSpV-hqfpxML32D_HNXiFisB0Z2uLjjZH6f9iddow/viewform?usp=sf_link`)
-                                }}> send a survey </Button>
+                                }}> send a marketing email </Button>
                                 </div>
                             </>)
                         }

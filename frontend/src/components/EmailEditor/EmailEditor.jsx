@@ -1,11 +1,16 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import EmailEditor from 'react-email-editor';
+
+ //todo move it to components
+import EmailTemplates from "../../pages/EmailTemplates/EmailTemplates.jsx"
 import { TextInput, toaster } from 'evergreen-ui'
 
 export default function EmailTemplate(props) {
   const [ templateName, setTemplateName ] = useState(props.templateName || '')
 
   const emailEditorRef = useRef(null);
+  const [ shownTemplateId, setShowTemplateId ] = useState(-1)
+  const [ shownTemplate, setShowTemplate ] = useState("")
 
   const exportTemplate = async () => {
     if (templateName != '') {
@@ -33,6 +38,17 @@ export default function EmailTemplate(props) {
     })
   }
 
+  const getTemplateById = async (id) => {
+    await fetch(`http://localhost:3000/templates/template/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      }
+    }).then(data=>data.json())
+    .then(data=>{ setShowTemplate(data.template.name); emailEditorRef.current.editor.loadDesign(JSON.parse(data.template.design))})
+  }
+
   const onLoad = () => {
     // editor instance is created
     // you can load your template here;
@@ -45,10 +61,15 @@ export default function EmailTemplate(props) {
     console.log('onReady');
   };
 
+  useEffect(()=>{
+    getTemplateById(shownTemplateId)
+  }, [shownTemplateId])
+
   return (
     <div>
-      <div>
-        <TextInput name="template-input-name" defaultValue={props.templateName} placeholder="Template name..." onChange={(e)=>setTemplateName(e.target.value)}/>
+      <div style={{display:'flex', justifyContent:'start'}}>
+        <EmailTemplates setShowTemplateId={setShowTemplateId }/>
+        <TextInput name="template-input-name" defaultValue={shownTemplate} placeholder="Template name..." onChange={(e)=>setTemplateName(e.target.value)}/>
         <button onClick={exportTemplate}> Save template design </button>
       </div>
       
