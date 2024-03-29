@@ -11,6 +11,8 @@ const contact_routes = require('./contacts/contact-routes');
 const deal_routes = require('./deals/deals-routes');
 const task_routes = require('./tasks/tasks-routes');
 const leads_routes = require('./leads/leads-routes');
+const templates_routes = require('./templates/templates-routes');
+
 
 dotenv.config(); // Configure dotenv
 app.use(cors({origin: 'http://localhost:5173'}));
@@ -23,5 +25,6 @@ app.use('/contacts', contact_routes);
 app.use('/deals', deal_routes);
 app.use('/tasks', task_routes);
 app.use('/leads', leads_routes);
+app.use('/templates', templates_routes);
 
 module.exports = app;

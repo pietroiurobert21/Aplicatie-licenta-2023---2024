@@ -1,20 +1,36 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import EmailEditor from 'react-email-editor';
+import { TextInput, toaster } from 'evergreen-ui'
 
 export default function EmailTemplate(props) {
+  const [ templateName, setTemplateName ] = useState(props.templateName || '')
+
   const emailEditorRef = useRef(null);
 
-  const exportHtml = () => {
-    emailEditorRef.current.editor.exportHtml((data) => {
-      const { design, html } = data;
-      console.log('exportHtml', html);
-    });
+  const exportTemplate = async () => {
+    if (templateName != '') {
+      emailEditorRef.current.editor.exportHtml((data) => {
+        const { design, html } = data;
+        saveTemplateToDatabase(design, html)
+      });
+      toaster.success('Template design saved successfully!')
+    } else {
+      toaster.warning('Template design name required!')
+    }
   };
 
-  const saveTemplateDesign = () => {
-    emailEditorRef.current.editor.saveDesign(function(design) {
-      console.log('design', design);
-    });
+  const accessToken = localStorage.getItem('accessToken')
+  const organizationId = localStorage.getItem('organizationId')
+
+  const saveTemplateToDatabase = async (design, html) => { 
+    await fetch(`http://localhost:3000/templates`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
+      body: JSON.stringify({design: JSON.stringify(design), name: templateName, html: html, organizationId: organizationId})
+    })
   }
 
   const onLoad = () => {
@@ -32,8 +48,8 @@ export default function EmailTemplate(props) {
   return (
     <div>
       <div>
-        <button onClick={exportHtml}>Export HTML</button>
-        <button onClick={saveTemplateDesign}> Save template design </button>
+        <TextInput name="template-input-name" defaultValue={props.templateName} placeholder="Template name..." onChange={(e)=>setTemplateName(e.target.value)}/>
+        <button onClick={exportTemplate}> Save template design </button>
       </div>
       
       <EmailEditor

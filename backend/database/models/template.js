@@ -11,11 +11,15 @@ const Template = sequelize.define('Template', {
         allowNull: false,
         unique: true,
     },
+    name: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     design: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
     },
     html: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
     },
     organizationId: {
         type: Sequelize.INTEGER,
