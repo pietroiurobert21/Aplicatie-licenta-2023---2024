@@ -1,6 +1,3 @@
-const express = require("express");
-const jwt = require("jsonwebtoken");
-
 const Tasks = require("../database/models/task");
 const Employee = require("../database/models/employee");
 const User = require("../database/models/user");

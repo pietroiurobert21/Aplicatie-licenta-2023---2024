@@ -11,11 +11,17 @@ export default function EmailTemplate(props) {
     });
   };
 
+  const saveTemplateDesign = () => {
+    emailEditorRef.current.editor.saveDesign(function(design) {
+      console.log('design', design);
+    });
+  }
+
   const onLoad = () => {
     // editor instance is created
     // you can load your template here;
-    // const templateJson = {};
-    // emailEditorRef.current.editor.loadDesign(templateJson);
+    const templateJson = {};
+    emailEditorRef.current.editor.loadDesign(templateJson);
   }
 
   const onReady = () => {
@@ -27,6 +33,7 @@ export default function EmailTemplate(props) {
     <div>
       <div>
         <button onClick={exportHtml}>Export HTML</button>
+        <button onClick={saveTemplateDesign}> Save template design </button>
       </div>
       
       <EmailEditor
