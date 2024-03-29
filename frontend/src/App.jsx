@@ -1,6 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard/Dashboard.jsx'
 import Contacts from './pages/Contacts/Contacts.jsx'
+import TabsContact from './pages/TabsContacts/TabsContacts.jsx'
+
 import NotFound from './pages/404_page/NotFound.jsx'
 import Navbar from './components/Navbar/Navbar.jsx'
 import Login from './pages/Authentication/Login/Login.jsx'
@@ -35,7 +37,7 @@ function Main() {
         <Route path="/register" element={<Register />} />
         <Route path="/registerToCompany" element={<RegisterToCompany />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/contacts" element={<Contacts />} />
+        <Route path="/contacts" element={<TabsContact />} />
         <Route path="/leads" element={<Leads />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/team" element={<Team />} />

@@ -1,4 +1,4 @@
-import { toaster, Button, NewPersonIcon } from 'evergreen-ui'
+import { toaster, Button, NewPersonIcon, Dialog } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
 
@@ -74,6 +74,7 @@ export default function Contacts() {
         organizationId && retrieveContacts()
     }, [updated])
 
+    const [ showEmailEditor, setShowEmailEditor ] = useState(false)
     return (
         <>  
         {
@@ -91,6 +92,7 @@ export default function Contacts() {
         <DialogComponent data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
         <Button appearance="default" intent="success" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> Import from csv </Button>
-        </>
+        <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowEmailEditor(true)}> Create email template </Button>
+        </> 
     )
 }
