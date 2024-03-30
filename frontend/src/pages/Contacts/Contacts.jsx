@@ -1,4 +1,4 @@
-import { toaster, Button, NewPersonIcon, Dialog, SelectMenu, TextInputField, Switch } from 'evergreen-ui'
+import { toaster, Button, NewPersonIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
 
@@ -101,7 +101,7 @@ export default function Contacts() {
                     contacts ? (
                         <>
                             <TableComponent data={contacts} showSatisfaction={true}/>
-                            <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> New marketing campaign </Button>
+                            <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> <RocketSlantIcon/> New marketing campaign </Button>
 
                             <Dialog
                                 isShown={showMarketingDialog}
