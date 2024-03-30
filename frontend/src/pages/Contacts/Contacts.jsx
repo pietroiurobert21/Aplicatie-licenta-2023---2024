@@ -33,9 +33,10 @@ export default function Contacts() {
     });
 
     const [ showMarketingDialog, setShowMarketingDialog ] = useState(false)
-    const [ selected, setSelected ] = useState()
+    const [ selected, setSelected ] = useState('')
     const [ checkedAllContacts, setCheckedAllContacts] = useState(false)
     const [ content, setContent ] = useState('')
+    const [ subject, setSubject ] = useState('')
 
     const retrieveContacts = async () => {
         const res = await fetch(`http://localhost:3000/contacts/customers/${organizationId}`, {
@@ -78,11 +79,19 @@ export default function Contacts() {
 
     const startMarketingCampaign = async () => {
         const emailAddress = selected
-        try {
-            await sendEmail(emailAddress, "Invitation code to CRMLite", content)
-            toaster.success("email sent successfully!")   
-        } catch (error) {
-            toaster.warning("email could not be sent!")   
+        if (emailAddress=='') {
+            toaster.warning("at least one contact has to be selected!")
+        } else if (content=='') {
+            toaster.warning("a template has to be selected! you can make your own in the template editor tab.")
+        } else if (subject=='') {
+            toaster.warning("an email subject is required!")
+        } else {
+            try {
+                await sendEmail(emailAddress, subject, content)
+                toaster.success("email sent successfully!")   
+            } catch (error) {
+                toaster.warning("email could not be sent!")   
+            }               
         }
     }
 
@@ -92,6 +101,7 @@ export default function Contacts() {
     }, [updated])
 
 
+    const [shownSelected, setShownSelected] = useState()
     return (
         <>  
         {
@@ -107,7 +117,8 @@ export default function Contacts() {
                                 isShown={showMarketingDialog}
                                 title="Set up a marketing campagin"
                                 onConfirm={() => {setShowMarketingDialog(false); startMarketingCampaign()}}
-                                onCancel={()=>setShowMarketingDialog(false)}
+                                onCancel={()=> setShowMarketingDialog(false)}
+                                onCloseComplete={()=>setShowMarketingDialog(false)}
                             >
                                 <p style={{color:'#BBB7B6'}}> Step 1: select recipients </p>
                                 <p style={{display:'flex', width:'100%', gap:'4%', color: !checkedAllContacts && '#BBB7B6'}}> All contacts <Switch checked={checkedAllContacts} onChange={(e) => {setCheckedAllContacts(e.target.checked); setSelected(contacts)}} /></p>
@@ -116,14 +127,14 @@ export default function Contacts() {
                                             <SelectMenu
                                             title="Select name"
                                             options={contacts.map(contact => ({ label: contact.firstName, value: contact.firstName, emailAddress: contact.emailAddress,  key: contact.id }))}
-                                            selected={selected}
+                                            selected={shownSelected}
                                         
-                                            onSelect={(item) => {setSelected(item.emailAddress) }}>
+                                            onSelect={(item) => {setShownSelected(item.value); setSelected([{"emailAddress": item.emailAddress, "firstName": item.value }] )}}>
                                                 
                                             <TextInputField 
                                                 label="Desired contact"
                                                 isSelectable={false}
-                                                value={selected || 'Select name...'}/>
+                                                value={shownSelected || 'Select name...'}/>
                                         </SelectMenu>
                                         )
                                     }
@@ -131,7 +142,13 @@ export default function Contacts() {
                             <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 2: select the email template to be used </p>
                                     <p style={{display:'flex', width:'100%', gap:'4%', alignItems: 'center'}}> Desired email template <EmailTemplates setContent={setContent}/> </p>
                             
-                            <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 3: start the campaign by pressing the "Confirm" button </p>
+                            <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 3: select the email subject </p>
+                                            <TextInputField 
+                                                placeholder='email subject'
+                                                onChange={(e)=>(setSubject(e.target.value))}
+                                            />
+
+                            <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 4: start the campaign by pressing the "Confirm" button </p>
                             </Dialog>
                         </>
                     ) : <p> loading </p>

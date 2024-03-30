@@ -43,7 +43,7 @@ export default function EmailTemplates(props) {
                         title: 'Template'
                     }}
                 />
-                ) : <p> loading </p>
+                ) : <p> no templates found </p>
             }
         </div>
     );
