@@ -106,7 +106,8 @@ export default function Contacts() {
                             <Dialog
                                 isShown={showMarketingDialog}
                                 title="Set up a marketing campagin"
-                                onCloseComplete={() => {setShowMarketingDialog(false); startMarketingCampaign()}}
+                                onConfirm={() => {setShowMarketingDialog(false); startMarketingCampaign()}}
+                                onCancel={()=>setShowMarketingDialog(false)}
                             >
                                 <p style={{color:'#BBB7B6'}}> Step 1: select recipients </p>
                                 <p style={{display:'flex', width:'100%', gap:'4%', color: !checkedAllContacts && '#BBB7B6'}}> All contacts <Switch checked={checkedAllContacts} onChange={(e) => {setCheckedAllContacts(e.target.checked); setSelected(contacts)}} /></p>
