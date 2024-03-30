@@ -9,9 +9,13 @@ export default function sendEmail(emailAddress, subject, content) {
             
         let api = new EmailsApi()
 
-        const emailData = {
+        const emailData =  
+        !Array.isArray(emailAddress) ?
+        {
             Recipients: {
-                To: [emailAddress]
+                To: [ 
+                    emailAddress 
+                ]
             },
             Content: {
                 Body: [
@@ -29,7 +33,34 @@ export default function sendEmail(emailAddress, subject, content) {
                 From: "resourcewise70@gmail.com",
                 Subject: subject
             }
-        };
+        } :
+        {
+            Recipients: 
+                emailAddress.map(email => {
+                    return {
+                        Email: email.emailAddress,
+                        Fields: {
+                            name: email.firstName // You can change this value if needed
+                        }
+                    }
+                }),            
+            Content: {
+                Body: [
+                    {
+                        ContentType: "HTML",
+                        Charset: "utf-8",
+                        Content: content
+                    },
+                    {
+                        ContentType: "PlainText",
+                        Charset: "utf-8",
+                        Content: "Mail content."
+                    }
+                ],
+                From: "resourcewise70@gmail.com",
+                Subject: subject
+            }
+        }
                     
         var callback = function(error, data, response) {
             if (error) {
@@ -39,6 +70,6 @@ export default function sendEmail(emailAddress, subject, content) {
             }
         };
         
-        api.emailsTransactionalPost(emailData, callback);
+        !Array.isArray(emailAddress) ? api.emailsTransactionalPost(emailData, callback) : api.emailsPost(emailData, callback);
     })
 }

@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import TableComponent from "../../components/Table/TableComponent.jsx"
 import DialogComponent from '../../components/Dialog/DialogComponent.jsx';
 import EmailTemplates from "../EmailTemplates/EmailTemplates.jsx"
+import sendEmail from "../../components/ElasticEmail/ElasticEmail.js"
 
 export default function Contacts() {
     CheckToken()
@@ -30,6 +31,11 @@ export default function Contacts() {
         pipelineStatus: 'customer',
         organizationId: organizationId
     });
+
+    const [ showMarketingDialog, setShowMarketingDialog ] = useState(false)
+    const [ selected, setSelected ] = useState()
+    const [ checkedAllContacts, setCheckedAllContacts] = useState(false)
+    const [ content, setContent ] = useState('')
 
     const retrieveContacts = async () => {
         const res = await fetch(`http://localhost:3000/contacts/customers/${organizationId}`, {
@@ -71,7 +77,13 @@ export default function Contacts() {
     }
 
     const startMarketingCampaign = async () => {
-        
+        const emailAddress = selected
+        try {
+            await sendEmail(emailAddress, "Invitation code to CRMLite", content)
+            toaster.success("email sent successfully!")   
+        } catch (error) {
+            toaster.warning("email could not be sent!")   
+        }
     }
 
 
@@ -79,9 +91,7 @@ export default function Contacts() {
         organizationId && retrieveContacts()
     }, [updated])
 
-    const [ showMarketingDialog, setShowMarketingDialog ] = useState(false)
-    const [ selected, setSelected ] = useState()
-    const [ checkedAllContacts, setCheckedAllContacts] = useState(true)
+
     return (
         <>  
         {
@@ -91,6 +101,37 @@ export default function Contacts() {
                     contacts ? (
                         <>
                             <TableComponent data={contacts} showSatisfaction={true}/>
+                            <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> New marketing campaign </Button>
+
+                            <Dialog
+                                isShown={showMarketingDialog}
+                                title="Set up a marketing campagin"
+                                onCloseComplete={() => {setShowMarketingDialog(false); startMarketingCampaign()}}
+                            >
+                                <p style={{color:'#BBB7B6'}}> Step 1: select recipients </p>
+                                <p style={{display:'flex', width:'100%', gap:'4%', color: !checkedAllContacts && '#BBB7B6'}}> All contacts <Switch checked={checkedAllContacts} onChange={(e) => {setCheckedAllContacts(e.target.checked); setSelected(contacts)}} /></p>
+                                    {
+                                        !checkedAllContacts && (
+                                            <SelectMenu
+                                            title="Select name"
+                                            options={contacts.map(contact => ({ label: contact.firstName, value: contact.firstName, emailAddress: contact.emailAddress,  key: contact.id }))}
+                                            selected={selected}
+                                        
+                                            onSelect={(item) => {setSelected(item.emailAddress) }}>
+                                                
+                                            <TextInputField 
+                                                label="Desired contact"
+                                                isSelectable={false}
+                                                value={selected || 'Select name...'}/>
+                                        </SelectMenu>
+                                        )
+                                    }
+
+                            <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 2: select the email template to be used </p>
+                                    <p style={{display:'flex', width:'100%', gap:'4%', alignItems: 'center'}}> Desired email template <EmailTemplates setContent={setContent}/> </p>
+                            
+                            <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 3: start the campaign by pressing the "Confirm" button </p>
+                            </Dialog>
                         </>
                     ) : <p> loading </p>
                 }
@@ -99,38 +140,6 @@ export default function Contacts() {
         <DialogComponent data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
         <Button appearance="default" intent="success" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> Import from csv </Button>
-
-        <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> New marketing campaign </Button>
-
-        <Dialog
-            isShown={showMarketingDialog}
-            title="Set up a marketing campagin"
-            onCloseComplete={() => {setShowMarketingDialog(false); startMarketingCampaign()}}
-        >
-            <p style={{color:'#BBB7B6'}}> Step 1: select recipients </p>
-            <p style={{display:'flex', width:'100%', gap:'4%', color: !checkedAllContacts && '#BBB7B6'}}> All contacts <Switch checked={checkedAllContacts} onChange={(e) => setCheckedAllContacts(e.target.checked)} /></p>
-                {
-                    !checkedAllContacts && (
-                        <SelectMenu
-                        title="Select name"
-                        options={contacts.map(contact => ({ label: contact.firstName, value: contact.firstName, key: contact.id }))}
-                        selected={selected}
-                       
-                        onSelect={(item) => {setSelected(item.value) }}>
-                            
-                        <TextInputField 
-                            label="Desired contact"
-                            isSelectable={false}
-                            value={selected || 'Select name...'}/>
-                    </SelectMenu>
-                    )
-                }
-
-        <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 2: select the email template to be used </p>
-                <p style={{display:'flex', width:'100%', gap:'4%', alignItems: 'center'}}> Desired email template <EmailTemplates/> </p>
-        
-        <p style={{paddingTop: '7vh', color:'#BBB7B6'}}> Step 3: start the campaign by pressing the "Confirm" button </p>
-        </Dialog>
         </> 
     )
 }

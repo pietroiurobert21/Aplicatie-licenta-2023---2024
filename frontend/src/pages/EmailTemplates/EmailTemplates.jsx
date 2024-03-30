@@ -31,9 +31,13 @@ export default function EmailTemplates(props) {
             { 
                 templates.length > 0 ? (
                     <Combobox
-                    items={templates.map((template, index) => ({ label: template.name, id: template.id }))}
+                    items={templates.map((template, index) => ({ label: template.name, id: template.id, content: template.html }))}
                     itemToString={item => (item ? item.label : '')}
-                    onChange={selected => {console.log(selected), props.setShowTemplateId && props.setShowTemplateId(selected.id)}}    
+                    onChange={selected => {
+                        console.log(selected), 
+                        props.setShowTemplateId && props.setShowTemplateId(selected.id)
+                        props.setContent && props.setContent(selected.content)
+                    }}    
                     placeholder="Template"
                     autocompleteProps={{
                         title: 'Template'
