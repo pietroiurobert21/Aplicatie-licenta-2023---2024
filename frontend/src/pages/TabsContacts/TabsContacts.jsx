@@ -6,7 +6,7 @@ import EmailEditor from '../../components/EmailEditor/EmailEditor.jsx'
 
 export default function TabsContact() {
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [tabs] = useState(['Customers list', 'Template editor'])
+  const [tabs] = useState(['Customers list', 'Template editor', 'Marketing campaigns'])
   return (
     <Pane >
       <Tablist display={'flex'} justifyContent={'center'} alignItems={'center'} fontSize={400}>
