@@ -139,7 +139,6 @@ export default function Contacts() {
         }
         <DialogComponent data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
-        <Button appearance="default" intent="success" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> Import from csv </Button>
         </> 
     )
 }
