@@ -2,6 +2,7 @@ import { Pane, Tablist, Tab, Paragraph } from 'evergreen-ui'
 import { useState } from 'react'
 
 import Contacts from '../Contacts/Contacts'
+import MarketingCampaigns from "../MarketingCampaigns/MarketingCampaigns.jsx"
 import EmailEditor from '../../components/EmailEditor/EmailEditor.jsx'
 
 export default function TabsContact() {
@@ -33,6 +34,7 @@ export default function TabsContact() {
           >
             {tab == 'Customers list' && <Contacts/>}
             {tab == 'Template editor' && <EmailEditor/>}
+            {tab == 'Marketing campaigns' && <MarketingCampaigns/>}
           </Pane>
         ))}
       </Pane>

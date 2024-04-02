@@ -89,10 +89,23 @@ export default function Contacts() {
             try {
                 await sendEmail(emailAddress, subject, content)
                 toaster.success("email sent successfully!")   
+                saveCampaignToDataBase()
             } catch (error) {
                 toaster.warning("email could not be sent!")   
             }               
         }
+    }
+
+    const saveCampaignToDataBase = async () => {
+        await fetch(`http://localhost:3000/campaigns`, {
+            method: 'POST', 
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({date: new Date(), emailsSent: selected.length, subject: subject, organizationId: organizationId})
+        })
+        setUpdated(newContact.id + ' ' + newContact.firstName + ' ' + newContact.lastName)
     }
 
 
@@ -116,7 +129,7 @@ export default function Contacts() {
                             <Dialog
                                 isShown={showMarketingDialog}
                                 title="Set up a marketing campagin"
-                                onConfirm={() => {setShowMarketingDialog(false); startMarketingCampaign()}}
+                                onConfirm={() => {setShowMarketingDialog(false); startMarketingCampaign();}}
                                 onCancel={()=> setShowMarketingDialog(false)}
                                 onCloseComplete={()=>setShowMarketingDialog(false)}
                             >
