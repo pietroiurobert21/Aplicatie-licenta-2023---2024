@@ -124,7 +124,7 @@ export default function Contacts() {
                 {
                     contacts ? (
                         <>
-                            <TableComponent data={contacts} showSatisfaction={true} setUpdated={setUpdated} />
+                            <TableComponent data={contacts} setUpdated={setUpdated} />
                             <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> <RocketSlantIcon/> New marketing campaign </Button>
 
                             <Dialog
@@ -169,7 +169,7 @@ export default function Contacts() {
                 }
                 </>
         }
-        <DialogComponent data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
+        <DialogComponent title={"Add new customer"} data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
         </> 
     )

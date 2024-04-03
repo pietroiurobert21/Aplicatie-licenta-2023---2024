@@ -48,9 +48,9 @@ export default function TableComponent(props) {
 
                 <Table.VirtualBody height={440}>
                     {
-                        data.map((profile)=>(
+                        data.map((profile, index)=>(
                             <Table.Row key={profile.id} isSelectable onSelect={() => { setIsShown(true); setShownProfile(profile) }}>
-                                <Table.TextCell>{profile.id}</Table.TextCell>
+                                <Table.TextCell>{index+1}</Table.TextCell>
                                 <Table.TextCell>{profile.firstName}</Table.TextCell>
                                 <Table.TextCell>{profile.lastName}</Table.TextCell>
                                 <Table.TextCell>{profile.professionalTitle}</Table.TextCell>
@@ -64,7 +64,7 @@ export default function TableComponent(props) {
                 </Table.VirtualBody>
             </Table>
 
-            <DialogComponent data={shownProfile} isShown={isShown} setIsShown={setIsShown} showSatisfaction={props.showSatisfaction}/>
+            <DialogComponent title={"View profile"} data={shownProfile} isShown={isShown} setIsShown={setIsShown}/>
         </>
     )
 }

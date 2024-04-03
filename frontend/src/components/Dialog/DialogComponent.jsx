@@ -29,24 +29,10 @@ export default function DialogComponent(props) {
         <>
             <Dialog
                     isShown={isShown}
-                    title="Add new contact"
+                    title={props.title}
                     onConfirm={()=>{props.handleConfirm(), props.setIsShown(false)}}
                     onCloseComplete={() => props.setIsShown(false)}
                     >
-                        {
-                            props.showSatisfaction && (<>
-                                <h5> Satisfaction: </h5>
-                                <div style={{marginBottom: '5vh', display: 'flex', justifyContent:'space-between', alignItems:'center'}}>
-                                <Rating
-                                    name="simple-controlled"
-                                    value={ratingValue}
-                                    readOnly
-                                />
-                                <Button onClick={() => {
-                                }}> send a marketing email </Button>
-                                </div>
-                            </>)
-                        }
 
                         <TextInputField
                             label="First name"

@@ -151,7 +151,7 @@ export default function Tasks() {
                                         {tasks.map((task, index) => (
                                             
                                                 <Table.Row isSelectable onClick={(e)=>{if (e.target.classList!="IconButton") updateTaskStatus(task.id) }}>
-                                                    <Table.TextCell>{task.id}</Table.TextCell>
+                                                    <Table.TextCell>{index+1}</Table.TextCell>
                                                     <Table.TextCell>{task.description}</Table.TextCell>
                                                     { role==="administrator" && <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>}
                                                     <Table.TextCell>  
