@@ -31,7 +31,7 @@ export default function Organization() {
     }
 
     const organizationId = localStorage.getItem('organizationId')
-    const [ updated, setUpdated ] = useState('')
+    const [ updated, setUpdated ] = useState()
     const [ totalRevenue, setTotalRevenue ] = useState(-1)
     const getDeals = async () => {
         const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, {
@@ -52,6 +52,24 @@ export default function Organization() {
                     setTotalRevenue(prev => prev + deal.value)
                 }
             })
+        }
+    }
+
+    const changeCode = async () => {
+        try {
+            await fetch(`http://localhost:3000/organizations/${organizationId}/code`, {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            toaster.success("invitation code has been changed successfully", {id: "invitation_code_changed"})
+            setTimeout(()=>{
+                setUpdated(Math.floor(Math.random()*9000))
+            }, 1000)
+        } catch(error) {
+            toaster.warning("could not change the invitation code")
         }
     }
 
@@ -77,7 +95,8 @@ export default function Organization() {
                     }    
                 </li>
                 <li className={style.itemName}> Invitation code </li>
-                <li> {organization.code} <Button> change </Button> </li>
+                <li> {organization.code} </li>
+                <li><Button onClick={()=>{changeCode()}}> change </Button> </li>
                 <li className={style.itemName}> Active on platform since </li>
                 <li> dd/mm/yyyy  </li>
             </ul>

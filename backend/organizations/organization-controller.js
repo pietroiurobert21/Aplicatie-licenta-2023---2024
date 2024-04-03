@@ -1,5 +1,6 @@
 const express = require('express');
 const sequelize = require('sequelize')
+const { v4: uuidv4 } = require('uuid');
 
 const Organization = require('../database/models/organization');
 const Employee = require('../database/models/employee');
@@ -198,6 +199,23 @@ const getOrganizationDealsYears = async (req, res) => {
     }
 }
 
+const changeCodeByOrganizationId = async (req, res) => {
+    const { id } = req.params
+    try {
+        const organization = await Organization.findByPk(id)
+        if (organization) {
+            organization.code = uuidv4()
+            await organization.save()
+            res.status(200).json({success: true, message: "invitation code has changed successfully"})
+        } else {
+            res.status(404).json({success: false, error: "organization not found"})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({success: false, error: "error occured"})
+    }
+}
+
 
 module.exports = {
     postOrganization,
@@ -207,5 +225,6 @@ module.exports = {
     getOrganizationByUserId,
     getOrganizationDeals,
     getStructuredOrganizationDeals,
-    getOrganizationDealsYears
+    getOrganizationDealsYears,
+    changeCodeByOrganizationId
 }

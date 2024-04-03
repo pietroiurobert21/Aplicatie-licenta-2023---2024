@@ -18,14 +18,16 @@ export default function LoginCard(props) {
         })
         const response = await data.json();
         if (response.success) {
-            toaster.success("Logged in successfully!", {duration: 2})
-            localStorage.setItem("accessToken", response.token)
-            localStorage.setItem("userId", response.user.id)
-            await checkUserBelongsToOrganization();
+            toaster.success("Logged in successfully!", {id:"login"})
+            setTimeout(async()=>{
+                localStorage.setItem("accessToken", response.token)
+                localStorage.setItem("userId", response.user.id)
+                await checkUserBelongsToOrganization();
+            },1000)
         } else {
             toaster.danger("Invalid credentials", {
                 description: "Incorrect email or password"
-            })
+            }, {id:"error_login"})
         }
     }
 
