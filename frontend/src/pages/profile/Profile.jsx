@@ -59,10 +59,11 @@ export default function Profile(){
     }
 
     const emptyLocalstorage = () => {
-        localStorage.removeItem("accessToken")
-        localStorage.removeItem("userId")
-        localStorage.removeItem("organizationId")
-        navigate("/")
+            localStorage.removeItem("accessToken")
+            localStorage.removeItem("userId")
+            localStorage.removeItem("organizationId")
+            navigate("/")
+        toaster.notify("Logged out Successfully", {id:"logout"});
     }
 
     useEffect(()=>{
@@ -83,7 +84,7 @@ export default function Profile(){
                                     <StatusIndicator color="success" marginRight={16} fontSize={16}> Online </StatusIndicator>
                                     <Badge color={color} fontSize={13} margin={0} marginLeft={16}> {userRole} </Badge>
                                 </p>
-                                <p id={style.logout} onClick={()=>{toaster.notify("Logged out Successfully", {duration: 1.5}); emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
+                                <p id={style.logout} onClick={()=>{ emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
                             </div>
                             <div className={style.contactInfoContainer}>
                                 <b> Contact Information </b>
