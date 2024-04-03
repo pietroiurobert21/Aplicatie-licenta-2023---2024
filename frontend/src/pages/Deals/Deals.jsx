@@ -30,6 +30,34 @@ export default function Deals() {
         }
     }
 
+    const [sortOrder, setSortOrder] = useState('asc');
+    const sortingTable = async (attribute) => {
+        const sortedDeals = [...deals];
+        sortedDeals.sort((a, b) => {
+            const attributeArray = attribute.split('.');
+            let aValue = a;
+            let bValue = b;
+            for (let key of attributeArray) {
+                aValue = aValue[key];
+                bValue = bValue[key];
+            }
+            // For string comparison, use localeCompare
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+            }
+            // For numeric comparison
+            return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        });
+        setDeals(sortedDeals);
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    }
+    
+    
+
+    useEffect(()=>{
+            
+    }, [deals])
+
     const [ contacts, setContacts ] = useState([])
     const [ loadingContacts, setLoadingContacts ] = useState(true)
 
@@ -144,14 +172,14 @@ export default function Deals() {
                 loading ? <p>loading</p> : (
             <>
             <Table style={{width:"100vw", padding:"2%", paddingTop: "0", marginTop: "16px"}}>
-                <Table.Head>
+                <Table.Head style={{userSelect: 'none'}}>
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
-                    <Table.TextHeaderCell> value </Table.TextHeaderCell>
-                    <Table.TextHeaderCell> contact </Table.TextHeaderCell>
-                    <Table.TextHeaderCell> date </Table.TextHeaderCell>
-                    <Table.TextHeaderCell> employee </Table.TextHeaderCell>
-                    <Table.TextHeaderCell> description </Table.TextHeaderCell>
-                    <Table.TextHeaderCell> status </Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('value')}}> value </Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('Contact.firstName')}}> contact </Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('date')}}> date </Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('Employee.User.firstName')}}> employee </Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('description')}}> description </Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('status')}}> status </Table.TextHeaderCell>
                     <Table.TextHeaderCell>  </Table.TextHeaderCell>
                 </Table.Head>
 

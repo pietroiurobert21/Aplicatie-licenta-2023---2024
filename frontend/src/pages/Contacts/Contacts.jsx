@@ -55,6 +55,10 @@ export default function Contacts() {
         }
     }
 
+    useState(()=>{
+
+    }, [])
+
     const addNewContact = async () => {
         let missingFields = false;
         for(let key in newContact)
@@ -114,6 +118,9 @@ export default function Contacts() {
         organizationId && retrieveContacts()
     }, [updated])
 
+    useEffect(()=>{
+
+    }, [contacts])
 
     const [shownSelected, setShownSelected] = useState()
     return (
@@ -124,7 +131,7 @@ export default function Contacts() {
                 {
                     contacts ? (
                         <>
-                            <TableComponent data={contacts} setUpdated={setUpdated} />
+                            <TableComponent data={contacts} setUpdated={setUpdated} setProfiles={setContacts}/>
                             <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> <RocketSlantIcon/> New marketing campaign </Button>
 
                             <Dialog

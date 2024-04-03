@@ -4,7 +4,6 @@ import DialogComponent from "../Dialog/DialogComponent.jsx"
 
 export default function TableComponent(props) {
     
-    const data = props.data
     const [ isShown, setIsShown ] = useState(false)
     const [ shownProfile, setShownProfile ] = useState({})
 
@@ -27,28 +26,46 @@ export default function TableComponent(props) {
         }
     }
 
-    useEffect(()=>{
-
-    },[])
+    const [sortOrder, setSortOrder] = useState('asc');
+    const sortingTable = async (attribute) => {
+        const sortedProfiles = [...props.data];
+        sortedProfiles.sort((a, b) => {
+            const attributeArray = attribute.split('.');
+            let aValue = a;
+            let bValue = b;
+            for (let key of attributeArray) {
+                aValue = aValue[key];
+                bValue = bValue[key];
+            }
+            // For string comparison, use localeCompare
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+            }
+            // For numeric comparison
+            return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        });
+        props.setProfiles(sortedProfiles);
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    }
     
     return (
         <>
             <Table style={{width:"100vw", padding:"2%", paddingTop: "0", marginTop: "16px"}}>
-                <Table.Head>
+                <Table.Head style={{userSelect: 'none'}}>
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
-                    <Table.TextHeaderCell>First Name</Table.TextHeaderCell>
-                    <Table.TextHeaderCell>Last Name</Table.TextHeaderCell>
-                    <Table.TextHeaderCell>Professional Title</Table.TextHeaderCell>
-                    <Table.TextHeaderCell>Company</Table.TextHeaderCell>
-                    <Table.TextHeaderCell>Email Address</Table.TextHeaderCell>
-                    <Table.TextHeaderCell>Phone Number</Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("firstName")}>First Name</Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("lastName")}>Last Name</Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("professionalTitle")}>Professional Title</Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("companyName")}>Company</Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("emailAddress")}>Email Address</Table.TextHeaderCell>
+                    <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("phoneNumber")}>Phone Number</Table.TextHeaderCell>
                     <Table.TextHeaderCell> </Table.TextHeaderCell>
                 </Table.Head>
 
 
                 <Table.VirtualBody height={440}>
                     {
-                        data.map((profile, index)=>(
+                        props.data.map((profile, index)=>(
                             <Table.Row key={profile.id} isSelectable onSelect={() => { setIsShown(true); setShownProfile(profile) }}>
                                 <Table.TextCell>{index+1}</Table.TextCell>
                                 <Table.TextCell>{profile.firstName}</Table.TextCell>

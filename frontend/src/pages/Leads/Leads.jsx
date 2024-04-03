@@ -72,6 +72,10 @@ export default function Leads() {
         organizationId && retrieveLeads()
     }, [updated])
 
+    useEffect(()=>{
+
+    }, [leads])
+
     return (
         <>
             {
@@ -81,7 +85,7 @@ export default function Leads() {
                         leads ? 
                         (
                             <>
-                                <TableComponent data={leads} showSatisfaction={false} setUpdated={setUpdated}/> 
+                                <TableComponent data={leads} showSatisfaction={false} setUpdated={setUpdated} setProfiles={setLeads}/> 
                             </>
                         )
                         : 
