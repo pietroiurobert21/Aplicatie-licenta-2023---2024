@@ -15,7 +15,7 @@ export default function Contacts() {
     const [ isShown, setIsShown ] =   useState(false)
     const [ shownContact, setShownContact ] = useState({})
 
-    const [ updated, setUpdated ] = useState('')
+    const [ updated, setUpdated ] = useState()
 
     const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
@@ -71,7 +71,7 @@ export default function Contacts() {
                 },
                 body: JSON.stringify(newContact)
             })
-            setUpdated(newContact.id + ' ' + newContact.firstName + ' ' + newContact.lastName)
+            setUpdated(Math.floor(Math.random() * 9000))
         } else {
             toaster.danger('missing fields!');
         }
@@ -105,8 +105,9 @@ export default function Contacts() {
             },
             body: JSON.stringify({date: new Date(), emailsSent: selected.length, subject: subject, organizationId: organizationId})
         })
-        setUpdated(newContact.id + ' ' + newContact.firstName + ' ' + newContact.lastName)
+        setUpdated(Math.floor(Math.random() * 9000))
     }
+
 
 
     useEffect(() => {
@@ -123,7 +124,7 @@ export default function Contacts() {
                 {
                     contacts ? (
                         <>
-                            <TableComponent data={contacts} showSatisfaction={true}/>
+                            <TableComponent data={contacts} showSatisfaction={true} setUpdated={setUpdated} />
                             <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> <RocketSlantIcon/> New marketing campaign </Button>
 
                             <Dialog

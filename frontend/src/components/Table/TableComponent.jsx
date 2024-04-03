@@ -1,4 +1,4 @@
-import { Table, IconButton, TrashIcon } from 'evergreen-ui'
+import { Table, IconButton, TrashIcon, toaster } from 'evergreen-ui'
 import { useEffect, useState } from 'react';
 import DialogComponent from "../Dialog/DialogComponent.jsx"
 
@@ -8,8 +8,27 @@ export default function TableComponent(props) {
     const [ isShown, setIsShown ] = useState(false)
     const [ shownProfile, setShownProfile ] = useState({})
 
+    const accessToken = localStorage.getItem("accessToken")
+
+    const deleteContact = async (id) => {
+        try {
+            await fetch(`http://localhost:3000/contacts/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            toaster.success("contact deleted successfully")
+            props.setUpdated(Math.floor(Math.random() * 9000))
+        } catch(error) {
+            console.log(error)
+            toaster.warning("error deleting contact")
+        }
+    }
+
     useEffect(()=>{
-        console.log(data)
+
     },[])
     
     return (
@@ -38,7 +57,7 @@ export default function TableComponent(props) {
                                 <Table.TextCell>{profile.companyName}</Table.TextCell>
                                 <Table.TextCell>{profile.emailAddress}</Table.TextCell>
                                 <Table.TextCell>{profile.phoneNumber}</Table.TextCell>
-                                <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={50} onClick={()=>{}}/> </Table.TextCell>
+                                <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={50} onClick={(event)=>{event.stopPropagation(); deleteContact(profile.id)}}/> </Table.TextCell>
                             </Table.Row>
                         ))
                     }

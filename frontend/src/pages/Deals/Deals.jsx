@@ -1,4 +1,4 @@
-import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox, IconButton, TrashIcon } from "evergreen-ui"
+import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox, IconButton, TrashIcon, toaster } from "evergreen-ui"
 
 import { useEffect, useState } from "react";
 import CheckToken from '../../middlewares/CheckToken'
@@ -117,6 +117,23 @@ export default function Deals() {
         setUpdated(shownDeal.id + " " + newStatus);
     }
 
+    const deleteDeal = async (id) => {
+        try {
+            await fetch(`http://localhost:3000/deals/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+            setUpdated(shownDeal.id + " " + newStatus);
+            setIsShown_1(false)
+            toaster.success("deal deleted successfully")
+        } catch(error) {
+            toaster.warning("error deleting deal")
+        }
+    }
+
 
     const [ selected, setSelected ] = useState()
     const [ shownDeal, setShownDeal ] = useState({})
@@ -140,19 +157,19 @@ export default function Deals() {
 
                 <Table.VirtualBody height={440}>
 
-                    {deals.map((deal) => ( 
+                    {deals.map((deal, index) => ( 
                         <Table.Row key={deal.id} isSelectable onSelect={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status) }}>
-                            <Table.TextCell> {deal.id} </Table.TextCell>
+                            <Table.TextCell> {index+1} </Table.TextCell>
                             <Table.TextCell> {deal.value} </Table.TextCell>
                             <Table.TextCell> {deal.Contact.firstName} {deal.Contact.lastName} </Table.TextCell>
                             <Table.TextCell> {deal.date} </Table.TextCell>
                             <Table.TextCell> {deal.Employee.User.firstName} {deal.Employee.User.lastName} </Table.TextCell>
                             <Table.TextCell> {deal.description} </Table.TextCell>
                              
-                            <Table.TextCell onClick={(event)=>{event.stopPropagation()}} style={{color:"Red"}}>
+                            <Table.TextCell>
                                 <Badge color={deal.status === 'accepted' ? 'green' : deal.status === 'rejected' ? 'red' : 'inherit'}> {deal.status} </Badge>
                             </Table.TextCell>
-                            <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={100} onClick={()=>{}}/> </Table.TextCell>
+                            <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={100} onClick={(event)=>{event.stopPropagation(); deleteDeal(deal.id)}} style={{color:"Red"}}/> </Table.TextCell>
                         </Table.Row>
                     ))}
 
@@ -228,7 +245,7 @@ export default function Deals() {
                             // Used for the title in the autocomplete.
                             title: 'Status'
                         }}/>
-                    <Button appearance='primary' intent='danger' style={{width: "100%", marginTop: "20vh"}}> Delete deal </Button>
+                    <Button appearance='primary' intent='danger' style={{width: "100%", marginTop: "20vh"}} onClick={()=>deleteDeal(shownDeal.id)}> Delete deal </Button>
                 </Dialog>
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </Button>
                 </>

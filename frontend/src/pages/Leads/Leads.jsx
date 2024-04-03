@@ -14,7 +14,7 @@ export default function Leads() {
     const [ isShown, setIsShown ] =   useState(false)
 
     const [ shownLead, setShownLead ] = useState({})
-    const [ updated, setUpdated ] = useState('')
+    const [ updated, setUpdated ] = useState()
 
     const [newLead, setNewLead] = useState({
         firstName: '',
@@ -44,7 +44,7 @@ export default function Leads() {
                 },
                 body: JSON.stringify(newLead)
             })
-            setUpdated(newLead.id + ' ' + newLead.firstName + ' ' + newLead.lastName)
+            setUpdated(Math.floor(Math.random() * 9000))
         } else {
             toaster.danger('missing fields!');
         }
@@ -81,7 +81,7 @@ export default function Leads() {
                         leads ? 
                         (
                             <>
-                                <TableComponent data={leads} showSatisfaction={false}/> 
+                                <TableComponent data={leads} showSatisfaction={false} setUpdated={setUpdated}/> 
                             </>
                         )
                         : 

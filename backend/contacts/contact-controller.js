@@ -61,9 +61,22 @@ const getContactById = async (req, res) => {
     }
 }
 
+const deleteContactById = async (req, res) => {
+    const { id } = req.params
+    try {
+        const contact = await Contact.findByPk(id)
+        await contact.destroy()
+        res.status(200).json({success: true, message: "contact deleted successfully"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error contact deal" });
+    }
+}
+
 module.exports = {
     addContact,
     getContactsByOrganizationId,
     getContactById,
-    getCustomersByOrganizationId
+    getCustomersByOrganizationId,
+    deleteContactById
 }

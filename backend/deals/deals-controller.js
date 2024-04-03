@@ -56,7 +56,20 @@ const updateDeal = async (req, res) => {
     }
 }
 
+const deleteDealById = async (req, res) => {
+    const { id } = req.params
+    try {
+        const deal = await Deal.findByPk(id)
+        await deal.destroy()
+        res.status(200).json({success: true, message: "deal deleted successfully"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error deleting deal" });
+    }
+}
+
 module.exports = {
     addDeal,
-    updateDeal
+    updateDeal,
+    deleteDealById
 }
