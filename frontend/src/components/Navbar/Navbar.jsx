@@ -70,7 +70,7 @@ export default function Navbar() {
             <div className={style.navbar}>
                 <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
                     <img src={reactLogo} alt="React Logo" />
-                    <p>CRMLite</p>
+                    <p>Node CRM</p>
                 </div>
                 <ul>
                     <li onClick={()=>{navigate('/leads')}}> Leads </li>
