@@ -1,6 +1,5 @@
 const { Sequelize } = require('sequelize');
 
-
 const sequelize = new Sequelize('CRM', 'postgres', '1234', {
     host: 'localhost',
     dialect: 'postgres',
