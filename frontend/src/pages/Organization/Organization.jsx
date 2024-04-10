@@ -34,7 +34,7 @@ export default function Organization() {
     const [ totalRevenue, setTotalRevenue ] = useState(-1)
     
     const getDeals = async () => {
-        const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/organizations/deals`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -57,7 +57,7 @@ export default function Organization() {
 
     const changeCode = async () => {
         try {
-            await fetch(`http://localhost:3000/organizations/${organizationId}/code`, {
+            await fetch(`http://localhost:3000/organizations/code`, {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json',
