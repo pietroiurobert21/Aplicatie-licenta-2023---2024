@@ -6,6 +6,7 @@ const Contact = require("../database/models/contact")
 
 const addContact = async (req, res) => {
     const info = req.body
+    info.organizationId = req.organizationId
     try {
         const newContact = await Contact.create(info)
         res.status(201).json({success: true, contact: newContact})

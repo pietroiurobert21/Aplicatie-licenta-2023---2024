@@ -1,7 +1,4 @@
-const express = require("express");
-
 const Campaign = require("../database/models/campaign");
-const Organization = require("../database/models/organization");
 
 const getCampaignsByOrganizationId = async (req, res) => {
     const organizationId = req.organizationId
