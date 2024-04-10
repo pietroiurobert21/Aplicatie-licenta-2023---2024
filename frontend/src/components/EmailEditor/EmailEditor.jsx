@@ -25,7 +25,6 @@ export default function EmailTemplate(props) {
   };
 
   const accessToken = localStorage.getItem('accessToken')
-  const organizationId = localStorage.getItem('organizationId')
 
   const saveTemplateToDatabase = async (design, html) => { 
     await fetch(`http://localhost:3000/templates`, {

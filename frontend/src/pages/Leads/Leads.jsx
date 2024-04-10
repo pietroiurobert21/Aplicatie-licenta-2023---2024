@@ -8,7 +8,6 @@ export default function Leads() {
     CheckToken()    
     const [ leads, setLeads ] = useState([])
 
-    const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
 
     const [ isShown, setIsShown ] =   useState(false)
@@ -25,7 +24,7 @@ export default function Leads() {
         phoneNumber: '',
         companyName: '',
         pipelineStatus: 'lead',
-        organizationId: organizationId
+        organizationId: ''
     });
 
     const addNewLead = async () => {
@@ -51,7 +50,7 @@ export default function Leads() {
     }
 
     const retrieveLeads = async () => {
-        const res = await fetch(`http://localhost:3000/leads/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/leads`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -67,9 +66,24 @@ export default function Leads() {
         }
     }
 
+    const getOrganization = async () => {
+        await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(data=>data.json())
+        .then(data=>{
+            setNewLead(prev=>({...prev, ['organizationId']: data.organization.organizationId}))
+        })
+    }
+    
+
 
     useEffect(()=>{
-        organizationId && retrieveLeads()
+        getOrganization()
+        retrieveLeads()
     }, [updated])
 
     useEffect(()=>{

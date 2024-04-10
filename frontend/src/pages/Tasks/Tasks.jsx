@@ -10,8 +10,8 @@ export default function Tasks() {
     const accessToken = localStorage.getItem("accessToken")
 
     const [employees, setEmployees] = useState([])
-    const userId = localStorage.getItem('userId')
     const [employeeId, setEmployeeId] = useState()
+    const [userId, setUserId] = useState(0)
 
     const [newTask, setNewTask] = useState({
         "description": "",
@@ -20,8 +20,21 @@ export default function Tasks() {
         "assignedByEmployeeId": userId
     })
 
+    const getUser = async () => {
+        await fetch(`http://localhost/3000/users/getUserJwt`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }}).then(data=>data.json())
+            .then(data=>{
+                setNewTask(prev=>({...prev, ['assignedByEmployeeId']:data.user.id}))
+                setUserId(data.user.id)
+            })
+    }
+
     const getEmployeeByUserId = async (userId) => {
-        await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+        await fetch(`http://localhost:3000/employees/getEmployeeJWT`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -35,7 +48,7 @@ export default function Tasks() {
     }
 
     const retrieveTaskAssignedBy = async () => {
-        employeeId && await fetch(`http://localhost:3000/tasks/assignedBy/${employeeId}`, {
+        employeeId && await fetch(`http://localhost:3000/tasks/assignedBy`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -46,7 +59,7 @@ export default function Tasks() {
     }
 
     const retrieveTaskAssignedTo = async () => {
-        employeeId && await fetch(`http://localhost:3000/tasks/assignedTo/${employeeId}`, {
+        employeeId && await fetch(`http://localhost:3000/tasks/assignedTo`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -57,10 +70,11 @@ export default function Tasks() {
     }
 
     const retrieveEmployees = async () => {
-        await fetch(`http://localhost:3000/employees/getColleagues/${userId}`, {
+        await fetch(`http://localhost:3000/employees/getColleagues`, {
             method: 'GET',
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             }
         }).then(data=>data.json())
         .then(data=>setEmployees(data.colleagues))
@@ -86,7 +100,7 @@ export default function Tasks() {
 
     const [role, setRole] = useState('')
     const getEmployeeRole = async () => {
-        await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+        await fetch(`http://localhost:3000/employees/getEmployeeJWT`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -120,6 +134,7 @@ export default function Tasks() {
 
     const [effect, setEffect] = useState('')
     useEffect(() => {
+        getUser()
         retrieveEmployees()
         getEmployeeRole()
         getEmployeeByUserId(userId)

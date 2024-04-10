@@ -1,7 +1,7 @@
 const Templates = require("../database/models/template")
 
 const getTemplatesByOrganizationID = async (req,res) => {
-    const { organizationId } = req.params 
+    const organizationId = req.organizationId 
     try {
         const templates = await Templates.findAll({where: {organizationId: organizationId}})
         if (templates) {

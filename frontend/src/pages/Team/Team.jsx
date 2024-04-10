@@ -15,14 +15,14 @@ export default function Team() {
 
     const [organization, setOrganization] = useState({})
 
-    const userId = localStorage.getItem('userId')
     const accessToken = localStorage.getItem('accessToken')
 
     const getTeam = async () => {
-        const res = await fetch(`http://localhost:3000/employees/getColleagues/${userId}`, {
+        const res = await fetch(`http://localhost:3000/employees/getColleagues`, {
             method: 'GET',
             headers: {
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
             }
         })
         const responseCode = res.status
@@ -37,7 +37,7 @@ export default function Team() {
     }
 
     const getOrganization = async () => {
-        const res = await fetch(`http://localhost:3000/organizations/getByUserId/${userId}`, {
+        const res = await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -79,7 +79,7 @@ export default function Team() {
 
     const [ userRole, setUserRole ] = useState()
     const getEmployeeRole = async () => {
-        const res = await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+        const res = await fetch(`http://localhost:3000/employees/getEmployee`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',

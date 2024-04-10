@@ -6,7 +6,7 @@ const Contact = require("../database/models/contact")
 
 
 const getLeadsByOrganizationId = async (req, res) => {
-    const { organizationId } = req.params
+    const organizationId = req.organizationId
     try {
         const leads = await Contact.findAll({where: {organizationId: organizationId, pipelineStatus: 'lead'}})
         if (leads.length > 0) {

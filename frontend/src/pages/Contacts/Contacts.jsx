@@ -17,7 +17,6 @@ export default function Contacts() {
 
     const [ updated, setUpdated ] = useState()
 
-    const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
 
     const [newContact, setNewContact] = useState({
@@ -29,7 +28,7 @@ export default function Contacts() {
         phoneNumber: '',
         companyName: '',
         pipelineStatus: 'customer',
-        organizationId: organizationId
+        organizationId: ''
     });
 
     const [ showMarketingDialog, setShowMarketingDialog ] = useState(false)
@@ -39,7 +38,7 @@ export default function Contacts() {
     const [ subject, setSubject ] = useState('')
 
     const retrieveContacts = async () => {
-        const res = await fetch(`http://localhost:3000/contacts/customers/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/contacts/customers/`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -53,6 +52,19 @@ export default function Contacts() {
             const data = await res.json()
             setContacts(data.contacts)
         }
+    }
+
+    const getOrganization = async () => {
+        await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(data=>data.json())
+        .then(data=>{
+            setNewContact(prev=>({...prev, ['organizationId']: data.organization.organizationId}))
+        })
     }
 
     useState(()=>{
@@ -115,7 +127,8 @@ export default function Contacts() {
 
 
     useEffect(() => {
-        organizationId && retrieveContacts()
+        getOrganization()
+        retrieveContacts()
     }, [updated])
 
     useEffect(()=>{

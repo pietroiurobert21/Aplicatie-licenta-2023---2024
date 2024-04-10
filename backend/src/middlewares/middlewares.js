@@ -15,6 +15,7 @@ const verifyToken = (req, res, next) => {
                 res.status(401).json({ error: "Token not valid" });
             } else {
                 req.userId = decoded.id;
+                req.organizationId = decoded.organizationId;
                 next();
             }
         });

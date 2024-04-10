@@ -5,11 +5,10 @@ export default function EmailTemplates(props) {
     
     const [ templates, setTemplates ] = useState([])
 
-    const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
 
     const retrieveTemplates = async () => {
-        await fetch(`http://localhost:3000/templates/${organizationId}`, {
+        await fetch(`http://localhost:3000/templates`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',

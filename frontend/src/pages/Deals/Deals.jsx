@@ -15,7 +15,7 @@ export default function Deals() {
     const organizationId = localStorage.getItem("organizationId")
 
     const getDeals = async () => {
-        const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/organizations/deals`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -62,7 +62,7 @@ export default function Deals() {
     const [ loadingContacts, setLoadingContacts ] = useState(true)
 
     const retrieveContacts = async () => {
-        const res = await fetch(`http://localhost:3000/contacts/${organizationId}`, {
+        const res = await fetch(`http://localhost:3000/contacts`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -92,8 +92,8 @@ export default function Deals() {
 
     const [loadingEmployee, setLoadingEmployee] = useState(true)
 
-    const getEmployeeByUserId = async () => {
-        await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+    const getEmployee = async () => {
+        await fetch(`http://localhost:3000/employees/getEmployeeJWT`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -110,7 +110,7 @@ export default function Deals() {
     useEffect(() => {
         getDeals()
         retrieveContacts()
-        getEmployeeByUserId()
+        getEmployee()
     }, [updated])
 
     const handleInputChange = (e) => {

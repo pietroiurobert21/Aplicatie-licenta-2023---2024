@@ -4,7 +4,7 @@ const Campaign = require("../database/models/campaign");
 const Organization = require("../database/models/organization");
 
 const getCampaignsByOrganizationId = async (req, res) => {
-    const { organizationId } = req.params
+    const organizationId = req.organizationId
     try {
         const campaigns = await Campaign.findAll({where: {organizationId: organizationId}})
         if (campaigns && campaigns.length) {

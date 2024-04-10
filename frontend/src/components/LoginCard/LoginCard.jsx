@@ -21,7 +21,6 @@ export default function LoginCard(props) {
             toaster.success("Logged in successfully!", {id:"login"})
             setTimeout(async()=>{
                 localStorage.setItem("accessToken", response.token)
-                localStorage.setItem("userId", response.user.id)
                 await checkUserBelongsToOrganization();
             },1000)
         } else {
@@ -32,7 +31,7 @@ export default function LoginCard(props) {
     }
 
     const getOrganization = async (userId) => {
-        const res = await fetch(`http://localhost:3000/organizations/getByUserId/${userId}`, {
+        const res = await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -43,7 +42,7 @@ export default function LoginCard(props) {
         const responseCode = res.status
         if (responseCode === 200) {
             const data = await res.json()
-            localStorage.setItem("organizationId", data.organization.id)
+            // localStorage.setItem("organizationId", data.organization.id)
         }
     }
 

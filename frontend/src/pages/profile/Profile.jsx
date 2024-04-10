@@ -15,12 +15,11 @@ export default function Profile(){
     const [userRole, setUserRole] = useState('')
     const [ points, setPoints ] = useState()
 
-    const userId = localStorage.getItem("userId")
     const token = localStorage.getItem("accessToken")
     const [color, setColor] = useState('yellow')
 
-    const getUserById = async () => {
-        const res = await fetch(`http://localhost:3000/users/getUser/${userId}`, {
+    const getUser = async () => {
+        const res = await fetch(`http://localhost:3000/users/getUserJwt`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -39,7 +38,7 @@ export default function Profile(){
     }
 
     const getEmployeeRole = async () => {
-        const res = await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+        const res = await fetch(`http://localhost:3000/employees/getEmployeeJWT`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -67,7 +66,7 @@ export default function Profile(){
     }
 
     useEffect(()=>{
-        getUserById()
+        getUser()
         getEmployeeRole()
     }, [])
 

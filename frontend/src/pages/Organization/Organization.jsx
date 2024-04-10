@@ -8,11 +8,10 @@ export default function Organization() {
 
     const [organization, setOrganization] = useState({})
 
-    const userId = localStorage.getItem('userId')
     const accessToken = localStorage.getItem('accessToken')
 
     const getOrganization = async () => {
-        const res = await fetch(`http://localhost:3000/organizations/getByUserId/${userId}`, {
+        const res = await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -33,6 +32,7 @@ export default function Organization() {
     const organizationId = localStorage.getItem('organizationId')
     const [ updated, setUpdated ] = useState()
     const [ totalRevenue, setTotalRevenue ] = useState(-1)
+    
     const getDeals = async () => {
         const res = await fetch(`http://localhost:3000/organizations/deals/${organizationId}`, {
             method: 'GET',

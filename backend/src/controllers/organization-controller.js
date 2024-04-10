@@ -26,43 +26,15 @@ const postOrganization = async (req, res) => {
     } 
 }
 
-const getOrganizationByCode = async (req, res) => {
-    const { code } = req.params
-    try {
-        const existingOrganization = await Organization.findAll({where: { code: code }})
-        if (existingOrganization.length === 1) {
-            res.status(200).json({success: true, existingOrganization})
-        } else {
-            res.status(404).json({success: false, error: "no organization found"})
-        }
-    } catch (error) {
-        res.status(500).json({ success:false, error });
-    }
-}
-
-const getOrganizationById = async (req, res) => {
-    const { id } = req.params
-    try {
-        const existingOrganization = await Organization.findByPk(id)
-        if (existingOrganization.length === 1) {
-            res.status(200).json({success: true, existingOrganization})
-        } else {
-            res.status(404).json({success: false, error: "no organization found"})
-        }
-    } catch (error) {
-        res.status(500).json({ success:false, error });
-    }
-}
-
-const getOrganizationByUserId = async (req, res) => {
-    const { userId } = req.params
+const getOrganizationByUser = async (req, res) => {
+    const userId = req.userId;
     try {
         const user = await User.findByPk(userId, { include: [Employee] });
         if (user) {
             const idOrganization = user.Employee.organizationId;
             const organization = await Organization.findByPk(idOrganization)
             if (organization) {
-                res.status(200).json({success:true, organization})
+                res.status(200).json({ success:true, organization })
             } else {
                 res.status(404).json({ success:false, error: "Organization not found" });
             }
@@ -75,7 +47,7 @@ const getOrganizationByUserId = async (req, res) => {
 }
 
 const getOrganizationMembers = async (req, res) => {
-    const { id } = req.params
+    const id = req.organizationId
     try {
         const organizationMembers = await Employee.findAll({where: {organizationId: id}})
         if (organizationMembers) {
@@ -89,7 +61,7 @@ const getOrganizationMembers = async (req, res) => {
 }
 
 const getOrganizationDeals = async (req, res) => {
-    const { id } = req.params
+    const id = req.organizationId
     try {
         const organizationDeals = await Deal.findAll({where: {organizationId: id}, 
             include: [
@@ -114,7 +86,7 @@ const getOrganizationDeals = async (req, res) => {
 }
 
 const getStructuredOrganizationDeals = async (req, res) => {
-    const { id } = req.params
+    const id = req.organizationId
     try {
         const acceptedDeals = await Deal.findAll({
             where: {
@@ -174,7 +146,7 @@ const getStructuredOrganizationDeals = async (req, res) => {
 }
 
 const getOrganizationDealsYears = async (req, res) => {
-    const { id } = req.params;
+    const id = req.organizationId;
     try {
         const years = await Deal.findAll({
             attributes: [
@@ -200,7 +172,7 @@ const getOrganizationDealsYears = async (req, res) => {
 }
 
 const changeCodeByOrganizationId = async (req, res) => {
-    const { id } = req.params
+    const id = req.organizationId
     try {
         const organization = await Organization.findByPk(id)
         if (organization) {
@@ -219,10 +191,12 @@ const changeCodeByOrganizationId = async (req, res) => {
 
 module.exports = {
     postOrganization,
-    getOrganizationByCode,
+    //getOrganizationByCode,
     getOrganizationMembers,
-    getOrganizationById,
-    getOrganizationByUserId,
+   // getOrganizationById,
+    
+   getOrganizationByUser,
+    
     getOrganizationDeals,
     getStructuredOrganizationDeals,
     getOrganizationDealsYears,

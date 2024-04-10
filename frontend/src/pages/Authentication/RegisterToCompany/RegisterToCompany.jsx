@@ -43,7 +43,7 @@ export default function RegisterToCompany() {
                 "Content-Type": "application/json",
                 'Authorization': 'Bearer ' + localStorage.getItem('accessToken') || ''
             },
-            body: JSON.stringify({ role: role, organizationId: companyId,  userId: localStorage.getItem("userId")})
+            body: JSON.stringify({ role: role, organizationId: companyId})
         })
         const response = await data.json()
         if (data.status == 201) {

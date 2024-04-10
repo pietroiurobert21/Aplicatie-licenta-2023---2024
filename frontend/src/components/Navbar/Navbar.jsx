@@ -19,7 +19,7 @@ export default function Navbar() {
     const token = localStorage.getItem("accessToken")
 
     const getUserById = async () => {
-        const res = await fetch(`http://localhost:3000/users/getUser/${userId}`, {
+        const res = await fetch(`http://localhost:3000/users/getUserJWT`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -45,7 +45,7 @@ export default function Navbar() {
     }
 
     const getEmployeeRole = async () => {
-        const res = await fetch(`http://localhost:3000/employees/getEmployee/${userId}`, {
+        const res = await fetch(`http://localhost:3000/employees/getEmployeeJWT`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',

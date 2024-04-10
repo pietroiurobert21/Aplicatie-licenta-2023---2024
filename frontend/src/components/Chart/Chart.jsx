@@ -23,7 +23,6 @@ export default function Chart(props) {
     const [ proposedDeals, setProposedDeals ] = useState([0,0,0,0,0,0,0,0,0,0,0,0])
 
     const accessToken = localStorage.getItem('accessToken')
-    const organizationId = localStorage.getItem('organizationId')
 
     const [ closedDealsYear, setClosedDealsYear ] = useState(0)
     const [ closedDealsMonth, setClosedDealsMonth ] = useState(0)
@@ -39,7 +38,7 @@ export default function Chart(props) {
 
       const localMonth = new Date().getMonth();
 
-      const res = await fetch(`http://localhost:3000/organizations/structuredDeals/${organizationId}`, {
+      const res = await fetch(`http://localhost:3000/organizations/structuredDeals`, {
         method: 'GET',
         headers: { 
           'Content-type': 'application/json', 

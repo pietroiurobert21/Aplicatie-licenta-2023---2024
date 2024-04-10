@@ -5,8 +5,8 @@ const { postTask, getTasksAssignedByUserId, getTasksAssignedToUserId, updateIsDo
 const { verifyToken } = require("../middlewares/middlewares"); // Import the middleware function
 
 router.post("/", verifyToken, postTask)
-router.get("/assignedBy/:id", verifyToken, getTasksAssignedByUserId)
-router.get("/assignedTo/:id", verifyToken, getTasksAssignedToUserId)
+router.get("/assignedBy", verifyToken, getTasksAssignedByUserId)
+router.get("/assignedTo", verifyToken, getTasksAssignedToUserId)
 
 router.put("/:id", verifyToken, updateIsDone)
 

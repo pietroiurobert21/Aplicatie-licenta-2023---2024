@@ -5,8 +5,8 @@ const { verifyToken } = require("../middlewares/middlewares")
 const { addContact, getContactsByOrganizationId, getContactById, getCustomersByOrganizationId, deleteContactById } = require("../controllers/contact-controller")
 
 router.post("/", verifyToken, addContact)
-router.get("/:organizationId", verifyToken, getContactsByOrganizationId)
-router.get("/customers/:organizationId", verifyToken, getCustomersByOrganizationId)
+router.get("/", verifyToken, getContactsByOrganizationId)
+router.get("/customers/", verifyToken, getCustomersByOrganizationId)
 router.get("/id/:id", verifyToken, getContactById)
 router.delete("/:id", verifyToken, deleteContactById)
 

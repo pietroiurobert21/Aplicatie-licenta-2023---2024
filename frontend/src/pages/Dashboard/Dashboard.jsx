@@ -14,7 +14,7 @@ export default function Home() {
     const organizationId = localStorage.getItem('organizationId')
     const accessToken = localStorage.getItem('accessToken')
     const getYears = async () => {
-      const res = await fetch(`http://localhost:3000/organizations/dealsyears/${organizationId}`, {
+      const res = await fetch(`http://localhost:3000/organizations/dealsyears`, {
         method: 'GET',
         headers: { 
           'Content-type': 'application/json',

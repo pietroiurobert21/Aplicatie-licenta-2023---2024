@@ -7,11 +7,9 @@ export default function MarketingCampaigns() {
     const [ campaigns, setCampaings ] = useState([])
     
     const accessToken = localStorage.getItem("accessToken")
-    const organizationId = localStorage.getItem("organizationId")
-
 
     const retrieveCampaigns = async () => {
-        await fetch(`http://localhost:3000/campaigns/${organizationId}`, {
+        await fetch(`http://localhost:3000/campaigns`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -28,7 +26,7 @@ export default function MarketingCampaigns() {
     return (
         <> 
             {
-                campaigns.length > 0 ? (
+                campaigns ? (
                     <Table>
                         <Table.Head>
                             <Table.HeaderCell style={{display:'flex', justifyContent:'center'}}><b>Campaigns History</b></Table.HeaderCell>

@@ -30,7 +30,7 @@ const deleteTask = async (req, res) => {
 }
 
 const getTasksAssignedByUserId = async (req, res) => {
-    const { id } = req.params
+    const id = req.userId
     try {
         const tasks = await Tasks.findAll({
             where: {assignedByEmployeeId: id},
@@ -59,7 +59,7 @@ const getTasksAssignedByUserId = async (req, res) => {
 }
 
 const getTasksAssignedToUserId = async (req, res) => {
-    const { id } = req.params
+    const id = req.userId
     try {
         const tasks = await Tasks.findAll({where: {assignedToEmployeeId: id}})
         if(tasks) {

@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const Users = require("../database/models/user");
 
 const Employees = require("../database/models/employee");
+const Organization = require("../database/models/organization");
 
 // GET all users from Database
 const getUsers = async (req, res) => {
@@ -18,13 +19,15 @@ const getUsers = async (req, res) => {
     }
 }
 
-const getUserById = async (req, res) => {
-    const { id } = req.params;
+// using Jwt
+const getUser = async (req, res) => {
+    const id = req.userId
     try {
         const user = await Users.findByPk(id);
         delete user.dataValues.password;
         res.status(200).json({ user });
     } catch (error) {
+        console.log(error)
         res.status(404).json({ error: "user not found" });
     }
 }
@@ -52,8 +55,16 @@ const loginUser = async (req, res) => {
         const user = await Users.findOne({ where: { email } });
         if (user) {
             if (user.password === password) {
-                const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
                 delete user.dataValues.password;
+                
+                const employee = await Employees.findOne({where: {userId: user.id}})
+                let token;
+                if (employee) {
+                    token = jwt.sign({ id: user.id, organizationId: employee.organizationId }, process.env.JWT_SECRET);
+                } else {
+                    token = jwt.sign({ id: user.id}, process.env.JWT_SECRET);
+                }
+                
                 res.status(200).json({ success:true, token, user });
             } else {
                 res.status(401).json({ success:false, error: "Invalid password" });
@@ -62,6 +73,7 @@ const loginUser = async (req, res) => {
             res.status(404).json({ success:false, error: "User not found" });
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({ success:false, error: "error" });
     }
 }
@@ -88,8 +100,9 @@ const belongsToOrganization = async (req, res) => {
 
 module.exports = {
     getUsers,
-    getUserById,
     postUser,
     loginUser,
-    belongsToOrganization
+    belongsToOrganization,
+
+    getUser
 }

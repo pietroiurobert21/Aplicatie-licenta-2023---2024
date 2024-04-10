@@ -11,7 +11,8 @@ Employee.belongsTo(User, { foreignKey: 'userId' });
 User.hasOne(Employee, { foreignKey: 'userId' });
 // create a new employee
 const postEmployee = async (req, res) => {
-    const { role, userId, organizationId } = req.body;
+    const { role, organizationId } = req.body;
+    const userId = req.userId
     try {
         const organization = await Organization.findAll({
             where:
@@ -29,8 +30,10 @@ const postEmployee = async (req, res) => {
     }
 }
 
-const getEmployeeByUserId = async (req, res) => {
-    const { userId } = req.params;
+
+// by jwt
+const getEmployee = async (req, res) => {
+    const userId = req.userId;
     try {
         const userOrganization = await Employee.findOne({where: {userId: userId}})
         if (userOrganization) {
@@ -46,7 +49,7 @@ const getEmployeeByUserId = async (req, res) => {
 
 
 const getColleagues = async (req, res) => {
-    const { userId } = req.params;
+    const userId = req.userId;
     try {
         const employee = await Employee.findOne({where: {userId: userId}})
         const organizationId = employee.organizationId
@@ -89,7 +92,7 @@ const deleteEmployee = async (req, res) => {
 
 module.exports = {
     postEmployee,
-    getEmployeeByUserId,
     getColleagues,
-    deleteEmployee
+    deleteEmployee,
+    getEmployee
 }

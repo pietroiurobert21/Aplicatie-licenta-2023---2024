@@ -16,7 +16,7 @@ const addContact = async (req, res) => {
 }
 
 const getContactsByOrganizationId = async (req, res) => {
-    const { organizationId } = req.params
+    const organizationId = req.organizationId
     try {
         const contacts = await Contact.findAll({where: {organizationId: organizationId}})
         if (contacts.length > 0) {
@@ -31,7 +31,7 @@ const getContactsByOrganizationId = async (req, res) => {
 }
 
 const getCustomersByOrganizationId = async (req, res) => {
-    const { organizationId } = req.params
+    const organizationId = req.organizationId
     try {
         const contacts = await Contact.findAll({where: {organizationId: organizationId, pipelineStatus: 'customer'}})
         if (contacts.length > 0) {
