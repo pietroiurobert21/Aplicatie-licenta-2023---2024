@@ -26,6 +26,20 @@ export default function EmailTemplate(props) {
 
   const accessToken = localStorage.getItem('accessToken')
 
+  const [organizationId, setOrganizationId] = useState(-1)
+  const getOrganization = async () => {
+    await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`
+        }
+    }).then(data=>data.json())
+    .then(data=>{
+        setOrganizationId(data.organization.id);
+    })
+}
+
   const saveTemplateToDatabase = async (design, html) => { 
     await fetch(`http://localhost:3000/templates`, {
       method: 'POST',
@@ -61,7 +75,11 @@ export default function EmailTemplate(props) {
   };
 
   useEffect(()=>{
-    getTemplateById(shownTemplateId)
+    getOrganization()
+  })
+
+  useEffect(()=>{
+    organizationId!=-1 && getTemplateById(shownTemplateId)
   }, [shownTemplateId])
 
   useEffect(()=>{
