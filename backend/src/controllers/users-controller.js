@@ -9,6 +9,9 @@ const Employees = require("../database/models/employee");
 const getUsers = async (req, res) => {
     try {
         const users = await Users.findAll();
+        users.forEach(user => {
+            delete user.dataValues.password;
+        })
         res.status(200).json({ users });
     } catch (err) {
         res.status(500).json({ err });
@@ -19,6 +22,7 @@ const getUserById = async (req, res) => {
     const { id } = req.params;
     try {
         const user = await Users.findByPk(id);
+        delete user.dataValues.password;
         res.status(200).json({ user });
     } catch (error) {
         res.status(404).json({ error: "user not found" });
@@ -49,6 +53,7 @@ const loginUser = async (req, res) => {
         if (user) {
             if (user.password === password) {
                 const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+                delete user.dataValues.password;
                 res.status(200).json({ success:true, token, user });
             } else {
                 res.status(401).json({ success:false, error: "Invalid password" });
