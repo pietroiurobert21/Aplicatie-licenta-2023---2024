@@ -4,15 +4,15 @@ const dotenv = require('dotenv'); // Import the dotenv package
 
 const app = express();
 
-const user_routes = require('./users/users-routes');
-const organization_routes = require('./organizations/organization-routes');
-const employee_routes = require('./employees/employee-routes');
-const contact_routes = require('./contacts/contact-routes');
-const deal_routes = require('./deals/deals-routes');
-const task_routes = require('./tasks/tasks-routes');
-const leads_routes = require('./leads/leads-routes');
-const templates_routes = require('./templates/templates-routes');
-const campaigns_routes = require('./campaigns/campaign-routes');
+const user_routes = require('./routes/users-routes');
+const organization_routes = require('./routes/organization-routes');
+const employee_routes = require('./routes/employee-routes');
+const contact_routes = require('./routes/contact-routes');
+const deal_routes = require('./routes/deals-routes');
+const task_routes = require('./routes/tasks-routes');
+const leads_routes = require('./routes/leads-routes');
+const templates_routes = require('./routes/templates-routes');
+const campaigns_routes = require('./routes/campaign-routes');
 
 
 dotenv.config(); // Configure dotenv

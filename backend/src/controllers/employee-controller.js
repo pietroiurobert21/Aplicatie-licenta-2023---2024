@@ -5,7 +5,7 @@ const Organization = require("../database/models/organization");
 const User = require("../database/models/user");
 const { col } = require("sequelize");
 const Task = require("../database/models/task");
-const { getTasksAssignedToUserId } = require("../tasks/tasks-controller");
+const { getTasksAssignedToUserId } = require("../controllers/tasks-controller");
 
 Employee.belongsTo(User, { foreignKey: 'userId' });
 User.hasOne(Employee, { foreignKey: 'userId' });

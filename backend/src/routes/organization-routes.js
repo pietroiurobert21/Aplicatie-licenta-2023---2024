@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router() // Create a new router using the express.Router() method
 
-const { postOrganization, getOrganizationByCode, getOrganizationMembers, getOrganizationById, getOrganizationByUserId, getOrganizationDeals, getStructuredOrganizationDeals, getOrganizationDealsYears, changeCodeByOrganizationId } = require("./organization-controller"); // Import the functions from the controller
+const { postOrganization, getOrganizationByCode, getOrganizationMembers, getOrganizationById, getOrganizationByUserId, getOrganizationDeals, getStructuredOrganizationDeals, getOrganizationDealsYears, changeCodeByOrganizationId } = require("../controllers/organization-controller"); // Import the functions from the controller
 const { verifyToken } = require("../middlewares/middlewares"); // Import the middleware function
 
 router.post("/", verifyToken, postOrganization)

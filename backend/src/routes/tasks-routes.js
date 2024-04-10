@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router() // Create a new router using the express.Router() method
 
-const { postTask, getTasksAssignedByUserId, getTasksAssignedToUserId, updateIsDone, deleteTask } = require("./tasks-controller")
+const { postTask, getTasksAssignedByUserId, getTasksAssignedToUserId, updateIsDone, deleteTask } = require("../controllers/tasks-controller")
 const { verifyToken } = require("../middlewares/middlewares"); // Import the middleware function
 
 router.post("/", verifyToken, postTask)

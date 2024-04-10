@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router() // Create a new router using the express.Router() method
 
-const { postEmployee, getEmployeeByUserId, getColleagues, deleteEmployee } = require("./employee-controller"); // Import the functions from the controller
+const { postEmployee, getEmployeeByUserId, getColleagues, deleteEmployee } = require("../controllers/employee-controller"); // Import the functions from the controller
 const { verifyToken } = require("../middlewares/middlewares"); // Import the middleware function
 
 router.post("/", verifyToken, postEmployee)
