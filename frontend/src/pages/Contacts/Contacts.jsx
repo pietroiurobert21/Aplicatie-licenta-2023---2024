@@ -53,7 +53,7 @@ export default function Contacts() {
             setContacts(data.contacts)
         }
     }
-
+    const [organizationId, setOrganizationId] = useState(-1)
     const getOrganization = async () => {
         await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
             method: 'GET',
@@ -63,7 +63,8 @@ export default function Contacts() {
             }
         }).then(data=>data.json())
         .then(data=>{
-            setNewContact(prev=>({...prev, ['organizationId']: data.organization.organizationId}))
+            setOrganizationId(data.organization.organizationId);
+            setNewContact(prev=>({...prev, ['organizationId']: data.organization.organizationId}));
         })
     }
 
@@ -105,6 +106,7 @@ export default function Contacts() {
             try {
                 await sendEmail(emailAddress, subject, content)
                 toaster.success("email sent successfully!")   
+                getOrganization()
                 saveCampaignToDataBase()
             } catch (error) {
                 toaster.warning("email could not be sent!")   
@@ -119,7 +121,7 @@ export default function Contacts() {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
-            body: JSON.stringify({date: new Date(), emailsSent: selected.length, subject: subject, organizationId: organizationId})
+            body: JSON.stringify({date: new Date(), emailsSent: selected.length, subject: subject})
         })
         setUpdated(Math.floor(Math.random() * 9000))
     }

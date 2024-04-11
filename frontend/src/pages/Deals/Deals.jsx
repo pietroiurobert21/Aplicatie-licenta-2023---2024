@@ -12,7 +12,6 @@ export default function Deals() {
 
     const userId = localStorage.getItem("userId")
     const accessToken = localStorage.getItem("accessToken")
-    const organizationId = localStorage.getItem("organizationId")
 
     const getDeals = async () => {
         const res = await fetch(`http://localhost:3000/organizations/deals`, {
@@ -86,7 +85,6 @@ export default function Deals() {
         "date": new Date().toLocaleString(),
         "description": "",
         "employeeId": "",
-        "organizationId": +organizationId,
         "contactId": 1
     })
 

@@ -7,6 +7,7 @@ const Deal = require("../database/models/deals")
 
 const addDeal = async (req, res) => {
     const dealInfo = req.body
+    dealInfo.organizationId = req.organizationId
     try {
         const newDeal = await Deal.create(dealInfo)
 

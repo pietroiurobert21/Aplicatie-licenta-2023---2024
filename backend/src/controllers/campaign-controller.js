@@ -17,6 +17,7 @@ const getCampaignsByOrganizationId = async (req, res) => {
 
 const addCampaign = async (req, res) => {
     const body = req.body
+    body.organizationId = req.organizationId
     try {
         const campaign = await Campaign.create(body)
         res.status(201).json({success: true, campaign})
