@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 
 const verifyToken = (req, res, next) => {
     if (!req.headers.authorization) {
-        // Handle the error appropriately, e.g. send a response with a 401 status code
         res.status(401).json({ error: 'No authorization header provided' });
         return;
     }
