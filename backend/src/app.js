@@ -30,3 +30,4 @@ app.use('/templates', templates_routes);
 app.use('/campaigns', campaigns_routes)
 
 module.exports = app;
+
