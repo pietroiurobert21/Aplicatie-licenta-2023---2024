@@ -33,7 +33,7 @@ export default function sendEmail(emailAddress, subject, content) {
                         Content: "Mail content."
                     }
                 ],
-                From: "resourcewise70@gmail.com",
+                From: import.meta.env.VITE_fromEmail,
                 Subject: subject
             }
         }

@@ -5,14 +5,13 @@ import { Button, SelectMenu } from "evergreen-ui";
 import Chart from "../../components/Chart/Chart.jsx"
 
 
-export default function Home() {
+export default function Dashboard() {
     CheckToken()
-    const [ selected, setSelected] = useState(null)
+    const accessToken = localStorage.getItem('accessToken')
 
+    const [ selected, setSelected] = useState(null)
     const [ years, setYears ] = useState([])
 
-    const organizationId = localStorage.getItem('organizationId')
-    const accessToken = localStorage.getItem('accessToken')
     const getYears = async () => {
       const res = await fetch(`http://localhost:3000/organizations/dealsyears`, {
         method: 'GET',

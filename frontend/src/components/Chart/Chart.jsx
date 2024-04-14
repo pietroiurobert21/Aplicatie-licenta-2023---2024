@@ -10,7 +10,7 @@ export default function Chart(props) {
 
 
     // for PieChart
-    const [ data1, setData1 ] = useState([])
+    const [ pieValues, setPieValues ] = useState([])
 
     // for LineChart
     const [ xAxis, setxAxis] = useState([])
@@ -28,7 +28,7 @@ export default function Chart(props) {
     const [ closedDealsMonth, setClosedDealsMonth ] = useState(0)
 
     const retrieveStructuredData = async () => {
-      setData1([])
+      setPieValues([])
       setClosedDealsYear(0)
       setClosedDealsMonth(0)
 
@@ -51,27 +51,27 @@ export default function Chart(props) {
       res.acceptedDeals
         .filter(value => value.YEAR === props.year)
         .map((value, index) => {
-        const newDataObject = {id: index, value: +value.COUNT_VALUE, label: labels[+value.MONTH - 1]}
-        console.log(value)
-        setData1(prevData => [...prevData, newDataObject]);
+          const newDataObject = {id: index, value: +value.COUNT_VALUE, label: labels[+value.MONTH - 1]}
+          console.log(value)
+          setPieValues(prevData => [...prevData, newDataObject]);
 
-        setxAxis(prevData => [...prevData, +value.MONTH]);
+          setxAxis(prevData => [...prevData, +value.MONTH]);
 
-        setyAxis(prevData => {
-            const newData = [...prevData];
-            newData[+value.MONTH-1] = +value.SUM_VALUE;
-            return newData; 
-        });
+          setyAxis(prevData => {
+              const newData = [...prevData];
+              newData[+value.MONTH-1] = +value.SUM_VALUE;
+              return newData; 
+          });
 
-        setClosedDealsYear(prev => prev+ (+value.COUNT_VALUE))
+          setClosedDealsYear(prev => prev+ (+value.COUNT_VALUE))
 
-        if (value.MONTH == localMonth+1)
-          setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
+          if (value.MONTH == localMonth+1)
+            setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
 
-        // for barchart
-        const prevData = acceptedDeals
-        prevData[+value.MONTH-1] = +value.COUNT_VALUE;
-        setAcceptedDeals(prevData)
+          // for barchart
+          const prevData = acceptedDeals
+          prevData[+value.MONTH-1] = +value.COUNT_VALUE;
+          setAcceptedDeals(prevData)
       })
 
       res.rejectedDeals
@@ -122,10 +122,10 @@ export default function Chart(props) {
                     <BasicLineChart data={[xAxis, yAxis]} year={props.year}/>
                 </div>
                 <div className={style.item2} style={{gridColumn: "span 3"}}>
-                    <PieChart data={data1} year={props.year}/>
+                    <PieChart data={pieValues} year={props.year}/>
                 </div>
                 <div className={style.item2} style={{gridColumn: "span 4"}}>
-                    <BarChart year={props.year} data={barValues}/>
+                    <BarChart data={barValues} year={props.year}/>
                 </div>
             </div>
         </div>
