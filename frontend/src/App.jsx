@@ -18,18 +18,33 @@ import { useLocation } from 'react-router-dom'
 
 import CheckToken from './middlewares/CheckToken.jsx'
 import Chatbot from './components/Chatbot/Chatbot.jsx'
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 
 function Main() {
-  const location = useLocation()
+  let location = useLocation()
+
+  const navbarPaths = [
+    '/dashboard',
+    '/contacts',
+    '/leads',
+    '/profile',
+    '/team',
+    '/deals',
+    '/tasks',
+    '/organization',
+  ];
+
+  const [showNavbar, setShowNavbar] = useState(false);
+
+  useEffect(()=>{
+    setShowNavbar(navbarPaths.includes(location.pathname))
+  }, [location])
 
   return (
-    <>
-      <Chatbot />
-
-      {location.pathname !== "/login" && location.pathname !== "/" && location.pathname !== "/registerToCompany" && location.pathname !== "/register" 
-        && location.pathname !== "*" && <Navbar />}
+    <>  
+      { showNavbar && <Navbar/> }
+      { showNavbar && <Chatbot/> }
       <Routes>
         {/* Authentication */}
         <Route path="/" element={<Login />} /> 
@@ -54,7 +69,6 @@ function App() {
   return (
     <Router>
       <Main />
-      {/* <p style={{color:'red'}}> <h1>todo</h1>:  customer satisfaction (model, back, front); update/delete for contacts/leads/customers; delete for deals; tasks page reworked; users/organizations leaderboard  </p> */}
     </Router>
   )
 }

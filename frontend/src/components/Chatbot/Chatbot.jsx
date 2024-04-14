@@ -9,12 +9,24 @@ const Chatbot = () => {
  
     script.onload = () => {
       window.botpressWebChat.init({
+        composerPlaceholder: "Chat with CRM Guide",
+        botConversationDescription: "Your CRM Guide",
         botId: import.meta.env.VITE_botID,
-        hostUrl: 'https://cdn.botpress.cloud/webchat/v1',
-        messagingUrl: 'https://messaging.botpress.cloud',
+        hostUrl: "https://cdn.botpress.cloud/webchat/v1",
+        messagingUrl: "https://messaging.botpress.cloud",
         clientId: import.meta.env.VITE_clientId,
-        exposeStore: true
+        webhookId: import.meta.env.webhookId,
+        lazySocket: true,
+        themeName: "prism",
+        botName: "NodeBot",
+        frontendVersion: "v1",
+        useSessionStorage: true,
+        enableConversationDeletion: true,
+        showPoweredBy: true,
+        theme: "prism",
+        themeColor: "#bea925"
       })
+      window.botpressWebChat.mergeConfig({ useSessionStorage: true })
     }
   }, [])
  
@@ -22,3 +34,4 @@ const Chatbot = () => {
 }
  
 export default Chatbot
+
