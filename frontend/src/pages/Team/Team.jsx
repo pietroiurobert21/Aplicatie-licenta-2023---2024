@@ -79,7 +79,7 @@ export default function Team() {
 
     const [ userRole, setUserRole ] = useState()
     const getEmployeeRole = async () => {
-        const res = await fetch(`http://localhost:3000/employees/getEmployee`, {
+        const res = await fetch(`http://localhost:3000/employees/getEmployeeJWT`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',

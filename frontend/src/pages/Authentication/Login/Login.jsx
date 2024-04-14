@@ -19,7 +19,7 @@ export default function Login() {
     return (
         <>
             <div className={style.login}>
-                <img src={CRMImage}/>
+                <img src={Background}/>
                 <div className={style.login_container}>
                     <LoginCard/>
                 </div>

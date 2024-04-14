@@ -32,10 +32,8 @@ const getUser = async (req, res) => {
     }
 }
 
-// POST a new user to the Database
 const postUser = async (req, res) => {
     const body = req.body; 
-    // Check if body has empty strings
     if (Object.values(body).some(value => value === "")) {
         res.status(400).json({ success: false, error: "Empty fields are not allowed" });
         return;

@@ -22,15 +22,15 @@ export default function Register() {
                 "password": document.getElementsByName("text-input-password")[0].value,
                 "email": document.getElementsByName("text-input-email")[0].value
             })});
-            const response = await data.json();
+        const response = await data.json();
 
-            if (data.status === 201) {
-                toaster.success("Account created successfully!")
-                navigate('/login')
-            } else {
-                toaster.danger(response.error)
-            } 
-        }
+        if (data.status === 201) {
+            toaster.success("Account created successfully!")
+            navigate('/login')
+        } else {
+            toaster.danger(response.error)
+        } 
+    }
 
 
     return (

@@ -1,4 +1,4 @@
-import { ApiClient, EmailsApi, EmailMessageData, EmailRecipient, BodyPart } from '@elasticemail/elasticemail-client';
+import { ApiClient, EmailsApi } from '@elasticemail/elasticemail-client';
 
 export default function sendEmail(emailAddress, subject, content) {
     return new Promise((resolve, reject) => {
@@ -50,3 +50,4 @@ export default function sendEmail(emailAddress, subject, content) {
         api.emailsPost(emailData, callback);
     })
 }
+
