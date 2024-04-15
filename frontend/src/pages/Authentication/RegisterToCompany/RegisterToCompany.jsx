@@ -47,14 +47,14 @@ export default function RegisterToCompany() {
         })
         const response = await data.json()
         if (data.status == 201) {
-            localStorage.setItem("organizationId", companyId)
+            localStorage.removeItem('accessToken')
             navigate("/")
         } else
             toaster.danger("Error creating company", { description: response.error })
     }
 
     const getOrganizationByCode = async (code) => {
-        const data = await fetch(`http://localhost:3000/organizations/${code}`, {
+        const data = await fetch(`http://localhost:3000/organizations/code/${code}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -63,8 +63,7 @@ export default function RegisterToCompany() {
         })
         const response = await data.json()
         if (data.status === 200) {
-            console.log(response.existingOrganization[0].id)
-            createUserCompanyFunc(response.existingOrganization[0].id, "subordinate")
+            createUserCompanyFunc(response.org.id, "subordinate")
         }
     }
 

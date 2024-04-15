@@ -46,6 +46,20 @@ const getOrganizationByUser = async (req, res) => {
     }
 }
 
+const getOrganizationByCode = async (req, res) => {
+    const { code } = req.params 
+    try {
+        const org = await Organization.findOne({where: {code: code}})
+        if (org) {
+            res.status(200).json({success: true, org})
+        } else {
+            res.status(404).json({success: false, error: "no organization found"})
+        }
+    } catch (error) {
+        res.status(500).json({ success:false, error: "error" }); 
+    }
+}
+
 const getOrganizationMembers = async (req, res) => {
     const id = req.organizationId
     try {
@@ -191,7 +205,7 @@ const changeCodeByOrganizationId = async (req, res) => {
 
 module.exports = {
     postOrganization,
-    //getOrganizationByCode,
+    getOrganizationByCode,
     getOrganizationMembers,
    // getOrganizationById,
     
