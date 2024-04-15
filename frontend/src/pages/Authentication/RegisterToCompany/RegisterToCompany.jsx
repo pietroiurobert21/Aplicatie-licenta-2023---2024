@@ -70,7 +70,7 @@ export default function RegisterToCompany() {
     return (
         <>
             <div className={style1.login}>
-                <img src={CRMImage}/>
+                <img src={Background}/>
                 <div className={style1.login_container}>
                     
                     <div className={style2.card1}>

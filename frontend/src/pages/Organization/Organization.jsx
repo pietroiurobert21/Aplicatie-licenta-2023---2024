@@ -97,8 +97,6 @@ export default function Organization() {
                 <li className={style.itemName}> Invitation code </li>
                 <li> {organization.code} </li>
                 <li><Button onClick={()=>{changeCode()}}> change </Button> </li>
-                <li className={style.itemName}> Active on platform since </li>
-                <li> dd/mm/yyyy  </li>
             </ul>
         </div>
     )
