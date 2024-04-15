@@ -15,7 +15,7 @@ const Chatbot = () => {
         hostUrl: "https://cdn.botpress.cloud/webchat/v1",
         messagingUrl: "https://messaging.botpress.cloud",
         clientId: import.meta.env.VITE_clientId,
-        webhookId: import.meta.env.webhookId,
+        webhookId: import.meta.env.VITE_webhookId,
         lazySocket: true,
         themeName: "prism",
         botName: "NodeBot",
@@ -30,7 +30,7 @@ const Chatbot = () => {
     }
   }, [])
  
-  return <div id="webchat" />
+  return <div id="botpressWebChat" />
 }
  
 export default Chatbot
