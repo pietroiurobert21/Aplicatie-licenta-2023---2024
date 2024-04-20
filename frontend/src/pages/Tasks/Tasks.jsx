@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from './Tasks.module.css'
-import { Table, TextInput, Badge, Button, SelectMenu, IconButton, TrashIcon  } from 'evergreen-ui'
+import { Table, TextInput, Badge, Button, SelectMenu, IconButton, TrashIcon, Dialog, TextInputField, Switch  } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 
 
@@ -31,7 +31,7 @@ export default function Tasks() {
                 setNewTask(prev=>({...prev, ['assignedByEmployeeId']:data.user.id}))
                 setUserId(data.user.id)
             })
-    }
+    }   
 
     const getEmployeeByUserId = async (userId) => {
         await fetch(`http://localhost:3000/employees/getEmployeeJWT`, {
@@ -55,7 +55,7 @@ export default function Tasks() {
                 'Authorization': `Bearer ${accessToken}`
             }
         }).then(data=>data.json())
-        .then(data=> setTasks(data.tasks));
+        .then(data=> {setTasks(data.tasks);console.log(data.tasks);});
     }
 
     const retrieveTaskAssignedTo = async () => {
@@ -110,8 +110,8 @@ export default function Tasks() {
         .then(data=>setRole(data.userOrganization.role))
     }
 
-    const updateTaskStatus = async (taskId) => {
-        await fetch(`http://localhost:3000/tasks/${taskId}`, {
+    const toggleTaskStatus = async (taskId) => {
+        await fetch(`http://localhost:3000/tasks/toggleTaskStatus/${taskId}`, {
             method: 'PUT',
             headers: {
                 'content-type': 'application/json',
@@ -145,7 +145,46 @@ export default function Tasks() {
     }, [employeeId, effect])
 
     
-    const [selected, setSelected] = useState()
+    const [ selected, setSelected ] = useState()
+    const [ selected2, setSelected2 ] = useState()
+
+    const [ selectedTask, setSelectedTask ] = useState()
+    const [ isShown, setIsShown ] = useState(false);
+
+    const updateTask = async (task) => {
+        console.log(task)
+        await fetch('http://localhost:3000/tasks/updateTask', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({ id: task.id, description: task.description, assignedToEmployeeId: task.assignedToEmployeeId, isDone: task.isDone })
+        })
+        setEffect(Math.floor(Math.random() * 1000))
+    }
+
+    const [sortOrder, setSortOrder] = useState('asc')
+    const sortingTable = async (attribute) => {
+        const sortedTasks = [...tasks];
+        sortedTasks.sort((a, b) => {
+            const attributeArray = attribute.split('.');
+            let aValue = a;
+            let bValue = b;
+            for (let key of attributeArray) {
+                aValue = aValue[key];
+                bValue = bValue[key];
+            }
+            // For string comparison, use localeCompare
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+            }
+            // For numeric comparison
+            return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        });
+        setTasks(sortedTasks)
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    }
 
     return (
         <>
@@ -153,27 +192,27 @@ export default function Tasks() {
                 <div className={style.tasks}>
                     { role==="administrator" ? <h5> Tasks </h5> : <h5> My Tasks </h5>}
                             {tasks.length > 0 && employees.length ? (
-                                <Table style={{ width: "90vw" }}>
+                                <Table style={{ width: "90vw", userSelect: 'none'}}>
                                     <Table.Head>
                                         <Table.SearchHeaderCell />
-                                        <Table.TextHeaderCell> Description </Table.TextHeaderCell>
-                                        { role==="administrator" && <Table.TextHeaderCell> Assigned to </Table.TextHeaderCell> }
-                                        <Table.TextHeaderCell> IsDone </Table.TextHeaderCell>
-                                        <Table.TextHeaderCell> Assigned by </Table.TextHeaderCell>
+                                        <Table.TextHeaderCell isSelectable  onClick={()=>sortingTable("description")}> Description </Table.TextHeaderCell>
+                                        { role==="administrator" && <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("assignedToEmployeeId")}> Assigned to </Table.TextHeaderCell> }
+                                        <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("isDone")}> IsDone </Table.TextHeaderCell>
+                                        <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("assignedByEmployeeId")}> Assigned by </Table.TextHeaderCell>
                                         <Table.TextHeaderCell>  </Table.TextHeaderCell>
                                     </Table.Head>
                                     <Table.VirtualBody height={390}>
                                         {tasks.map((task, index) => (
                                             
-                                                <Table.Row isSelectable onClick={(e)=>{if (e.target.classList!="IconButton") updateTaskStatus(task.id) }}>
+                                                <Table.Row isSelectable onSelect={()=>{ setSelectedTask({"id": task.id, "description": task.description, "assignedToEmployeeId": task.assignedToEmployeeId, "assignedByEmployeeId": task.assignedByEmployeeId, "isDone": task.isDone}); setIsShown(true); setSelected2(task.assignedTo.firstName + " " + task.assignedTo.lastName) } }>  
                                                     <Table.TextCell>{index+1}</Table.TextCell>
                                                     <Table.TextCell>{task.description}</Table.TextCell>
                                                     { role==="administrator" && <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>}
                                                     <Table.TextCell>  
-                                                        <Badge color={task.isDone === true ? 'green' : task.isDone === false ? 'red' : 'inherit'}> {task.isDone.toString()} </Badge>
+                                                        <Switch checked={task.isDone} onClick={(e) => {e.stopPropagation(); toggleTaskStatus(task.id)}} />
                                                     </Table.TextCell>
                                                     <Table.TextCell isNumber>{task.assignedBy.firstName} {task.assignedBy.lastName}</Table.TextCell>
-                                                    <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={100} onClick={()=>{deleteTask(task.id)}}/> </Table.TextCell>
+                                                    <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={100} onClick={(e) => {e.stopPropagation(); deleteTask(task.id)}}/> </Table.TextCell>
                                                 </Table.Row>
                                         ))}
                                     </Table.VirtualBody>
@@ -198,7 +237,43 @@ export default function Tasks() {
                             }
                 </div>
             </div>
+
+            {
+                isShown && (
+                    <Dialog 
+                        isShown={isShown}
+                        title="Update task"
+                        onCloseComplete={() => setIsShown(false)}
+                        onCancel={()=>{setIsShown(false)}}
+                        onClose={()=>{setIsShown(false)}}
+                        onConfirm={()=>{updateTask(selectedTask); setIsShown(false)}}
+                        preventBodyScrolling
+                        shouldCloseOnOverlayClick={false}
+                        confirmLabel="Custom Label">
+                        <TextInputField
+                            label="Description"
+                            placeholder="Description"
+                            name="Description"
+                            value={selectedTask.description}
+                            onChange={(e)=>setSelectedTask({ ...selectedTask, "description": e.target.value })}
+                        />
+                        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                            <p> Is done: </p>
+                            <Switch checked={selectedTask.isDone} style={{width:'8vw'}} onChange={(e)=>{setSelectedTask({ ...selectedTask, "isDone": e.target.checked })}} />
+
+                            <p> Assigned to: </p>
+                            <SelectMenu
+                                        title="Select name"
+                                        options={employees.filter(employee => employee.User.id !== userId).map(employee => ({ label: employee.User.id + " " + employee.User.firstName + " " + employee.User.lastName, value: employee.User.firstName + " " + employee.User.lastName, key: employee.id }))}
+                                        selected={selected2}
+                                        onSelect={(item) => { setSelected2(item.value); setSelectedTask({ ...selectedTask, "assignedToEmployeeId": +item.key }) }}
+                                        label={""}>
+                                <Button>{selected2}</Button>    
+                            </SelectMenu>
+                        </div>
+                    </Dialog>
+                )
+            }
         </>
     );
-    
 }

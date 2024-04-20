@@ -32,8 +32,6 @@ export default function Profile(){
             const data = await res.json()
             setUserData(data)
             setIsLoading(false)
-            console.log(data)
-            console.log(userData)
         }
     }
 

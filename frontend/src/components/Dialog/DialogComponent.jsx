@@ -32,6 +32,7 @@ export default function DialogComponent(props) {
                     title={props.title}
                     onConfirm={()=>{props.handleConfirm(), props.setIsShown(false)}}
                     onCloseComplete={() => props.setIsShown(false)}
+                    shouldCloseOnOverlayClick={false}
                     >
 
                         <TextInputField

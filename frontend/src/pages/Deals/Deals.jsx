@@ -208,6 +208,7 @@ export default function Deals() {
                 onConfirm={() => {setIsShown(false); saveNewDeal()}}
                 onCancel={()=>{setIsShown(false)}}
                 onCloseComplete={() => setIsShown(false)}
+                shouldCloseOnOverlayClick={false}
                 confirmLabel="Custom Label">
                 <SelectMenu
                     title="Select name"
@@ -241,6 +242,7 @@ export default function Deals() {
                     onConfirm={() => {setIsShown_1(false); updateDealStatus(newStatus); }}
                     onCancel={() => setIsShown_1(false)}
                     onCloseComplete={() => setIsShown_1(false)}
+                    shouldCloseOnOverlayClick={false}
                     confirmLabel="Update deal">
                     <TextInputField
                         label="Contact"
