@@ -3,7 +3,7 @@ const express = require("express");
 const Employee = require("../database/models/employee");
 const Organization = require("../database/models/organization");
 const Contact = require("../database/models/contact");
-const Deal = require("../database/models/deals")
+const Deal = require("../database/models/deals");
 
 const addDeal = async (req, res) => {
     const dealInfo = req.body
@@ -61,7 +61,19 @@ const deleteDealById = async (req, res) => {
     const { id } = req.params
     try {
         const deal = await Deal.findByPk(id)
-        await deal.destroy()
+        const organization = await Organization.findByPk(deal.organizationId)
+        const user = await Employee.findByPk(deal.employeeId)
+        if (deal) {
+            if (organization && deal.status=='accepted' && organization.points > 0) {
+                organization.points--
+                await organization.save()
+            }
+            if (user && deal.status=='accepted' && user.points > 0) {
+                user.points--
+                await user.save()
+            }
+            await deal.destroy()
+        }
         res.status(200).json({success: true, message: "deal deleted successfully"})
     } catch (error) {
         console.log(error)

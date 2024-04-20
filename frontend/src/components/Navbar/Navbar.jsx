@@ -81,7 +81,7 @@ export default function Navbar() {
                     <li onClick={()=>{navigate('/deals')}}> Deals </li>
                     <li onClick={()=>{navigate('/team')}}> Team </li>
                     {
-                        role=='administrator' && <li onClick={()=>{navigate('/organization')}} style={{color: "#887B04"}}> Organization </li>
+                        role=='administrator' && <li id={style.organizationLI} onClick={()=>{navigate('/organization')}}> Organization </li>
                     }
                 </ul>
 

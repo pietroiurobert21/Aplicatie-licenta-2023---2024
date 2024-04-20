@@ -52,3 +52,11 @@ body {
 .active {
     color: #5d8ffc;
 }
+
+#organizationLI {
+    color: #887B04;
+}
+
+#organizationLI:hover {
+    color: #dcc708;
+}
