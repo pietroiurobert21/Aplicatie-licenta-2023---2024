@@ -2,7 +2,8 @@ const express = require("express");
 
 const Employee = require("../database/models/employee");
 const Organization = require("../database/models/organization");
-const Contact = require("../database/models/contact")
+const Contact = require("../database/models/contact");
+const Deal = require("../database/models/deals");
 
 const addContact = async (req, res) => {
     const info = req.body
@@ -19,7 +20,10 @@ const addContact = async (req, res) => {
 const getContactsByOrganizationId = async (req, res) => {
     const organizationId = req.organizationId
     try {
-        const contacts = await Contact.findAll({where: {organizationId: organizationId}})
+        const contacts = await Contact.findAll({
+            where: {organizationId: organizationId}, 
+            order: [ ['id', 'ASC'] ]
+        })
         if (contacts.length > 0) {
             res.status(200).json({success: true, contacts})
         } else {
@@ -34,7 +38,10 @@ const getContactsByOrganizationId = async (req, res) => {
 const getCustomersByOrganizationId = async (req, res) => {
     const organizationId = req.organizationId
     try {
-        const contacts = await Contact.findAll({where: {organizationId: organizationId, pipelineStatus: 'customer'}})
+        const contacts = await Contact.findAll({
+            where: {organizationId: organizationId, pipelineStatus: 'customer'},
+            order: [ ['id', 'ASC'] ]
+        })
         if (contacts.length > 0) {
             res.status(200).json({success: true, contacts})
         } else {
@@ -66,6 +73,12 @@ const deleteContactById = async (req, res) => {
     const { id } = req.params
     try {
         const contact = await Contact.findByPk(id)
+
+        const contactDeals = await Deal.findAll({ where: { contactId: id } })
+        if (contactDeals.length > 0) {
+            await Deal.update({ contactId: null }, { where: { contactId: id } });
+        }
+
         await contact.destroy()
         res.status(200).json({success: true, message: "contact deleted successfully"})
     } catch (error) {

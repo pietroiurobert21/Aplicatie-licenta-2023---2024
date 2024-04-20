@@ -8,7 +8,10 @@ const Contact = require("../database/models/contact")
 const getLeadsByOrganizationId = async (req, res) => {
     const organizationId = req.organizationId
     try {
-        const leads = await Contact.findAll({where: {organizationId: organizationId, pipelineStatus: 'lead'}})
+        const leads = await Contact.findAll({
+            where: {organizationId: organizationId, pipelineStatus: 'lead'},
+            order: [ ['id', 'ASC'] ]
+        })
         if (leads.length > 0) {
             res.status(200).json({success: true, leads})
         } else {

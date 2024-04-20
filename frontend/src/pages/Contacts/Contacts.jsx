@@ -196,7 +196,7 @@ export default function Contacts() {
                 }
                 </>
         }
-        <DialogComponent title={"Add new customer"} data={shownContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
+        <DialogComponent title={"Add new customer"} data={newContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         </> 
     )
 }

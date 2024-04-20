@@ -3,6 +3,7 @@ const express = require("express");
 const Employee = require("../database/models/employee");
 const Organization = require("../database/models/organization");
 const User = require("../database/models/user");
+const Deal = require("../database/models/deals")
 const { col } = require("sequelize");
 const Task = require("../database/models/task");
 const { getTasksAssignedToUserId } = require("../controllers/tasks-controller");
@@ -81,6 +82,11 @@ const deleteEmployee = async (req, res) => {
                 await Promise.all(employeeTasks.map(task => task.destroy()));
             }
 
+            const employeeDeals = await Deal.findAll({ where: { employeeId: employee.id } })
+            if (employeeDeals.length > 0) {
+                await Deal.update({ employeeId: null }, { where: { employeeId: employee.id } });
+            }
+
             await employee.destroy()
             res.status(200).json({success: true, message: 'employee deleted'})
         }
@@ -89,6 +95,7 @@ const deleteEmployee = async (req, res) => {
         res.status(500).json({ success:false, error: "error deleting the employee" });
     }
 }
+
 
 module.exports = {
     postEmployee,

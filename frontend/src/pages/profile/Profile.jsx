@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import style from "./Profile.module.css"
 import { useNavigate } from 'react-router-dom';
 
-import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster } from 'evergreen-ui'
+import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster, Button } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
 
 
@@ -81,6 +81,7 @@ export default function Profile(){
                                     <StatusIndicator color="success" marginRight={16} fontSize={16}> Online </StatusIndicator>
                                     <Badge color={color} fontSize={13} margin={0} marginLeft={16}> {userRole} </Badge>
                                 </p>
+                                <Button style={{marginTop: "5%", width: "100%"}}> Edit profile </Button>
                                 <p id={style.logout} onClick={()=>{ emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
                             </div>
                             <div className={style.contactInfoContainer}>

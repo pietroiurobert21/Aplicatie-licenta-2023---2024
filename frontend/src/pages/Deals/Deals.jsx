@@ -37,9 +37,14 @@ export default function Deals() {
             let aValue = a;
             let bValue = b;
             for (let key of attributeArray) {
-                aValue = aValue[key];
-                bValue = bValue[key];
+                aValue = aValue ? aValue[key] : null;
+                bValue = bValue ? bValue[key] : null;
             }
+            // Handle null values
+            if (aValue === null && bValue === null) return 0;
+            if (aValue === null) return sortOrder === 'asc' ? 1 : -1;
+            if (bValue === null) return sortOrder === 'asc' ? -1 : 1;
+    
             // For string comparison, use localeCompare
             if (typeof aValue === 'string' && typeof bValue === 'string') {
                 return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
@@ -50,6 +55,7 @@ export default function Deals() {
         setDeals(sortedDeals);
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     }
+    
     
     
 
@@ -187,9 +193,15 @@ export default function Deals() {
                         <Table.Row key={deal.id} isSelectable onSelect={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status) }}>
                             <Table.TextCell> {index+1} </Table.TextCell>
                             <Table.TextCell> {deal.value} </Table.TextCell>
-                            <Table.TextCell> {deal.Contact.firstName} {deal.Contact.lastName} </Table.TextCell>
+                            { 
+                                deal.Contact ? <Table.TextCell> {deal.Contact.firstName} {deal.Contact.lastName} </Table.TextCell>
+                                :  <Table.TextCell> (contact removed) </Table.TextCell> 
+                            }
                             <Table.TextCell> {deal.date} </Table.TextCell>
-                            <Table.TextCell> {deal.Employee.User.firstName} {deal.Employee.User.lastName} </Table.TextCell>
+                            { 
+                                deal.Employee ? <Table.TextCell> {deal.Employee.User.firstName} {deal.Employee.User.lastName} </Table.TextCell> 
+                                :  <Table.TextCell> (employee removed) </Table.TextCell> 
+                            }
                             <Table.TextCell> {deal.description} </Table.TextCell>
                              
                             <Table.TextCell>
@@ -238,7 +250,7 @@ export default function Deals() {
 
                 <Dialog
                     isShown={isShown_1}
-                    title={shownDeal.Employee ? shownDeal.Employee.User.firstName + " " + shownDeal.Employee.User.lastName + "'s deal since " + new Date(shownDeal.date).toLocaleDateString("en-US") : "Loading"}
+                    title={shownDeal.Employee ? shownDeal.Employee.User.firstName + " " + shownDeal.Employee.User.lastName + "'s deal since " + new Date(shownDeal.date).toLocaleDateString("en-US") : "(employee removed)"}
                     onConfirm={() => {setIsShown_1(false); updateDealStatus(newStatus); }}
                     onCancel={() => setIsShown_1(false)}
                     onCloseComplete={() => setIsShown_1(false)}
@@ -249,8 +261,8 @@ export default function Deals() {
                         placeholder="Contact"
                         name="contact"
                         disabled
-                        value={shownDeal.Contact ? shownDeal.Contact.firstName + " " + shownDeal.Contact.lastName : "Loading"}/>
-                    <TextInputField
+                        value={shownDeal.Contact ? shownDeal.Contact.firstName + " " + shownDeal.Contact.lastName : "(contact removed)"}/>
+                    <TextInputField 
                         label="Value"
                         placeholder="Value"
                         name="value"
