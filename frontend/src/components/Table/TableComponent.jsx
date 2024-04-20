@@ -48,6 +48,31 @@ export default function TableComponent(props) {
         setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
     }
     
+    const updateContact = async () => {
+        if (shownProfile) {
+            console.log(shownProfile)
+            await fetch('http://localhost:3000/contacts/updateContact', {
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify({
+                    id: shownProfile.id, 
+                    firstName: shownProfile.firstName, 
+                    lastName: shownProfile.lastName, 
+                    professionalTitle: shownProfile.professionalTitle,
+                    emailAddress: shownProfile.emailAddress,
+                    homeAddress: shownProfile.homeAddress,
+                    phoneNumber: shownProfile.phoneNumber,
+                    companyName: shownProfile.companyName
+                })
+            })
+            props.setUpdated(Math.floor(Math.random() * 9000))
+        }
+    }
+
+    const [ selectedContact, setSelectedContact ] = useState();
     return (
         <>
             <Table style={{width:"100vw", padding:"2%", paddingTop: "0", marginTop: "16px"}}>
@@ -81,7 +106,7 @@ export default function TableComponent(props) {
                 </Table.VirtualBody>
             </Table>
 
-            <DialogComponent title={"View profile"} data={shownProfile} isShown={isShown} setIsShown={setIsShown}/>
+            <DialogComponent title={"View profile"} data={shownProfile} setNewContact={setShownProfile} isShown={isShown} setIsShown={setIsShown} handleConfirm={updateContact}/>
         </>
     )
 }

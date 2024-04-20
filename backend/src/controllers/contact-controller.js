@@ -74,10 +74,30 @@ const deleteContactById = async (req, res) => {
     }
 }
 
+const updateContact = async (req, res) => {
+    const body = req.body
+    try {
+        const contact = await Contact.findByPk(body.id)
+        contact.firstName = body.firstName
+        contact.lastName = body.lastName
+        contact.professionalTitle = body.professionalTitle
+        contact.emailAddress = body.emailAddress
+        contact.homeAddress = body.homeAddress
+        contact.phoneNumber = body.phoneNumber
+        contact.companyName = body.companyName
+        await contact.save()
+        res.status(200).json({success: true, message: "contact deleted successfully"})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error contact deal" });
+    }
+}
+
 module.exports = {
     addContact,
     getContactsByOrganizationId,
     getContactById,
     getCustomersByOrganizationId,
-    deleteContactById
+    deleteContactById,
+    updateContact
 }
