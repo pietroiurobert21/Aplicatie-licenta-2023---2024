@@ -96,11 +96,29 @@ const belongsToOrganization = async (req, res) => {
     }
 }
 
+const updateUser = async (req, res) => {
+    const body = req.body
+    try {
+        const user = await Users.findByPk(body.id);
+        if (user) {
+            user.username = body.username
+            user.firstName = body.firstName
+            user.lastName = body.lastName
+            await user.save()
+        } else {
+            res.status(404).json({ success:false, error: "User not found" });
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error updating profile" });
+    }
+}
+
 module.exports = {
     getUsers,
     postUser,
     loginUser,
     belongsToOrganization,
-
-    getUser
+    getUser,
+    updateUser
 }
