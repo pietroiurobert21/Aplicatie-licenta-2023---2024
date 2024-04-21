@@ -3,6 +3,7 @@ body {
     padding: 0;
     font-family: 'Roboto', sans-serif;
     background-color: #f5f5f5;
+    overflow: hidden;
 }
 
 .navbar {
@@ -106,9 +107,12 @@ body {
     }
     .navbar.navbar.responsive ul {
         height: 98vh;
+        width: 60vw;
         background-color: #484242;
         z-index: 999;
         overflow: visible;
+        position: fixed;
+        right: 0;
         margin: 0;
         padding: 0;
         padding-top: 2vh;

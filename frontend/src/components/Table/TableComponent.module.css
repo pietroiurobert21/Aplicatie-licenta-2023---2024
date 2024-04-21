@@ -1,0 +1,26 @@
+.tableComponent {
+    width: 100vw;
+}
+
+.table {
+    width: 100vw;
+    padding: 2%;
+    padding-top: 0;
+    margin-top: 16px;
+    overflow: scroll;
+}
+
+
+@media screen and (max-width: 780px) {
+    .table {
+        width: 100%;
+    }
+    .tableHeader > *{
+        width: 200vw;
+    }
+    
+    .tableHeader2 {
+        width: 200vw;
+        overflow: hidden;
+    }
+}

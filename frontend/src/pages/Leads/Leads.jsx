@@ -33,7 +33,7 @@ export default function Leads() {
             if (newLead[key] == '') {
                 missingFields = true;
             }
-
+        console.log(newLead)
         if (missingFields==false) {
             await fetch("http://localhost:3000/contacts", {
                 method: 'POST',

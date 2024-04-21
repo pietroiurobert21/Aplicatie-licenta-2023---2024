@@ -1,6 +1,7 @@
 import { toaster, Button, NewPersonIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
+import style from './Contacts.module.css'
 
 import TableComponent from "../../components/Table/TableComponent.jsx"
 import DialogComponent from '../../components/Dialog/DialogComponent.jsx';
@@ -139,7 +140,7 @@ export default function Contacts() {
 
     const [shownSelected, setShownSelected] = useState()
     return (
-        <>  
+        <div className={style.contactsPage}>  
         {
             contacts == -1 ? <p style={{width:"100vw", textAlign:'center'}}> No contacts found </p> :
                 <>
@@ -197,6 +198,6 @@ export default function Contacts() {
                 </>
         }
         <DialogComponent title={"Add new customer"} data={newContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
-        </> 
+        </div> 
     )
 }

@@ -1,4 +1,4 @@
-import { Dialog, TextInputField, Button, toaster } from 'evergreen-ui' 
+import { Dialog, TextInputField, Button, toaster, Pane } from 'evergreen-ui' 
 import Rating from '@mui/material/Rating';
 import { useState } from 'react';
 
@@ -25,7 +25,7 @@ export default function DialogComponent(props) {
                     onCancel={()=> props.setIsShown(false)}
                     shouldCloseOnOverlayClick={false}
                     >
-
+                        <Pane height={"50vh"} width="100%">
                         <TextInputField
                             label="First name"
                             placeholder="First name"
@@ -75,6 +75,7 @@ export default function DialogComponent(props) {
                             defaultValue={profileData.companyName}
                             onChange={handleInputChange}
                         />
+                        </Pane>
             </Dialog>
         </>
     )
