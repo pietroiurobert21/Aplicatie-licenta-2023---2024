@@ -29,27 +29,41 @@ const updateDeal = async (req, res) => {
     try {
         const deal = await Deal.findByPk(id)
         if (deal && deal.status!=body.status) {
-            deal.status = body.status
-            await deal.save({fields: ['status']})
-            res.status(200).json({success:true, deal})
-
             // update organization points
             const organization = await Organization.findByPk(deal.organizationId)
             const employee = await Employee.findByPk(deal.employeeId)
+            
             if (organization) {
-                if (body.status == 'accepted')
-                    organization.points++
-                else if (organization.points > 0)
-                    organization.points--
+                if (deal.status=='proposed') {
+                    if (body.status=='accepted')
+                        organization.points++;
+                } else if (deal.status=='accepted') {
+                    if (body.status=='proposed' || body.status=='rejected')
+                        organization.points--;
+                } else if (deal.status=='rejected') {
+                    if (body.status=='accepted')
+                        organization.points++;
+                }
                 await organization.save({fields: ['points']})
             }
+
             if (employee) {
-                if (body.status == 'accepted') 
-                    employee.points++
-                else if (employee.points > 0)
-                    employee.points--
+                if (deal.status=='proposed') {
+                    if (body.status=='accepted')
+                        employee.points++;
+                } else if (deal.status=='accepted') {
+                    if (body.status=='proposed' || body.status=='rejected')
+                        employee.points--;
+                } else if (deal.status=='rejected') {
+                    if (body.status=='accepted')
+                        employee.points++;
+                }
                 await employee.save({fields: ['points']})
             }
+
+            deal.status = body.status
+            await deal.save({fields: ['status']})
+            res.status(200).json({success:true, deal})
         }
     } catch (error) {
         console.log(error)
