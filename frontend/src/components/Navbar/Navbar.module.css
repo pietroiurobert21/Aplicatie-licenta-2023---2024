@@ -70,7 +70,6 @@ body {
     align-items: center;
     justify-content:start;
     height: 7vh;
-    width: 100%;
     padding-left: 2%;
 }
 
@@ -89,16 +88,6 @@ body {
       display: block;
       height: 7vh;
     }
-    .navbar {
-        position: fixed;
-        z-index: 999;
-    }
-    body {
-        padding-top: 7vh;
-    }
-    body::-webkit-scrollbar {
-        display: none;
-    }
 }
 
 @media screen and (max-width: 780px) {
@@ -115,7 +104,7 @@ body {
       float: right;
       display: block;
     }
-    .navbar.navbar.responsive ul{
+    .navbar.navbar.responsive ul {
         height: 98vh;
         background-color: #484242;
         z-index: 999;
