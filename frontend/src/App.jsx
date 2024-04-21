@@ -17,7 +17,7 @@ import Leads from './pages/Leads/Leads.jsx'
 import { useLocation } from 'react-router-dom'
 
 import CheckToken from './middlewares/CheckToken.jsx'
-import Chatbot from './components/Chatbot/Chatbot.jsx'
+import ReactSimpleChatbot from './components/ReactSimpleChatbot/ReactSimpleChatbot.jsx'
 import { useEffect, useState } from 'react';
 
 
@@ -44,7 +44,7 @@ function Main() {
   return (
     <>  
       { showNavbar && <Navbar/> }
-      { showNavbar && <Chatbot/> }
+      { showNavbar && <ReactSimpleChatbot/> }
       <Routes>
         {/* Authentication */}
         <Route path="/" element={<Login />} /> 
