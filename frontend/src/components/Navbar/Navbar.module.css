@@ -89,6 +89,16 @@ body {
       display: block;
       height: 7vh;
     }
+    .navbar {
+        position: fixed;
+        z-index: 999;
+    }
+    body {
+        padding-top: 7vh;
+    }
+    body::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 780px) {
