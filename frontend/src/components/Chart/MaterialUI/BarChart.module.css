@@ -1,0 +1,9 @@
+.barChart {
+    zoom: 80%;
+}
+
+@media screen and (max-width: 670px) {
+    .barChart {
+        zoom: 66%;
+    }
+}

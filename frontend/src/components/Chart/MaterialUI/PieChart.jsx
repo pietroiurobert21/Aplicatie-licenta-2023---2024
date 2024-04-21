@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { PieChart as Chart} from '@mui/x-charts/PieChart';
 import Typography from '@mui/material/Typography';
+import style from './PieChart.module.css';
 
 
 export default function PieChart(props) {
@@ -12,7 +13,7 @@ export default function PieChart(props) {
         data1.length ? (
           <>
           <Typography> Closed won deals in {props.year} </Typography>
-          <div style={{zoom: '80%'}}>
+          <div className={style.pieChart}>
             <Chart 
               series={[
                 {

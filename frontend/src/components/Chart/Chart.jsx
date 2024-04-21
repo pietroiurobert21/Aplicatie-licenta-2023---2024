@@ -105,8 +105,8 @@ export default function Chart(props) {
     }, [props.year])
 
     return (
-        <div style={{display: 'flex', justifyContent: "center", alignItems: 'start', width: "75vw"}}>
-            <div style={{display: 'flex', flexDirection: 'column', height:'45vh', justifyContent: 'space-between', alignItems: 'center'}}>
+        <div className={style.chartContainer}>
+            <div className={style.stats}>              
               <div className={style.item3}>
                 <Typography> Deals closed this year </Typography>
                 <Typography> {closedDealsYear} </Typography>
@@ -121,10 +121,10 @@ export default function Chart(props) {
                 <div className={style.item1}>
                     <BasicLineChart data={[xAxis, yAxis]} year={props.year}/>
                 </div>
-                <div className={style.item2} style={{gridColumn: "span 3"}}>
+                <div className={style.item2}  >
                     <PieChart data={pieValues} year={props.year}/>
                 </div>
-                <div className={style.item2} style={{gridColumn: "span 4"}}>
+                <div className={style.item2}>
                     <BarChart data={barValues} year={props.year}/>
                 </div>
             </div>

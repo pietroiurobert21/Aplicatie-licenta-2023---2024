@@ -1,0 +1,9 @@
+.pieChart {
+    zoom: 80%;
+}
+
+@media screen and (max-width: 780px) {
+    .pieChart {
+        zoom: 70%;
+    }
+}

@@ -24,3 +24,21 @@
 .organizationContainer ul li:not(.itemName) {
     padding-bottom: 3vh;
 }
+
+@media screen and (max-width: 780px) {
+    .organizationContainer {
+        margin: 0;
+        width: 99%;
+        border-radius: 0px;
+        padding: 0;
+        height: 92vh;
+        overflow: auto;
+    }
+}
+
+@media screen and (max-width: 670px) {
+    .firstRowContainer {
+        flex-direction: column;
+    }
+}
+
