@@ -8,14 +8,14 @@ body {
 .navbar {
     background-color: #384c5c;
     border-bottom: 1px solid #e6e6e6;
-    height: 55px;
+    height: 7vh;
     top: 0;
     width: 100vw;
 
     display: flex;
     flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
+    align-items: start;
+    justify-content: space-between;
 }
 
 .navbar ul {
@@ -59,4 +59,74 @@ body {
 
 #organizationLI:hover {
     color: #dcc708;
+}
+
+.navbar .icon {
+    display: none;
+}
+
+.navbar .logoNavbar {
+    display: flex;
+    align-items: center;
+    justify-content:start;
+    height: 7vh;
+    width: 100%;
+    padding-left: 2%;
+}
+
+.navbar .profile {
+    display: none;
+}
+
+@media screen and (max-width: 780px) {
+    .navbar li:not(:first-child) {display: none;}
+    .navbar #profile {display: none;}
+    .navbar ul {display: flex;flex-direction: column;align-items: end; margin: 0;
+        padding: 0;
+        padding-top: 2vh;}
+    .navbar .icon {
+      float: right;
+      display: block;
+      height: 7vh;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .navbar.responsive li:not(:first-child)
+    {
+        display: block;
+        width: 50vw;
+        height: 7vh;
+        padding: 16;
+    }
+    .navbar.responsive #profile {display: none;}
+    .navbar.responsive {align-items: start;}
+    .navbar.responsive .icon {
+      float: right;
+      display: block;
+    }
+    .navbar.navbar.responsive ul{
+        height: 98vh;
+        background-color: #484242;
+        z-index: 999;
+        overflow: visible;
+        margin: 0;
+        padding: 0;
+        padding-top: 2vh;
+        animation: slideLeft 0.1s ease-in-out; 
+    }
+    .navbar.navbar.responsive .profile{
+        display: block;
+    }
+}
+
+@keyframes slideLeft {
+    from {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0%);
+    }
 }

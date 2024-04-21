@@ -118,7 +118,7 @@ const steps = [
 const theme = {
 	background: '#fff',
 	headerBgColor: '#384c5c',
-	headerFontSize: '20px',
+	headerFontSize: '1rem',
 	botBubbleColor: '#93bad7',
 	headerFontColor: 'white',
 	botFontColor: 'white',

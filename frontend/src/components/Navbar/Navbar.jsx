@@ -7,6 +7,15 @@ import { useEffect, useState } from 'react';
 import { Popover, Position, Menu, toaster, Button } from 'evergreen-ui' // components
 import { UserIcon, LogOutIcon } from 'evergreen-ui' // icons
 
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+
+import { useToggle } from "@uidotdev/usehooks";
+
+function myFunction() {
+
+}
+
 export default function Navbar() {
     const navigate = useNavigate();
     const location = window.location.pathname;
@@ -65,14 +74,18 @@ export default function Navbar() {
         getEmployeeRole()
     }, [])
 
+    const [ on, toggle ] = useToggle(false);
     return (
         <>
-            <div className={style.navbar}>
-                <div style={{display:'flex', alignItems:'center', justifyContent:'center'}}>
+            <div className={on ? `${style.navbar} ${style.responsive}` : style.navbar}>
+                <div className={style.logoNavbar}>
                     <img src={reactLogo} alt="React Logo" />
                     <p>Node CRM</p>
                 </div>
                 <ul>
+                    <li class={style.icon} onClick={toggle}>
+                        <FontAwesomeIcon icon={faBars} />
+                    </li>
                     <li onClick={()=>{navigate('/leads')}}> Leads </li>
                     <li onClick={()=>{navigate('/contacts')}}> Customers </li>
                     <li onClick={()=>{navigate('/tasks')}}> Tasks </li>
@@ -83,6 +96,8 @@ export default function Navbar() {
                     {
                         role=='administrator' && <li id={style.organizationLI} onClick={()=>{navigate('/organization')}}> Organization </li>
                     }
+                    <li onClick={()=>{navigate('/profile')}} className={style.profile}> Profile </li>
+                    <li onClick={()=>{emptyLocalstorage()}} className={style.profile}> Logout </li>
                 </ul>
 
 
