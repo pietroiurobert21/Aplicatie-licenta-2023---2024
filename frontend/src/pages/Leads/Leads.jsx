@@ -107,7 +107,7 @@ export default function Leads() {
                     }
             </>
             }
-            <DialogComponent title={"Add new lead"}  data={shownLead} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewLead} newContact={newLead} handleConfirm={addNewLead}/> 
+            <DialogComponent title={"Add new lead"}  data={newLead} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewLead} newContact={newLead} handleConfirm={addNewLead}/> 
             <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New lead </Button>
         </>
     )

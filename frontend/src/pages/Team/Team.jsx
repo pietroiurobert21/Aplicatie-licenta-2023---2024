@@ -145,7 +145,7 @@ export default function Team() {
                                     </Tooltip>
                                 </p>
                                 { 
-                                userRole=='administrator' &&  colleague.role!='administrator' && <p style={{color: 'red', paddingRight: '2vw'}} onClick={()=>{alert('remove member?'); fireEmployee(colleague.id)}}> <RemoveIcon/> </p> 
+                                userRole=='administrator' &&  colleague.role!='administrator' && <p style={{color: 'red', paddingRight: '2vw'}} onClick={()=>{if (confirm('remove member?')==true) { fireEmployee(colleague.id)}}}> <RemoveIcon/> </p> 
                                 }
                             </li>
                         ))}

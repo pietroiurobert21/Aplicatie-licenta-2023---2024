@@ -74,6 +74,10 @@ body {
     padding-left: 2%;
 }
 
+#profile {
+    margin: auto;
+}
+
 .navbar .profile {
     display: none;
 }
