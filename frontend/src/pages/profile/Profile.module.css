@@ -68,7 +68,7 @@
         margin: 0;
         width: 99%;
         border-radius: 0px;
-        padding: 0;
+        padding-left: 10%;
         height: 92vh;
         overflow: auto;
     }
@@ -78,6 +78,14 @@
 }
 
 @media screen and (max-width: 670px) {
+    .profileContainer {
+        margin: 0;
+        width: 99%;
+        border-radius: 0px;
+        padding: 0;
+        height: 92vh;
+        overflow: auto;
+    }
     .firstRowContainer {
         flex-direction: column;
     }

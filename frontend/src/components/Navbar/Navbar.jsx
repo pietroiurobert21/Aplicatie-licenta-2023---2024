@@ -2,7 +2,7 @@ import { Avatar } from 'evergreen-ui'
 import { useNavigate } from 'react-router-dom';
 import reactLogo from '../../assets/react.svg';
 import style from './Navbar.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { Popover, Position, Menu, toaster, Button } from 'evergreen-ui' // components
 import { UserIcon, LogOutIcon } from 'evergreen-ui' // icons
@@ -74,10 +74,36 @@ export default function Navbar() {
         getEmployeeRole()
     }, [])
 
+    
     const [ on, toggle ] = useToggle(false);
+    
+    const divRef = useRef(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (divRef.current && !divRef.current.contains(event.target)) {
+            toggle(false);
+          }
+        };
+    
+        const handleClickInside = (event) => {
+          if (divRef.current && divRef.current.contains(event.target) && event.target.tagName === 'LI') {
+            toggle(false);
+          }
+        };
+    
+        document.addEventListener('click', handleClickOutside);
+        document.addEventListener('click', handleClickInside);
+    
+        return () => {
+          document.removeEventListener('click', handleClickOutside);
+          document.removeEventListener('click', handleClickInside);
+        };
+      }, [toggle]);
+    
     return (
         <>
-            <div className={on ? `${style.navbar} ${style.responsive}` : style.navbar}>
+            <div ref={divRef} className={on ? `${style.navbar} ${style.responsive}` : style.navbar}>
                 <div className={style.logoNavbar}>
                     <img src={reactLogo} alt="React Logo" />
                     <p>Node CRM</p>
