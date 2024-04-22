@@ -47,3 +47,18 @@
 .invitationContainer {
     display: flex;
 }
+
+@media screen and (max-width: 670px) {
+    .teamContainer {
+        margin: 0;
+        width: 99%;
+        border-radius: 0px;
+        padding: 0;
+        height: 92vh;
+        overflow: auto;
+    }
+    .firstRowContainer {
+        flex-direction: column;
+    }
+}
+
