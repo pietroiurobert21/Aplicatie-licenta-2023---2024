@@ -30,7 +30,6 @@ export default function Dashboard() {
     }, [])
 
     useEffect(() => {
-      console.log(selected)
     }, [selected])
 
     return (

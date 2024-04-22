@@ -29,6 +29,9 @@ export default function Chart(props) {
 
     const retrieveStructuredData = async () => {
       setPieValues([])
+      setBarValues([])
+      setxAxis([])
+      setyAxis([0,0,0,0,0,0,0,0,0,0,0,0])
       setClosedDealsYear(0)
       setClosedDealsMonth(0)
 
@@ -46,7 +49,6 @@ export default function Chart(props) {
         }
       }).then(data=>data.json())
 
-      console.log(res)
 
       res.acceptedDeals
         .filter(value => value.YEAR === props.year)
@@ -97,6 +99,7 @@ export default function Chart(props) {
         setProposedDeals(prevData)    
       })
         
+      
       setBarValues([{ data: acceptedDeals}, {data: rejectedDeals}, {data: proposedDeals}])
     }
   
