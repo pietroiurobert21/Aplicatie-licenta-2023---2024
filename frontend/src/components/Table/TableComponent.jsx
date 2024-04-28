@@ -2,6 +2,7 @@ import { Table, IconButton, TrashIcon, toaster } from 'evergreen-ui'
 import { useEffect, useState } from 'react';
 import DialogComponent from "../Dialog/DialogComponent.jsx"
 import style from "./TableComponent.module.css"
+import ContactContainer from "../ContactContainer/ContactContainer.jsx"
 
 export default function TableComponent(props) {
     
@@ -106,6 +107,15 @@ export default function TableComponent(props) {
                     }
                 </Table.VirtualBody>
             </Table>
+
+            <div className={style.contactContainers}>
+                {
+                    props.data.map((profile, index)=>(
+                        <ContactContainer data={profile} index={index} onClick={() => { setIsShown(true); setShownProfile(profile) }}/>
+                    ))
+                }
+            </div>
+
 
             <DialogComponent title={"View profile"} data={shownProfile} setNewContact={setShownProfile} isShown={isShown} setIsShown={setIsShown} handleConfirm={updateContact}/>
         </div>

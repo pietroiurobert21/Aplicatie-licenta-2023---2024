@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import style from "./Profile.module.css"
 import { useNavigate } from 'react-router-dom';
 
-import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster, Button, Dialog, TextInputField } from 'evergreen-ui'
+import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster, Button, Dialog, TextInputField, TextInput } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
 
 
@@ -132,6 +132,7 @@ export default function Profile(){
                                 onConfirm={() => {updateProfile();setIsShown(false);}}
                                 onCancel={()=>{setIsShown(false)}}
                                 shouldCloseOnOverlayClick={false}
+                                id={style.profileDialog}
                             >
                                 <TextInputField
                                     label="Username"

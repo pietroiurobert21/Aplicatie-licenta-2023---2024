@@ -10,9 +10,13 @@
     overflow: scroll;
 }
 
+.contactContainers {
+    display: none;
+}
 
 @media screen and (max-width: 780px) {
     .table {
+        display: none;
         width: 100%;
     }
     .tableHeader > *{
@@ -22,5 +26,12 @@
     .tableHeader2 {
         width: 200vw;
         overflow: hidden;
+    }
+
+    .contactContainers {
+        display: flex;
+        flex-direction: column;
+        overflow-y: scroll;
+        height: 74.4vh;
     }
 }

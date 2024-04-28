@@ -25,7 +25,7 @@ export default function DialogComponent(props) {
                     onCancel={()=> props.setIsShown(false)}
                     shouldCloseOnOverlayClick={false}
                     >
-                        <Pane height={"50vh"} width="100%">
+                        <Pane height="90" width="90">
                         <TextInputField
                             label="First name"
                             placeholder="First name"

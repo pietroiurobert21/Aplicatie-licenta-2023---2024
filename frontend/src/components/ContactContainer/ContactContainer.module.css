@@ -1,0 +1,23 @@
+.contactContainer {
+    background-color: #fff;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.contactContainer:hover {
+    cursor: pointer;
+    background-color: rgb(60,76,92, .1);
+}
+
+.contactContainer p {
+    font-size: 0.8rem;
+}
+
+@media screen and (min-width: 780px) {
+    .contactContainer {
+        display: none;
+    }
+}
