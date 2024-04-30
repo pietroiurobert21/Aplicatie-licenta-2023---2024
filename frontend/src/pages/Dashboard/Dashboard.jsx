@@ -26,7 +26,6 @@ export default function Dashboard() {
 
     useEffect(() => {
         getYears()
-        console.log(years)
     }, [])
 
     useEffect(() => {

@@ -41,7 +41,6 @@ export default function sendEmail(emailAddress, subject, content) {
         var callback = function(error, data, response) {
             if (error) {
                 reject(error);
-                console.log(error)
             } else {
                 resolve(response)
             }

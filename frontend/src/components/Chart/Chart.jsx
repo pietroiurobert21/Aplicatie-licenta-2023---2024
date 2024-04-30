@@ -54,7 +54,6 @@ export default function Chart(props) {
         .filter(value => value.YEAR === props.year)
         .map((value, index) => {
           const newDataObject = {id: index, value: +value.COUNT_VALUE, label: labels[+value.MONTH - 1]}
-          console.log(value)
           setPieValues(prevData => [...prevData, newDataObject]);
 
           setxAxis(prevData => [...prevData, +value.MONTH]);

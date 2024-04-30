@@ -17,7 +17,6 @@ export default function EmailTemplates(props) {
         }).then(data=>data.json())
         .then(data=>{
             setTemplates(data.templates)
-            console.log(data)
         })
     }
     

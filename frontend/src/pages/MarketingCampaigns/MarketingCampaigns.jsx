@@ -16,7 +16,7 @@ export default function MarketingCampaigns() {
                 'Authorization': `Bearer ${accessToken}`
             }
         }).then(data => data.json())
-        .then(data => { setCampaings(data.campaigns); console.log(data.campaigns) })
+        .then(data => { setCampaings(data.campaigns) })
     }
 
     useEffect(() => {

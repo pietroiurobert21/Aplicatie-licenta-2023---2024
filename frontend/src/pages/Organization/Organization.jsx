@@ -23,7 +23,6 @@ export default function Organization() {
         if (responseCode === 200) {
             const data = await res.json()
             setOrganization(data.organization)
-            console.log(data)
         } else if (res.status == 401) {
             localStorage.removeItem("accessToken")
         }
@@ -45,8 +44,6 @@ export default function Organization() {
             setTotalRevenue(0)
             const organization = await res.json()
             const deals = organization.organizationDeals
-            console.log(deals)
-
             deals.map((deal, index)=>{
                 if (deal.status === 'accepted') {
                     setTotalRevenue(prev => prev + deal.value)

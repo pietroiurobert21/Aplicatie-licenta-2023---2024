@@ -58,7 +58,7 @@ export default function Tasks() {
                 'Authorization': `Bearer ${accessToken}`
             }
         }).then(data=>data.json())
-        .then(data=> {setTasks(data.tasks);console.log(data.tasks);});
+        .then(data=> {setTasks(data.tasks)});
     }
 
     const retrieveTaskAssignedTo = async () => {
@@ -97,8 +97,6 @@ export default function Tasks() {
             })
             setEffect(Math.floor(Math.random() * 1000))
         }
-
-        console.log(newTask)
     }
 
     const [role, setRole] = useState('')
@@ -156,7 +154,6 @@ export default function Tasks() {
     const [ isShown, setIsShown ] = useState(false);
 
     const updateTask = async (task) => {
-        console.log(task)
         await fetch('http://localhost:3000/tasks/updateTask', {
             method: 'PUT',
             headers: {

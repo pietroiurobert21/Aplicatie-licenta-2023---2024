@@ -29,7 +29,6 @@ export default function Team() {
         if (responseCode === 200) {
             const data = await res.json()
             setTeam(data.colleagues)
-            console.log(data)
             setIsLoading(false)
         } else if (res.status == 401) {
             localStorage.removeItem("accessToken")
@@ -49,7 +48,6 @@ export default function Team() {
         if (responseCode === 200) {
             const data = await res.json()
             setOrganization(data.organization)
-            console.log(data)
         } else if (res.status == 401) {
             localStorage.removeItem("accessToken")
         }

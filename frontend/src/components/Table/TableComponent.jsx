@@ -23,7 +23,6 @@ export default function TableComponent(props) {
             toaster.success("contact deleted successfully")
             props.setUpdated(Math.floor(Math.random() * 9000))
         } catch(error) {
-            console.log(error)
             toaster.warning("error deleting contact")
         }
     }
@@ -52,7 +51,6 @@ export default function TableComponent(props) {
     
     const updateContact = async () => {
         if (shownProfile) {
-            console.log(shownProfile)
             await fetch('http://localhost:3000/contacts/updateContact', {
                 method: 'PUT',
                 headers: {

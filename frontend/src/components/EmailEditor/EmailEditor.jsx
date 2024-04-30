@@ -71,7 +71,6 @@ export default function EmailTemplate(props) {
 
   const onReady = () => {
     // editor is ready
-    console.log('onReady');
   };
 
   useEffect(()=>{

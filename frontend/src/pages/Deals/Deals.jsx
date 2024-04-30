@@ -25,7 +25,6 @@ export default function Deals() {
             const deals = await res.json()
             setDeals(deals.organizationDeals)
             setLoading(false)
-            console.log(deals)
         }
     }
 
@@ -77,7 +76,6 @@ export default function Deals() {
 
         if (res.status == 200) {
             const data = await res.json()
-            console.log(data)
             setContacts(data.contacts)
         } else if (res.status == 401) {
             localStorage.removeItem("accessToken")

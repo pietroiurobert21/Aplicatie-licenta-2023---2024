@@ -40,7 +40,6 @@ export default function Navbar() {
         if (responseCode === 200) {
             const data = await res.json()
             setUserData(data)
-            console.log(userData)
             setIsLoading(false)
         }
     }
