@@ -41,6 +41,7 @@ function Main() {
     setShowNavbar(navbarPaths.includes(location.pathname))
   }, [location])
 
+  
   return (
     <>  
       { showNavbar && <Navbar/> }
