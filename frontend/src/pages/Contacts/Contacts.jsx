@@ -150,8 +150,6 @@ export default function Contacts() {
                             <TableComponent data={contacts} setUpdated={setUpdated} setProfiles={setContacts}/>
                             <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> 
                                 <RocketSlantIcon/> New marketing campaign </Button>
-                            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> 
-                                <NewPersonIcon/> New contact </Button>
 
 
                             <Dialog
@@ -194,9 +192,13 @@ export default function Contacts() {
                             </Dialog>
                         </>
                     ) : <p> loading </p>
+
                 }
+
                 </>
         }
+        <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> 
+        <NewPersonIcon/> New contact </Button>
         <DialogComponent title={"Add new customer"} data={newContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         </div> 
     )

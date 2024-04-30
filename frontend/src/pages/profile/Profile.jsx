@@ -78,8 +78,6 @@ export default function Profile(){
 
 
     const updateProfile = async () => {
-        setUpdated(Math.floor(Math.random() * 9000))
-
         await fetch('http://localhost:3000/users', {
             method: 'PUT',
             headers: {
@@ -87,7 +85,7 @@ export default function Profile(){
                 'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify({id: newUserData.id, username: newUserData.username, firstName: newUserData.firstName, lastName: newUserData.lastName})
-        });
+        }).then(()=>setUpdated(Math.floor(Math.random() * 9000)));
     }
 
     const [ isShown, setIsShown ] = useState(false)
