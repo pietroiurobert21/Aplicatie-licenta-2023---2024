@@ -109,7 +109,7 @@ export default function Navbar() {
                     <p>Node CRM</p>
                 </div>
                 <ul>
-                    <li class={style.icon} onClick={toggle}>
+                    <li className={style.icon} onClick={toggle}>
                         <FontAwesomeIcon icon={faBars} />
                     </li>
                     <li onClick={()=>{navigate('/leads')}}> Leads </li>

@@ -1,15 +1,12 @@
-#dealsTable {
-    width: 100vw;
-    padding: 2%;
-    padding-top: 0;
-    margin-top: 16px;
+#marketingTable {
+    display: block;
 }
- 
-.dealContainers {
+
+.marketingContainers {
     display: none;
 }
 
-.dealContainer {
+.marketingContainer {
     background-color: #fff;
     padding-left: 5%;
     padding-right: 5%;
@@ -17,25 +14,26 @@
     padding-bottom: 2%;
     border-bottom: 1px solid #e6e6e6;
 }
-.dealContainer:hover {
+.marketingContainer:hover {
     cursor: pointer;
     background-color: rgb(60,76,92, .1);
 }
 
-.dealContainer p {
+.marketingContainer p {
     font-size: 0.8rem;
 }
 
+
 @media screen and (max-width: 780px) {
-    #dealsTable {
+    #marketingTable {
         display: none;
     }
 
-    .dealContainer {
+    .marketingContainer {
         display: block;
     }
 
-    .dealContainers {
+    .marketingContainers {
         display: flex;
         flex-direction: column;
         overflow-y: scroll;

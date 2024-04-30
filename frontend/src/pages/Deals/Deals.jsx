@@ -1,5 +1,5 @@
 import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox, IconButton, TrashIcon, toaster } from "evergreen-ui"
-
+import style from './Deals.module.css';
 import { useEffect, useState } from "react";
 import CheckToken from '../../middlewares/CheckToken'
 
@@ -175,7 +175,7 @@ export default function Deals() {
             {
                 loading ? <p>loading</p> : (
             <>
-            <Table style={{width:"100vw", padding:"2%", paddingTop: "0", marginTop: "16px"}}>
+            <Table id={style.dealsTable}>
                 <Table.Head style={{userSelect: 'none'}}>
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
                     <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('value')}}> value </Table.TextHeaderCell>
@@ -213,6 +213,20 @@ export default function Deals() {
 
                 </Table.VirtualBody>
             </Table>
+
+            <div className={style.dealContainers}>
+                {deals.map(deal=>(
+                    <div className={style.dealContainer} onClick={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status) }}>
+                        <p> Value: {deal.value} </p>
+                        {deal.Contact ? <p>Contact: {deal.Contact.firstName} {deal.Contact.lastName}</p> : <p>Contact: (contact removed)</p>}
+                        <p> Date: {deal.date} </p>
+                        {deal.Employee ? <p>Employee: {deal.Employee.User.firstName} {deal.Employee.User.lastName}</p> : <p>Employee: (employee removed)</p>}
+                        <p>Description:</p>
+                        <p> {deal.description} </p>
+                        <p> Status: <Badge color={deal.status === 'accepted' ? 'green' : deal.status === 'rejected' ? 'red' : 'inherit'}> {deal.status} </Badge> </p>
+                    </div>
+                ))}
+            </div>
 
             <Dialog
                 isShown={isShown}
