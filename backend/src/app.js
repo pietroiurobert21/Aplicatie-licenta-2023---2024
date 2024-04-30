@@ -16,8 +16,8 @@ const campaigns_routes = require('./routes/campaign-routes');
 
 
 dotenv.config(); // Configure dotenv
-// app.use(cors({origin: 'http://localhost:5173'}));
-app.use(cors({origin: 'https://6630e6f66353e50569d34982--node-crm.netlify.app'}));
+app.use(cors({origin: 'http://localhost:5173'}));
+// app.use(cors({origin: 'https://6630e6f66353e50569d34982--node-crm.netlify.app'}));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use('/users', user_routes);
