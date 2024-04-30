@@ -123,7 +123,7 @@ export default function Team() {
                         </div>
                 </Dialog>
 
-                <Button onClick={() => setIsShown(true)}> invite </Button>
+                {userRole==="administrator" && <Button onClick={() => setIsShown(true)}> invite </Button>}
             </div>
 
             <div className={style.teamBody}>
