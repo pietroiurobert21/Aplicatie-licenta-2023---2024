@@ -107,7 +107,7 @@ export default function Navbar() {
                     <img src={reactLogo} alt="React Logo" />
                     <p>Node CRM</p>
                 </div>
-                <ul style={{ userSelect: 'none' }}>
+                <ul>
                     <li className={style.icon} onClick={toggle}>
                         <FontAwesomeIcon icon={faBars}/>
                     </li>

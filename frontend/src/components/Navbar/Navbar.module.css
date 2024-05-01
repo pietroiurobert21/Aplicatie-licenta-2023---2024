@@ -26,6 +26,9 @@ body {
     justify-content: start;
     flex-direction: row;
     width: 70vw;
+    user-select: none;
+    height: 7vh;
+    margin: 0;
 }
 
 .navbar ul li {
