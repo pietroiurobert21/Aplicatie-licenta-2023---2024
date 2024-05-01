@@ -23,7 +23,7 @@ export default function TabsContact() {
         ))}
       </Tablist>
 
-      <Pane padding={16} background="tint1" flex="1">
+      <Pane padding={16} flex="1">
         {tabs.map((tab, index) => (
           <Pane
             aria-labelledby={tab}
