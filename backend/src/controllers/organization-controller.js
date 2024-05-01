@@ -203,16 +203,37 @@ const changeCodeByOrganizationId = async (req, res) => {
 }
 
 
+const getLeaderboard = async (req, res) => {
+    try {
+        const leaderboard = await Organization.findAll({
+                order: [ ['points', 'DESC'] ],
+                limit: 50 }
+        );
+        if (leaderboard) {
+            leaderboard.forEach((org)=>delete org.dataValues.code)
+            res.status(200).json({success: true, leaderboard});
+        } else {
+            res.status(404).json({success: false, error: "no organization found"});
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({success: false, error: "error occured"});
+    }
+}
+
+
 module.exports = {
     postOrganization,
     getOrganizationByCode,
     getOrganizationMembers,
    // getOrganizationById,
     
-   getOrganizationByUser,
+    getOrganizationByUser,
     
     getOrganizationDeals,
     getStructuredOrganizationDeals,
     getOrganizationDealsYears,
-    changeCodeByOrganizationId
+    changeCodeByOrganizationId,
+
+    getLeaderboard
 }

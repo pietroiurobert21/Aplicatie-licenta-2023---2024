@@ -1,0 +1,43 @@
+.leaderboardItem {
+    width: 98%;
+    padding-left: 1%;
+    padding-right: 1%;
+    height: 5vh;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+}
+
+.leaderboardItem:hover {
+    cursor: pointer;
+    background-color: rgb(60,76,92, .1);
+}
+
+.leaderboardContainer {
+    width: 70vw;
+    height: 80vh;
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    margin: auto;
+    border-radius: 20px;
+    padding: 2%;
+
+    font-family: 'Roboto', sans-serif;
+}
+
+.leaderboardList {
+    overflow-y: scroll;
+    height: 90%;
+}
+
+.leaderboardContainer b {
+    border-bottom: 1px solid #e6e6e6;
+    display: block;
+    text-align: center;
+}
+
+.itemName {
+    color: #7c7e82;
+}

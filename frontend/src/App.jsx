@@ -13,6 +13,7 @@ import Team from './pages/Team/Team.jsx'
 import Deals from './pages/Deals/Deals.jsx'
 import Tasks from './pages/Tasks/Tasks.jsx'
 import Organization from './pages/Organization/Organization.jsx'
+import TabsOrganization from './pages/TabsOrganization/TabsOrganization.jsx'
 import Leads from './pages/Leads/Leads.jsx'
 import { useLocation } from 'react-router-dom'
 
@@ -58,7 +59,7 @@ function Main() {
         <Route path="/team" element={<Team />} />
         <Route path="/deals" element={<Deals />} />
         <Route path="/tasks" element={<Tasks />} />
-        <Route path="/organization" element={<Organization />} />
+        <Route path="/organization" element={<TabsOrganization />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>
