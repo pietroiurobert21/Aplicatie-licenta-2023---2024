@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard/Dashboard.jsx'
 import Contacts from './pages/Contacts/Contacts.jsx'
 import TabsContact from './pages/TabsContacts/TabsContacts.jsx'
+import TabsProfile from './pages/TabsProfile/TabsProfile.jsx'
 
 import NotFound from './pages/404_page/NotFound.jsx'
 import Navbar from './components/Navbar/Navbar.jsx'
@@ -55,7 +56,7 @@ function Main() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/contacts" element={<TabsContact />} />
         <Route path="/leads" element={<Leads />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<TabsProfile />} />
         <Route path="/team" element={<Team />} />
         <Route path="/deals" element={<Deals />} />
         <Route path="/tasks" element={<Tasks />} />

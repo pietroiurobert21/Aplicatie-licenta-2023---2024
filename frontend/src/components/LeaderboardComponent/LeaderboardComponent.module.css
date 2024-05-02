@@ -41,3 +41,19 @@
 .itemName {
     color: #7c7e82;
 }
+
+@media screen and (max-width: 780px)  {
+    .leaderboardContainer {
+        margin: 0;
+        width: 99%;
+        border-radius: 0px;
+        padding: 0;
+        height: 92vh;
+        overflow: auto;
+    }
+
+    .leaderboardList {
+        padding-right: 5%;
+        padding-left: 5%;
+    }
+}

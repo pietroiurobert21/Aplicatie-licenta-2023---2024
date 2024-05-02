@@ -96,10 +96,28 @@ const deleteEmployee = async (req, res) => {
     }
 }
 
+const getLeaderboard = async (req, res) => {
+    try {
+        const employees = await Employee.findAll({
+            order: [[ 'points', 'DESC' ]],
+            limit: 50,
+            include: [User]
+        })
+        if (employees) {
+            res.status(200).json({ success: true, employees });
+        } else {
+            res.status(404).json({ success:false, error: "no leaderboard found" });
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error deleting the leaderboard" });
+    }
+}
 
 module.exports = {
     postEmployee,
     getColleagues,
     deleteEmployee,
-    getEmployee
+    getEmployee,
+    getLeaderboard
 }
