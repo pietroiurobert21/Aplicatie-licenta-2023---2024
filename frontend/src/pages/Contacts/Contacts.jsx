@@ -1,4 +1,4 @@
-import { toaster, Button, NewPersonIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon } from 'evergreen-ui'
+import { toaster, Button, NewPersonIcon, DocumentIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
 import style from './Contacts.module.css'
@@ -8,6 +8,8 @@ import DialogComponent from '../../components/Dialog/DialogComponent.jsx';
 import EmailTemplates from "../EmailTemplates/EmailTemplates.jsx"
 import sendEmail from "../../components/ElasticEmail/ElasticEmail.js"
 
+import FileUploader from '../../components/FileUploader/FileUploader.jsx'
+
 export default function Contacts() {
     CheckToken()
 
@@ -15,6 +17,7 @@ export default function Contacts() {
 
     const [ isShown, setIsShown ] =   useState(false)
     const [ shownContact, setShownContact ] = useState({})
+    const [ uploadIsShown, setUploadIsShown ] = useState(false);
 
     const [ updated, setUpdated ] = useState()
 
@@ -203,8 +206,18 @@ export default function Contacts() {
 
                 </>
         }
-        <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> 
-        <NewPersonIcon/> New contact </Button>
+        <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
+        <Button appearance="default" intent="success" style={{left:"2%"}} onClick={()=>setUploadIsShown(true)}> <DocumentIcon/> Import data </Button>
+            <Dialog
+            isShown={uploadIsShown}
+            title="Import data from external files"
+            onCloseComplete={() => setUploadIsShown(false)}
+            onCancel={() => setUploadIsShown(false)}
+        >
+            <FileUploader/>
+        </Dialog>
+
+
         <DialogComponent title={"Add new customer"} data={newContact} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewContact} newContact={newContact} handleConfirm={addNewContact}/> 
         </div> 
     )

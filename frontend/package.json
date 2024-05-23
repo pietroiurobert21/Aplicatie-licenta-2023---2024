@@ -23,12 +23,14 @@
     "evergreen-ui": "^7.1.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-drag-drop-files": "^2.3.10",
     "react-email-editor": "^1.7.9",
     "react-google-charts": "^4.0.1",
     "react-router-dom": "^6.22.2",
     "react-simple-chatbot": "^0.6.1",
     "router": "^1.3.8",
-    "styled-components": "^6.1.8"
+    "styled-components": "^6.1.8",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
