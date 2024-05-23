@@ -1,4 +1,5 @@
 const express = require("express");
+const { Sequelize, Op } = require('sequelize');
 
 const Employee = require("../database/models/employee");
 const Organization = require("../database/models/organization");
@@ -9,11 +10,24 @@ const addContact = async (req, res) => {
     const info = req.body
     info.organizationId = req.organizationId
     try {
-        const newContact = await Contact.create(info)
-        res.status(201).json({success: true, contact: newContact})
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (info.emailAddress && !emailRegex.test(info.emailAddress)) {
+            res.status(400).json({ success: false, error: "Invalid email format!" });
+        } else {
+            const existingContactName = await Contact.findOne(({
+                where: {firstName: info.firstName, lastName: info.lastName}
+            }));
+
+            if (existingContactName) {
+                res.status(400).json({ success: false, error: "Contact name already exists!"})
+            } else {
+                const newContact = await Contact.create(info)
+                res.status(201).json({success: true, contact: newContact})
+            }
+        }
     } catch (error) {
         console.log(error)
-        res.status(500).json({ success:false, error: "error creating the contact" });
+        res.status(500).json({ success:false, error: "Contact email already exists!" });
     }
 }
 
@@ -91,6 +105,18 @@ const updateContact = async (req, res) => {
     const body = req.body
     try {
         const contact = await Contact.findByPk(body.id)
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (contact.firstName !== body.firstName || contact.lastName !== body.lastName) {
+            const existingContactName = await Contact.findOne({
+                where: { firstName: body.firstName, lastName: body.lastName}
+            })
+            if (existingContactName) {
+                return res.status(400).json({ success: false, error: "Contact name already exists!"})
+            } else if (body.emailAddress && !emailRegex.test(body.emailAddress)) {
+                return res.status(400).json({ success: false, error: "Invalid email format!" });
+            }
+        } 
         contact.firstName = body.firstName
         contact.lastName = body.lastName
         contact.professionalTitle = body.professionalTitle
@@ -99,10 +125,10 @@ const updateContact = async (req, res) => {
         contact.phoneNumber = body.phoneNumber
         contact.companyName = body.companyName
         await contact.save()
-        res.status(200).json({success: true, message: "contact deleted successfully"})
+        return res.status(200).json({success: true, message: "Contact modified successfully!"})
     } catch (error) {
         console.log(error)
-        res.status(500).json({ success:false, error: "error contact deal" });
+        return res.status(500).json({ success:false, error: "Contact email already exists!" });
     }
 }
 

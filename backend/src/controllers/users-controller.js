@@ -34,8 +34,12 @@ const getUser = async (req, res) => {
 
 const postUser = async (req, res) => {
     const body = req.body; 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (Object.values(body).some(value => value === "")) {
         res.status(400).json({ success: false, error: "Empty fields are not allowed" });
+        return;
+    } else if (body.email && !emailRegex.test(body.email)) {
+        res.status(400).json({ success: false, error: "Invalid email format" });
         return;
     }
     try {

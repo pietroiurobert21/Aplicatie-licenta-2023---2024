@@ -16,7 +16,7 @@ const sequelize = new Sequelize('CRM', 'postgres', '1234', {
 //     }
 // });
 
-sequelize.sync()
+sequelize.sync({ alter: true })
 .then(() => { 
     console.log('Models successfully (re)created'); 
 }).catch((err) => { 

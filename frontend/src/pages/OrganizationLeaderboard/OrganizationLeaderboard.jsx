@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LeaderboardItem from "../../components/LeaderboardComponent/LeaderboardComponent";
+import LeaderboardComponent from "../../components/LeaderboardComponent/LeaderboardComponent";
 
 export default function OrganizationLeaderboard() {
     const accessToken = localStorage.getItem('accessToken');
@@ -23,8 +23,9 @@ export default function OrganizationLeaderboard() {
     return (
         <>
             {
-                leaderboard.length>0 ? <LeaderboardItem items={leaderboard}/> : <p> Loading... </p>
+                leaderboard.length>0 ? <LeaderboardComponent items={leaderboard}/> : <p> Loading... </p>
             }
         </>
     )
 }
+

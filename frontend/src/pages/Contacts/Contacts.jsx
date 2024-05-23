@@ -81,7 +81,7 @@ export default function Contacts() {
             }
 
         if (missingFields==false) {
-            await fetch("http://localhost:3000/contacts", {
+            const response = await fetch("http://localhost:3000/contacts", {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -89,6 +89,12 @@ export default function Contacts() {
                 },
                 body: JSON.stringify(newContact)
             })
+            if (response.ok) {
+                toaster.success("contact added!")
+            } else {
+                const responseJson = await response.json()
+                toaster.danger(responseJson.error)
+            }
             setUpdated(Math.floor(Math.random() * 9000))
         } else {
             toaster.danger('missing fields!');

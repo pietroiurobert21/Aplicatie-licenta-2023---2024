@@ -35,7 +35,7 @@ export default function Leads() {
             }
         console.log(newLead)
         if (missingFields==false) {
-            await fetch("http://localhost:3000/contacts", {
+            const response = await fetch("http://localhost:3000/contacts", {
                 method: 'POST',
                 headers: {
                     'Content-type': 'application/json',
@@ -43,6 +43,12 @@ export default function Leads() {
                 },
                 body: JSON.stringify(newLead)
             })
+            if (response.ok) {
+                toaster.success("contact modified successfully!")
+            } else {
+                const responseJson = await response.json();
+                toaster.danger(responseJson.error)
+            }
             setUpdated(Math.floor(Math.random() * 9000))
         } else {
             toaster.danger('missing fields!');

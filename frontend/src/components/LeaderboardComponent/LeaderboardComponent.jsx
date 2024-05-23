@@ -1,6 +1,6 @@
 import style from './LeaderboardComponent.module.css';
 
-export default function LeaderboardItem(props) {
+export default function LeaderboardComponent(props) {
     const items = props.items;
     return (
         <div className={style.leaderboardContainer}>
@@ -21,3 +21,4 @@ export default function LeaderboardItem(props) {
         </div>
     );
 }
+

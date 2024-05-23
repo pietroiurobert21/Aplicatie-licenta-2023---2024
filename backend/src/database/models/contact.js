@@ -24,6 +24,7 @@ const Contact = sequelize.define('Contact', {
         allowNull: true,
     },
     emailAddress: {
+        unique: true,
         type: Sequelize.STRING,
         allowNull: false,
     },

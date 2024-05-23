@@ -51,7 +51,7 @@ export default function TableComponent(props) {
     
     const updateContact = async () => {
         if (shownProfile) {
-            await fetch('http://localhost:3000/contacts/updateContact', {
+            const response = await fetch('http://localhost:3000/contacts/updateContact', {
                 method: 'PUT',
                 headers: {
                     'Content-type': 'application/json',
@@ -68,6 +68,12 @@ export default function TableComponent(props) {
                     companyName: shownProfile.companyName
                 })
             })
+            if (response.ok) {
+                toaster.success("contact modified successfully!")
+            } else {
+                const responseJson = await response.json();
+                toaster.danger(responseJson.error)
+            }
             props.setUpdated(Math.floor(Math.random() * 9000))
         }
     }
