@@ -5,7 +5,7 @@ import { toaster } from 'evergreen-ui';
 
 const fileTypes = ["CSV", "XLSX"];
 
-export default function DragDrop() {
+export default function DragDrop(props) {
     const [file, setFile] = useState(null);
     const [jsonData, setJsonData] = useState(null);
     const accessToken = localStorage.getItem("accessToken")
@@ -13,33 +13,7 @@ export default function DragDrop() {
     const [ contactsAdded, setConctactsAdded ] = useState(0)
     
     const [organizationId, setOrganizationId] = useState(-1)
-    
 
-    const addNewContact = async (contact) => {
-        const response = await fetch("http://localhost:3000/contacts", {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'Authorization': `Bearer ${accessToken}`
-            },
-            body: JSON.stringify(contact)
-        })
-        if (response.ok) {
-            setConctactsAdded(prev=>prev+1);
-        }
-    }
-
-    const saveExternalData = async () => {
-        // setConctactsAdded(0);
-        // jsonData.foreach((contact) => {
-        //     contact.organizationId = organizationId
-        //     addNewContact(contact)
-        // })
-        // if (contactsAdded > 0) {
-        //     toaster.success(contactsAdded + " contacts added!")
-        //     setUpdated(Math.floor(Math.random() * 9000))
-        // }
-    }
 
     const getOrganization = async () => {
         await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
@@ -69,7 +43,7 @@ export default function DragDrop() {
                 const json = XLSX.utils.sheet_to_json(worksheet);
                 
                 setJsonData(json);
-                saveExternalData();
+                props.setJSONArray(json);    
             };
 
             reader.readAsArrayBuffer(file);

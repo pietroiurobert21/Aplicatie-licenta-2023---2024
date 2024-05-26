@@ -236,7 +236,7 @@ export default function Deals() {
                 confirmLabel="Custom Label">
                 <SelectMenu
                     title="Select name"
-                    options={contacts.map(contact => ({ label: contact.firstName, value: contact.firstName, key: contact.id }))}
+                    options={contacts.map(contact => ({ label:  contact.emailAddress, value: contact.emailAddress, key: contact.id }))}
                     selected={selected}
                     onSelect={(item) => {setSelected(item.value);  setNewDeal({ ...newDeal, ["contactId"]: +item.key }); }}>
                         
@@ -274,6 +274,12 @@ export default function Deals() {
                         name="contact"
                         disabled
                         value={shownDeal.Contact ? shownDeal.Contact.firstName + " " + shownDeal.Contact.lastName : "(contact removed)"}/>
+                    <TextInputField
+                        label="Email"
+                        placeholder="Email"
+                        name="email"
+                        disabled
+                        value={shownDeal.Contact ? shownDeal.Contact.emailAddress : "(contact removed)"}/>
                     <TextInputField 
                         label="Value"
                         placeholder="Value"

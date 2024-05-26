@@ -17,6 +17,7 @@ export default function Contacts() {
     const [ isShown, setIsShown ] =   useState(false)
     const [ shownContact, setShownContact ] = useState({})
     const [ uploadIsShown, setUploadIsShown ] = useState(false);
+    const [organizationId, setOrganizationId] = useState(-1)
 
     const [ updated, setUpdated ] = useState()
 
@@ -56,8 +57,7 @@ export default function Contacts() {
             setContacts(data.contacts)
         }
     }
-    const [organizationId, setOrganizationId] = useState(-1)
-    
+
     const getOrganization = async () => {
         await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
             method: 'GET',
@@ -67,15 +67,16 @@ export default function Contacts() {
             }
         }).then(data=>data.json())
         .then(data=>{
-            setOrganizationId(data.organization.organizationId);
-            setNewContact(prev=>({...prev, ['organizationId']: data.organization.organizationId}));
+            setOrganizationId(data.organization.id);
+            setNewContact(prev=>({...prev, ['organizationId']: data.organization.id}));
         })
     }
 
-    const addNewContact = async () => {
+    const addNewContact = async (contact) => {
+        console.log(contact)
         let missingFields = false;
         for(let key in newContact)
-            if (newContact[key] == '') {
+            if (contact[key] == '') {
                 missingFields = true;
             }
 
@@ -86,7 +87,7 @@ export default function Contacts() {
                     'Content-type': 'application/json',
                     'Authorization': `Bearer ${accessToken}`
                 },
-                body: JSON.stringify(newContact)
+                body: JSON.stringify(contact)
             })
             if (response.ok) {
                 toaster.success("contact added!")
@@ -132,6 +133,13 @@ export default function Contacts() {
         setUpdated(Math.floor(Math.random() * 9000))
     }
 
+    const saveMultipleContacts = async () => {
+        for (const contact of jsonArray) {
+            contact.organizationId = organizationId
+            await addNewContact(contact);
+        }
+        setUpdated(prev => prev + 1);
+    }
 
 
     useEffect(() => {
@@ -145,6 +153,7 @@ export default function Contacts() {
     
 
     const [shownSelected, setShownSelected] = useState()
+    const [ jsonArray, setJSONArray ] = useState([])
     return (
         <div className={style.contactsPage}>  
         {
@@ -214,8 +223,9 @@ export default function Contacts() {
             title="Import data from external files"
             onCloseComplete={() => setUploadIsShown(false)}
             onCancel={() => setUploadIsShown(false)}
+            onConfirm={()=>{console.log(jsonArray); saveMultipleContacts()}}
         >
-            <FileUploader/>
+            <FileUploader setJSONArray={setJSONArray}/>
         </Dialog>
 
 

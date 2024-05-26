@@ -20,7 +20,7 @@ export default function DialogComponent(props) {
             <Dialog
                     isShown={isShown}
                     title={props.title}
-                    onConfirm={()=>{props.handleConfirm(), props.setIsShown(false)}}
+                    onConfirm={()=>{props.handleConfirm(props.newContact), props.setIsShown(false)}}
                     onCloseComplete={() => props.setIsShown(false)}
                     onCancel={()=> props.setIsShown(false)}
                     shouldCloseOnOverlayClick={false}

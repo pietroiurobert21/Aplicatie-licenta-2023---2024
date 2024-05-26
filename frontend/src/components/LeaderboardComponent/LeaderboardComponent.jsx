@@ -12,7 +12,7 @@ export default function LeaderboardComponent(props) {
                     <div className={style.leaderboardItem} key={index}>
                         <div style={{ display: 'flex', gap: '45%', width: '80%' }}>
                             <p>{index + 1}.</p>
-                            {item.name ? <p>{item.name}</p> : (item.User && <p>{item.User.firstName} {item.User.lastName} ( {item.User.username} ) </p>)}
+                            {item.name ? <p>{item.name}</p> : (item.User && <p> {item.User.username} </p>)}
                         </div>
                         <p style={{ width: '10%' }}>{item.points} points</p>
                     </div>
