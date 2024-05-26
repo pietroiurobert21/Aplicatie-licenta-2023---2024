@@ -15,12 +15,24 @@ export default function DialogComponent(props) {
         props.setNewContact({ ...props.data, [name]: value });
     };
 
+    function validatePhoneNumber(phoneNumber) {
+        var regex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        return regex.test(phoneNumber);
+    }
+
     return (
         <>
             <Dialog
                     isShown={isShown}
                     title={props.title}
-                    onConfirm={()=>{props.handleConfirm(props.newContact), props.setIsShown(false)}}
+                    onConfirm={()=>{ 
+                        if (validatePhoneNumber(props.newContact.phoneNumber))  {
+                            props.handleConfirm(props.newContact), props.setIsShown(false)
+                        } else {
+                            toaster.danger("Invalid phone number");
+                            return;
+                        }
+                    }}
                     onCloseComplete={() => props.setIsShown(false)}
                     onCancel={()=> props.setIsShown(false)}
                     shouldCloseOnOverlayClick={false}
@@ -69,6 +81,7 @@ export default function DialogComponent(props) {
                             label="Phone Number"
                             placeholder="Phone number"
                             name="phoneNumber"
+                            type="number"
                             defaultValue={profileData.phoneNumber}
                             onChange={handleInputChange}
                         />
