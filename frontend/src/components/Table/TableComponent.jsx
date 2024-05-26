@@ -81,12 +81,11 @@ export default function TableComponent(props) {
     const [ selectedContact, setSelectedContact ] = useState();
     return (
         <div className={style.tableComponent}>
-            <p style={{paddingLeft: '2%'}}> Total: {props.data.length} records </p>
-            <Table className={style.table} width={"99vw"}>
+            <Table className={style.table}>
                 <Table.Head className={style.tableHeader} style={{userSelect: 'none'}}  >
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("firstName")}>First Name</Table.TextHeaderCell>
-                    <Table.TextHeaderCell   isSelectable onClick={()=>sortingTable("lastName")}>Last Name</Table.TextHeaderCell>
+                    <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("lastName")}>Last Name</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("professionalTitle")}>Professional Title</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("companyName")}>Company</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("emailAddress")}>Email Address</Table.TextHeaderCell>
@@ -95,7 +94,7 @@ export default function TableComponent(props) {
                 </Table.Head>
 
 
-                <Table.VirtualBody height={440} className={style.tableHeader2}>
+                <Table.VirtualBody height={"70vh"} className={style.tableHeader2}>
                     {
                         props.data.map((profile, index)=>(
                             <Table.Row key={profile.id} isSelectable onSelect={() => { setIsShown(true); setShownProfile(profile) }}className={style.tableHeader2}>

@@ -156,6 +156,14 @@ export default function Contacts() {
     const [ jsonArray, setJSONArray ] = useState([])
     return (
         <div className={style.contactsPage}>  
+            <div className={style.headerContacts}>
+                <p> Total: {contacts.length} records </p>
+                <div className={style.buttons}>
+                    <button onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </button>
+                    <button onClick={()=>setUploadIsShown(true)}> <DocumentIcon/> Import data </button>
+                    { contacts!=-1 && <button onClick={() => setShowMarketingDialog(true)}> <RocketSlantIcon/> New marketing campaign </button> }
+                </div>
+            </div>
         {
             contacts == -1 ? <p style={{width:"100vw", textAlign:'center'}}> No contacts found </p> :
                 <>
@@ -163,10 +171,6 @@ export default function Contacts() {
                     contacts ? (
                         <>
                             <TableComponent data={contacts} setUpdated={setUpdated} setProfiles={setContacts}/>
-                            <Button appearance="default" intent='none' style={{left:"2%"}} onClick={() => setShowMarketingDialog(true)}> 
-                                <RocketSlantIcon/> New marketing campaign </Button>
-
-
                             <Dialog
                                 isShown={showMarketingDialog}
                                 title="Set up a marketing campagin"
@@ -214,8 +218,7 @@ export default function Contacts() {
         }
 
             
-        <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
-        <Button appearance="default" intent="success" style={{left:"2%"}} onClick={()=>setUploadIsShown(true)}> <DocumentIcon/> Import data </Button>
+
         
         
         <Dialog

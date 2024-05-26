@@ -1,0 +1,36 @@
+.mainPane {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    background-color: #F6FAFD;
+}
+
+.mainTab {
+    display: flex;
+    flex-direction: row;
+    width: 100;
+}
+
+.tablist {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 14vw;
+}
+
+@media screen and (max-width: 780px) {
+    .mainPane {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        background-color: #F6FAFD;
+        width: 100vw;
+    }
+    
+    .tablist {
+        display: flex;
+        flex-direction: row;
+        align-items: start;
+        width: auto;
+    }
+}
