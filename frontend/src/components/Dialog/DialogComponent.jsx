@@ -1,4 +1,4 @@
-import { Dialog, TextInputField, Button, toaster, Pane } from 'evergreen-ui' 
+import { Dialog, TextInputField, Button, toaster, Pane, Avatar } from 'evergreen-ui' 
 import Rating from '@mui/material/Rating';
 import { useState } from 'react';
 
@@ -26,6 +26,10 @@ export default function DialogComponent(props) {
                     shouldCloseOnOverlayClick={false}
                     >
                         <Pane height="90" width="90">
+                        <div style={{display: 'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', paddingBottom: '5%'}}>
+                            <Avatar name={`${profileData.firstName} ${profileData.lastName}`} size={100} />
+                            <p> {profileData.firstName} {profileData.lastName} </p>
+                        </div>
                         <TextInputField
                             label="First name"
                             placeholder="First name"

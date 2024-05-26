@@ -1,14 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { FileUploader } from 'react-drag-drop-files';
 import * as XLSX from 'xlsx';
+import { toaster } from 'evergreen-ui';
 
 const fileTypes = ["CSV", "XLSX"];
 
 export default function DragDrop() {
     const [file, setFile] = useState(null);
     const [jsonData, setJsonData] = useState(null);
+    const accessToken = localStorage.getItem("accessToken")
+
+    const [ contactsAdded, setConctactsAdded ] = useState(0)
+    
+    const [organizationId, setOrganizationId] = useState(-1)
+    
+
+    const addNewContact = async (contact) => {
+        const response = await fetch("http://localhost:3000/contacts", {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(contact)
+        })
+        if (response.ok) {
+            setConctactsAdded(prev=>prev+1);
+        }
+    }
+
+    const saveExternalData = async () => {
+        // setConctactsAdded(0);
+        // jsonData.foreach((contact) => {
+        //     contact.organizationId = organizationId
+        //     addNewContact(contact)
+        // })
+        // if (contactsAdded > 0) {
+        //     toaster.success(contactsAdded + " contacts added!")
+        //     setUpdated(Math.floor(Math.random() * 9000))
+        // }
+    }
+
+    const getOrganization = async () => {
+        await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
+            method: 'GET',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            }
+        }).then(data=>data.json())
+        .then(data=>{
+            setOrganizationId(data.organization.organizationId);
+        })
+    }
 
     useEffect(() => {
+        getOrganization()
         if (file) {
             const reader = new FileReader();
 
@@ -22,7 +69,7 @@ export default function DragDrop() {
                 const json = XLSX.utils.sheet_to_json(worksheet);
                 
                 setJsonData(json);
-                console.log(json); // For debugging purposes
+                saveExternalData();
             };
 
             reader.readAsArrayBuffer(file);

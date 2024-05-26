@@ -10,7 +10,7 @@ export default function TabsContact() {
   const [tabs] = useState(['Customers list', 'Template editor', 'Marketing campaigns'])
   return (
     <Pane >
-      <Tablist display={'flex'} justifyContent={'center'} alignItems={'center'} fontSize={400}>
+      <Tablist display={'flex'} justifyContent={'center'} alignItems={'center'} fontSize={400} >
         {tabs.map((tab, index) => (
           <Tab
             aria-controls={`panel-${tab}`}
@@ -23,7 +23,7 @@ export default function TabsContact() {
         ))}
       </Tablist>
 
-      <Pane padding={16} flex="1">
+      <Pane flex="1">
         {tabs.map((tab, index) => (
           <Pane
             aria-labelledby={tab}

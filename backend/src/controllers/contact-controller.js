@@ -14,22 +14,15 @@ const addContact = async (req, res) => {
         if (info.emailAddress && !emailRegex.test(info.emailAddress)) {
             res.status(400).json({ success: false, error: "Invalid email format!" });
         } else {
-            const existingContactName = await Contact.findOne(({
-                where: {firstName: info.firstName, lastName: info.lastName}
-            }));
-
-            if (existingContactName) {
-                res.status(400).json({ success: false, error: "Contact name already exists!"})
-            } else {
-                const newContact = await Contact.create(info)
-                res.status(201).json({success: true, contact: newContact})
-            }
+            const newContact = await Contact.create(info)
+            res.status(201).json({success: true, contact: newContact})
         }
     } catch (error) {
         console.log(error)
         res.status(500).json({ success:false, error: "Contact email already exists!" });
     }
 }
+
 
 const getContactsByOrganizationId = async (req, res) => {
     const organizationId = req.organizationId
@@ -107,15 +100,8 @@ const updateContact = async (req, res) => {
         const contact = await Contact.findByPk(body.id)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (contact.firstName !== body.firstName || contact.lastName !== body.lastName) {
-            const existingContactName = await Contact.findOne({
-                where: { firstName: body.firstName, lastName: body.lastName}
-            })
-            if (existingContactName) {
-                return res.status(400).json({ success: false, error: "Contact name already exists!"})
-            } else if (body.emailAddress && !emailRegex.test(body.emailAddress)) {
-                return res.status(400).json({ success: false, error: "Invalid email format!" });
-            }
+        if (body.emailAddress && !emailRegex.test(body.emailAddress)) {
+            return res.status(400).json({ success: false, error: "Invalid email format!" });
         } 
         contact.firstName = body.firstName
         contact.lastName = body.lastName

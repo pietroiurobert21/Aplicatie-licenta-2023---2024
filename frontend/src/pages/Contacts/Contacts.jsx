@@ -14,7 +14,6 @@ export default function Contacts() {
     CheckToken()
 
     const [ contacts, setContacts ] = useState([])
-
     const [ isShown, setIsShown ] =   useState(false)
     const [ shownContact, setShownContact ] = useState({})
     const [ uploadIsShown, setUploadIsShown ] = useState(false);
@@ -58,6 +57,7 @@ export default function Contacts() {
         }
     }
     const [organizationId, setOrganizationId] = useState(-1)
+    
     const getOrganization = async () => {
         await fetch(`http://localhost:3000/organizations/getByUserIdJWT`, {
             method: 'GET',
@@ -71,10 +71,6 @@ export default function Contacts() {
             setNewContact(prev=>({...prev, ['organizationId']: data.organization.organizationId}));
         })
     }
-
-    useState(()=>{
-
-    }, [])
 
     const addNewContact = async () => {
         let missingFields = false;
@@ -146,6 +142,7 @@ export default function Contacts() {
     useEffect(()=>{
 
     }, [contacts])
+    
 
     const [shownSelected, setShownSelected] = useState()
     return (
@@ -206,9 +203,13 @@ export default function Contacts() {
 
                 </>
         }
+
+            
         <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </Button>
         <Button appearance="default" intent="success" style={{left:"2%"}} onClick={()=>setUploadIsShown(true)}> <DocumentIcon/> Import data </Button>
-            <Dialog
+        
+        
+        <Dialog
             isShown={uploadIsShown}
             title="Import data from external files"
             onCloseComplete={() => setUploadIsShown(false)}

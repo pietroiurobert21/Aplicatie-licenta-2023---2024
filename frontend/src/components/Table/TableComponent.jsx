@@ -1,4 +1,4 @@
-import { Table, IconButton, TrashIcon, toaster } from 'evergreen-ui'
+import { Table, IconButton, TrashIcon, toaster, Avatar } from 'evergreen-ui'
 import { useEffect, useState } from 'react';
 import DialogComponent from "../Dialog/DialogComponent.jsx"
 import style from "./TableComponent.module.css"
@@ -81,6 +81,7 @@ export default function TableComponent(props) {
     const [ selectedContact, setSelectedContact ] = useState();
     return (
         <div className={style.tableComponent}>
+            <p style={{paddingLeft: '2%'}}> Total: {props.data.length} records </p>
             <Table className={style.table} width={"99vw"}>
                 <Table.Head className={style.tableHeader} style={{userSelect: 'none'}}  >
                     <Table.SearchHeaderCell style={{width:"1rem"}}/>
@@ -98,7 +99,7 @@ export default function TableComponent(props) {
                     {
                         props.data.map((profile, index)=>(
                             <Table.Row key={profile.id} isSelectable onSelect={() => { setIsShown(true); setShownProfile(profile) }}className={style.tableHeader2}>
-                                <Table.TextCell >{index+1}</Table.TextCell>
+                                <Table.TextCell > <Avatar name={`${profile.firstName} ${profile.lastName}`} size={30} marginLeft={30} /> </Table.TextCell>
                                 <Table.TextCell >{profile.firstName}</Table.TextCell>
                                 <Table.TextCell >{profile.lastName}</Table.TextCell>
                                 <Table.TextCell >{profile.professionalTitle}</Table.TextCell>
