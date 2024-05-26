@@ -14,12 +14,17 @@ const addContact = async (req, res) => {
         if (info.emailAddress && !emailRegex.test(info.emailAddress)) {
             res.status(400).json({ success: false, error: "Invalid email format!" });
         } else {
-            const newContact = await Contact.create(info)
-            res.status(201).json({success: true, contact: newContact})
+            const existingEmailContact = await Contact.findOne({where: {organizationId: info.organizationId, emailAddress: info.emailAddress}})
+            if (!existingEmailContact) {
+                const newContact = await Contact.create(info)
+                res.status(201).json({success: true, contact: newContact})
+            } else {
+                res.status(500).json({ success:false, error: "Contact email already exists!" });
+            }
         }
     } catch (error) {
         console.log(error)
-        res.status(500).json({ success:false, error: "Contact email already exists!" });
+        res.status(500).json({ success:false, error: "Error creating contact!" });
     }
 }
 
@@ -100,9 +105,19 @@ const updateContact = async (req, res) => {
         const contact = await Contact.findByPk(body.id)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+        const existingEmailContact = await Contact.findOne({where: 
+            {
+                organizationId: req.organizationId, 
+                emailAddress: body.emailAddress,
+                id: { [Sequelize.Op.ne]: body.id }
+            }
+        })
+
         if (body.emailAddress && !emailRegex.test(body.emailAddress)) {
             return res.status(400).json({ success: false, error: "Invalid email format!" });
-        } 
+        } else if (existingEmailContact) {
+            return res.status(500).json({success:false, error: "Contact email already exists"});
+        }
         contact.firstName = body.firstName
         contact.lastName = body.lastName
         contact.professionalTitle = body.professionalTitle

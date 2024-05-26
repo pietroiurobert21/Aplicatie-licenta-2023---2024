@@ -24,7 +24,7 @@ const Contact = sequelize.define('Contact', {
         allowNull: true,
     },
     emailAddress: {
-        unique: true,
+        unique: false,
         type: Sequelize.STRING,
         allowNull: false,
     },
@@ -34,7 +34,7 @@ const Contact = sequelize.define('Contact', {
     },
     phoneNumber: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: false,   
     },
     companyName: {
         type: Sequelize.STRING,
