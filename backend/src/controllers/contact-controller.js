@@ -11,8 +11,11 @@ const addContact = async (req, res) => {
     info.organizationId = req.organizationId
     try {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
         if (info.emailAddress && !emailRegex.test(info.emailAddress)) {
             res.status(400).json({ success: false, error: "Invalid email format!" });
+        } else if (info.phoneNumber && !phoneRegex.test(info.phoneNumber)) {
+            res.status(400).json({ success: false, error: "Invalid phone number format!" });
         } else {
             const existingEmailContact = await Contact.findOne({where: {organizationId: info.organizationId, emailAddress: info.emailAddress}})
             if (!existingEmailContact) {
@@ -104,6 +107,7 @@ const updateContact = async (req, res) => {
     try {
         const contact = await Contact.findByPk(body.id)
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
 
         const existingEmailContact = await Contact.findOne({where: 
             {
@@ -115,6 +119,8 @@ const updateContact = async (req, res) => {
 
         if (body.emailAddress && !emailRegex.test(body.emailAddress)) {
             return res.status(400).json({ success: false, error: "Invalid email format!" });
+        } else if (body.phoneNumber && !phoneRegex.test(body.phoneNumber)) {
+            return res.status(400).json({ success: false, error: "Invalid phone number format!" });
         } else if (existingEmailContact) {
             return res.status(500).json({success:false, error: "Contact email already exists"});
         }
