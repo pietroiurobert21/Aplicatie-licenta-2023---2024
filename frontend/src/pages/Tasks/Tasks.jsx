@@ -267,9 +267,7 @@ export default function Tasks() {
                         onClose={()=>{setIsShown(false)}}
                         onConfirm={()=>{updateTask(selectedTask); setIsShown(false)}}
                         preventBodyScrolling
-                        shouldCloseOnOverlayClick={false}
-                        confirmLabel="Custom Label"
-                        hasFooter={false}>
+                        shouldCloseOnOverlayClick={false}>
                         <TextInputField
                             label="Description"
                             placeholder="Description"

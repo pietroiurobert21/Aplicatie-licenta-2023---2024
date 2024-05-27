@@ -90,14 +90,14 @@ export default function Contacts() {
                 body: JSON.stringify(contact)
             })
             if (response.ok) {
-                toaster.success("contact added!")
+                toaster.success("contact added!", {id:'1'})
             } else {
                 const responseJson = await response.json()
-                toaster.danger(responseJson.error)
+                toaster.danger(responseJson.error, {id:'1'})
             }
             setUpdated(Math.floor(Math.random() * 9000))
         } else {
-            toaster.danger('missing fields!');
+            toaster.danger('missing fields!', {id:'1'});
         }
     }
 
@@ -159,9 +159,9 @@ export default function Contacts() {
             <div className={style.headerContacts}>
                 <p> Total: {contacts.length} records </p>
                 <div className={style.buttons}>
-                    <button onClick={() => setIsShown(true)}> <NewPersonIcon/> New contact </button>
-                    <button onClick={()=>setUploadIsShown(true)}> <DocumentIcon/> Import data </button>
-                    { contacts!=-1 && <button onClick={() => setShowMarketingDialog(true)}> <RocketSlantIcon/> New marketing campaign </button> }
+                    <button onClick={() => setIsShown(true)}>  New contact  <NewPersonIcon/> </button>
+                    <button onClick={()=>setUploadIsShown(true)}>  Import data <DocumentIcon/></button>
+                    { contacts!=-1 && <button onClick={() => setShowMarketingDialog(true)}>New marketing campaign <RocketSlantIcon/> </button> }
                 </div>
             </div>
         {

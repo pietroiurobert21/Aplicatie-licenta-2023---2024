@@ -7,7 +7,7 @@ body {
 }
 
 .navbar {
-    background-color: #514EF3;
+    background-color: #5a226d;
     border-bottom: 1px solid #e6e6e6;
     height: 7vh;
     top: 0;
@@ -46,7 +46,6 @@ body {
 
 .navbar li:hover {
     cursor: pointer;
-    color: #000000;
 }
 
 
@@ -59,12 +58,31 @@ body {
 }
 
 #organizationLI {
-    color: #887B04;
-}
-
-#organizationLI:hover {
     color: #dcc708;
 }
+
+.navbar li {
+    display: inline-block;
+    position: relative;
+}
+
+.navbar li:not(.icon)::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #d9dadb;
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+.navbar li:not(.icon):hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
 
 .navbar .icon {
     display: none;
@@ -80,6 +98,8 @@ body {
 
 #profile {
     margin: auto;
+    float: right;
+    margin-right: 4%;
 }
 
 .navbar .profile {
@@ -116,7 +136,7 @@ body {
     .navbar.navbar.responsive ul {
         height: 100vh;
         width: 60vw;
-        background-color: #484242;
+        background-color: #5a226d;
         z-index: 999;
         overflow: visible;
         position: fixed;

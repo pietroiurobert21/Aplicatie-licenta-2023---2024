@@ -139,7 +139,7 @@ export default function Navbar() {
                 }>
                     {/* <img src="https://avatars.githubusercontent.com/u/81866624?v=4" alt="User" id={style.profile} 
                         onClick={()=>{navigate('/profile')}}/> */}
-                    <Avatar id={style.profile} name={`${userData.user.firstName} ${userData.user.lastName}`} size={35.93} onClick={()=>{navigate('/profile')}}/>
+                    <Avatar id={style.profile} name={`${userData.user.firstName} ${userData.user.lastName}`} size={37} onClick={()=>{navigate('/profile')}}/>
 
 
                 </Popover>   

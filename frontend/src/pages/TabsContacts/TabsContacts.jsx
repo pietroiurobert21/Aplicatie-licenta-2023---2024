@@ -14,14 +14,14 @@ export default function TabsContact() {
     <Pane className={style.mainPane}>
       <Tablist paddingTop="2vh" className={style.tablist}>
         {tabs.map((tab, index) => (
-          <Tab style={{fontFamily:'inter, sans-serif', fontWeight:'500', fontSize:'0.8rem', height:'2rem'}} className={style.mainTab}
+          <Tab display='block' className={ tab === "Template editor" ? style.secondTab : style.mainTab }
             aria-controls={`panel-${tab}`}
             direction="vertical"
             isSelected={index === selectedIndex}
             key={tab}
             onSelect={() => setSelectedIndex(index)}
           >
-            {tab}
+             { tab }
           </Tab>
         ))}
       </Tablist>
