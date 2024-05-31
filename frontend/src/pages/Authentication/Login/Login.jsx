@@ -5,6 +5,8 @@ import CRMImage from '../../../assets/crmimage.png';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
+import Content from "../../../assets/content.png"
+
 import LoginCard from '../../../components/LoginCard/LoginCard';
 
 export default function Login() {
@@ -19,10 +21,10 @@ export default function Login() {
     return (
         <>
             <div className={style.login}>
-                <img src={Background} id={style.img}/>
                 <div className={style.login_container}>
                     <LoginCard/>
                 </div>
+                <img src={Content} id={style.img}/>
             </div>
         </>
     )

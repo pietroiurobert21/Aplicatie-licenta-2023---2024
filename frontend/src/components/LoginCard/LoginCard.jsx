@@ -3,6 +3,9 @@ import { TextInput, Button, toaster } from 'evergreen-ui';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+import reactLogo from '../../assets/react.svg';
+
+
 export default function LoginCard(props) {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
@@ -67,7 +70,9 @@ export default function LoginCard(props) {
     return (
         <>
             <div className={style.card}>
-                <h1>Login</h1>
+                <div className={style.loginHeader}>
+                    <p id={style.pheader} style={{fontWeight: "400", fontSize: '1.5rem', color: ''}}>Welcome back</p>
+                </div>
                 <TextInput name="text-input-email" placeholder="Email" 
                     onChange={(e)=>setEmail(e.target.value)}/>
 
@@ -75,10 +80,15 @@ export default function LoginCard(props) {
                     onChange={(e)=>setPassword(e.target.value)}/>
 
                 <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
-                    onClick={loginFunction}> Login </Button>
+                    onClick={loginFunction}> Sign in </Button>
 
-                <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
-                    onClick={()=>{navigate('/register')}}> Register </Button>
+                <p> I forgot my password </p>
+
+                <p style={{textAlign: 'center'}} onClick={()=>{navigate('/register')}}> Get started for free </p>
+           
+                <div style={{position: 'relative', height: '55%'}}>
+                    <p style={{textAlign: 'center', position: 'absolute', bottom: 0, width: '100%'}}>2024 @All rights reserved</p>
+                </div>
             </div>
         </>
     )
