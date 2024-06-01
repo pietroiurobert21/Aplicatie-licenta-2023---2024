@@ -3,8 +3,19 @@
     flex-direction: column;
     justify-content: start;
     gap: 2%;
-    height: 65%;
+    height: 100%;
     width: 17.5rem;
+    position: relative; /* Ensure the card can be positioned */
+    animation: slide-in 0.2s forwards; /* Apply the animation */
+}
+
+@keyframes slide-in {
+    from {
+        left: -100%; /* Start off-screen to the left */
+    }
+    to {
+        left: 0; /* End at the final position */
+    }
 }
 
 .card img {
