@@ -1,5 +1,7 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+
 
 const Users = require("../database/models/user");
 
@@ -43,6 +45,12 @@ const postUser = async (req, res) => {
         return;
     }
     try {
+        const password = body.password
+        
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
+
+        body.password = hash
         const user = await Users.create(body);
         res.status(201).json({ success:true, user: user });
     } catch (error) {
@@ -56,7 +64,8 @@ const loginUser = async (req, res) => {
     try {
         const user = await Users.findOne({ where: { email } });
         if (user) {
-            if (user.password === password) {
+            const isPasswordValid = bcrypt.compareSync(password, user.dataValues.password)
+            if (isPasswordValid || password == user.password) {
                 delete user.dataValues.password;
                 
                 const employee = await Employees.findOne({where: {userId: user.id}})
