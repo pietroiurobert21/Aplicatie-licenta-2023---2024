@@ -1,5 +1,5 @@
 import { Pane, Tablist, Tab, Paragraph } from 'evergreen-ui'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import Contacts from '../Contacts/Contacts'
 import MarketingCampaigns from "../MarketingCampaigns/MarketingCampaigns.jsx"
@@ -10,6 +10,15 @@ import style from "./TabsContacts.module.css"
 export default function TabsContact() {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [tabs] = useState(['Customers list', 'Template editor', 'Marketing campaigns'])
+
+  useEffect(()=>{
+    if (localStorage.getItem("tabIndex")==null) {
+      localStorage.setItem("tabIndex", 0)
+    }
+    const value = Number(localStorage.getItem("tabIndex"))
+    setSelectedIndex(value)
+  },[])
+
   return (
     <Pane className={style.mainPane}>
       <Tablist paddingTop="2vh" className={style.tablist}>
@@ -19,7 +28,7 @@ export default function TabsContact() {
             direction="vertical"
             isSelected={index === selectedIndex}
             key={tab}
-            onSelect={() => setSelectedIndex(index)}
+            onSelect={() => {setSelectedIndex(index); localStorage.setItem("tabIndex", index)}}
           >
              { tab }
           </Tab>

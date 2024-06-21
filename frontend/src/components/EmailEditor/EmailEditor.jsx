@@ -19,6 +19,7 @@ export default function EmailTemplate(props) {
         saveTemplateToDatabase(design, html)
       });
       toaster.success('Template design saved successfully!')
+      window.location.reload();
     } else {
       toaster.warning('Template design name required!')
     }
