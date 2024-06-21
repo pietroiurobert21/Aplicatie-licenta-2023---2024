@@ -87,7 +87,7 @@ export default function EmailTemplate(props) {
   }, [templateName])
 
   return (
-    <div>
+    <div style={{paddingTop: '2vh', paddingRight: '2vw'}}>
       <div style={{display:'flex', justifyContent:'space-between'}}>
         <EmailTemplates setShowTemplateId={setShowTemplateId}/>
 

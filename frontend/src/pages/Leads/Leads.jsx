@@ -105,6 +105,7 @@ export default function Leads() {
                         leads ? 
                         (
                             <>
+                                <p style={{fontWeight: 500, paddingLeft: "2%"}}> Total: {leads.length} records </p>
                                 <TableComponent data={leads} showSatisfaction={false} setUpdated={setUpdated} setProfiles={setLeads}/> 
                             </>
                         )
