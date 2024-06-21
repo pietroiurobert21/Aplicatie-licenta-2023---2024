@@ -32,6 +32,28 @@ const addContact = async (req, res) => {
 }
 
 
+const switchPipelineStatus = async (req, res) => {
+    const body = req.body
+    try {
+        const contact = await Contact.findByPk(body.id)
+        if (contact) {
+            if (body.pipelineStatus==='customer') {
+                contact.pipelineStatus = 'lead'
+            } else {
+                contact.pipelineStatus = 'customer'
+            }
+            await contact.save();
+            res.status(200).json({success: true})
+        } else {
+            res.status(404).json({success: false, error: "contact not found"})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error updating the contact" });
+    }
+}
+
+
 const getContactsByOrganizationId = async (req, res) => {
     const organizationId = req.organizationId
     try {
@@ -145,5 +167,6 @@ module.exports = {
     getContactById,
     getCustomersByOrganizationId,
     deleteContactById,
-    updateContact
+    updateContact,
+    switchPipelineStatus
 }

@@ -1,4 +1,4 @@
-import { Table, IconButton, TrashIcon, toaster, Avatar } from 'evergreen-ui'
+import { Table, IconButton, TrashIcon, toaster, Avatar, ArrowRightIcon, ArrowLeftIcon, Tooltip } from 'evergreen-ui'
 import { useEffect, useState } from 'react';
 import DialogComponent from "../Dialog/DialogComponent.jsx"
 import style from "./TableComponent.module.css"
@@ -78,6 +78,24 @@ export default function TableComponent(props) {
         }
     }
 
+    const switchPipelineStatus = async (profile) => {
+        const res = await fetch('http://localhost:3000/contacts/switchPipeline', {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify(profile)
+        })
+        const response = res.status
+        if (response == 200) {
+            toaster.success("contact pipeline status changed")
+        } else {
+            toaster.danger(res.error)
+        }
+        props.setUpdated(Math.floor(Math.random() * 9000))
+    }
+
     const [ selectedContact, setSelectedContact ] = useState();
     return (
         <div className={style.tableComponent}>
@@ -90,6 +108,7 @@ export default function TableComponent(props) {
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("companyName")}>Company</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("emailAddress")}>Email Address</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("phoneNumber")}>Phone Number</Table.TextHeaderCell>
+                    <Table.TextHeaderCell > </Table.TextHeaderCell>
                     <Table.TextHeaderCell > </Table.TextHeaderCell>
                 </Table.Head>
 
@@ -105,7 +124,21 @@ export default function TableComponent(props) {
                                 <Table.TextCell >{profile.companyName}</Table.TextCell>
                                 <Table.TextCell >{profile.emailAddress}</Table.TextCell>
                                 <Table.TextCell >{profile.phoneNumber}</Table.TextCell>
-                                <Table.TextCell ><IconButton icon={TrashIcon} intent="danger" marginLeft={50} onClick={(event)=>{event.stopPropagation(); deleteContact(profile.id)}}/> </Table.TextCell>
+                                <Table.TextCell >
+                                    <Tooltip content={props.type==="customers" ? "move to leads" : "move to customers"}>
+                                        <IconButton 
+                                        icon={props.type === "customers" ? ArrowLeftIcon : ArrowRightIcon} 
+                                        intent='success'  
+                                        style={{ float: 'right' }}
+                                        onClick={(e)=>{e.stopPropagation(); switchPipelineStatus(profile)}}
+                                        />
+                                    </Tooltip>
+                                </Table.TextCell>
+                                <Table.TextCell >
+                                    <Tooltip content="Delete contact">
+                                    <IconButton icon={TrashIcon} style={{float:'left'}} intent="danger" onClick={(event)=>{event.stopPropagation(); deleteContact(profile.id)}}/> 
+                                    </Tooltip>
+                                </Table.TextCell>
                             </Table.Row>
                         ))
                     }

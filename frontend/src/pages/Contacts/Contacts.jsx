@@ -136,7 +136,9 @@ export default function Contacts() {
     const saveMultipleContacts = async () => {
         for (const contact of jsonArray) {
             contact.organizationId = organizationId
-            await addNewContact(contact);
+            if (contact.pipelineStatus && (contact.pipelineStatus=='lead' || contact.pipelineStatus=='customer')) {
+                await addNewContact(contact);
+            }
         }
         setUpdated(prev => prev + 1);
     }
@@ -170,7 +172,7 @@ export default function Contacts() {
                 {
                     contacts ? (
                         <>
-                            <TableComponent data={contacts} setUpdated={setUpdated} setProfiles={setContacts}/>
+                            <TableComponent data={contacts} setUpdated={setUpdated} setProfiles={setContacts} type="customers"/>
                             <Dialog
                                 isShown={showMarketingDialog}
                                 title="Set up a marketing campagin"

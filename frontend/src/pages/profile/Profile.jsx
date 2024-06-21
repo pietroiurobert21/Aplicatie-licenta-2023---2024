@@ -134,7 +134,7 @@ export default function Profile(){
                                     <Badge color={color} fontSize={13} margin={0} marginLeft={16}> {userRole} </Badge>
                                 </p>
                                 <Button style={{marginTop: "5%", width: "100%"}} onClick={()=>{setIsShown(true)}}> Edit profile </Button>
-                                <Button style={{marginTop: "5%", width: "100%"}} onClick={()=>{setIsShownPassword(true)}}> Update Password </Button>
+                                <Button appearance="minimal" style={{marginTop: "5%", width: "100%"}} onClick={()=>{setIsShownPassword(true)}}> Update Password </Button>
                                 <p id={style.logout} onClick={()=>{ emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
                             </div>
                             <div className={style.contactInfoContainer}>
