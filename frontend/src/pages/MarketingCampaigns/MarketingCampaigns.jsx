@@ -42,7 +42,14 @@ export default function MarketingCampaigns() {
                                 {campaigns.map(campaign => (
                                     <Table.Row key={campaign.id}>
                                         <Table.TextCell>{campaign.id}</Table.TextCell>
-                                        <Table.TextCell>{campaign.date}</Table.TextCell>
+                                        <Table.TextCell>
+                                            {new Date(campaign.date).toLocaleDateString("en-US", {
+                                            weekday: 'long', // "Monday"
+                                            year: 'numeric', // "2023"
+                                            month: 'long',   // "June"
+                                            day: 'numeric'   // "21"
+                                            })}
+                                        </Table.TextCell>
                                         <Table.TextCell isNumber>{campaign.emailsSent}</Table.TextCell>
                                         <Table.TextCell>{campaign.subject}</Table.TextCell>
                                 </Table.Row>

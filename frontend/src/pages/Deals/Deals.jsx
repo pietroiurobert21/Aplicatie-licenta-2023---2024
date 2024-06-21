@@ -195,7 +195,13 @@ export default function Deals() {
                                 deal.Contact ? <Table.TextCell> {deal.Contact.firstName} {deal.Contact.lastName} </Table.TextCell>
                                 :  <Table.TextCell> (contact removed) </Table.TextCell> 
                             }
-                            <Table.TextCell> {deal.date} </Table.TextCell>
+                            <Table.TextCell> {new Date(deal.date).toLocaleDateString("en-US", {
+                                    weekday: 'long', // "Monday"
+                                    year: 'numeric', // "2023"
+                                    month: 'long',   // "June"
+                                    day: 'numeric'   // "21"
+                                    })}
+                            </Table.TextCell>
                             { 
                                 deal.Employee ? <Table.TextCell> {deal.Employee.User.firstName} {deal.Employee.User.lastName} </Table.TextCell> 
                                 :  <Table.TextCell> (employee removed) </Table.TextCell> 
@@ -217,7 +223,13 @@ export default function Deals() {
                     <div className={style.dealContainer} onClick={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status) }}>
                         <p> Value: {deal.value} </p>
                         {deal.Contact ? <p>Contact: {deal.Contact.firstName} {deal.Contact.lastName}</p> : <p>Contact: (contact removed)</p>}
-                        <p> Date: {deal.date} </p>
+                        <p> Date: {new Date(deal.date).toLocaleDateString("en-US", {
+                        weekday: 'long', // "Monday"
+                        year: 'numeric', // "2023"
+                        month: 'long',   // "June"
+                        day: 'numeric'   // "21"
+                        })} </p>
+
                         {deal.Employee ? <p>Employee: {deal.Employee.User.firstName} {deal.Employee.User.lastName}</p> : <p>Employee: (employee removed)</p>}
                         <p>Description:</p>
                         <p> {deal.description} </p>
@@ -262,7 +274,12 @@ export default function Deals() {
 
                 <Dialog
                     isShown={isShown_1}
-                    title={shownDeal.Employee ? shownDeal.Employee.User.firstName + " " + shownDeal.Employee.User.lastName + "'s deal since " + new Date(shownDeal.date).toLocaleDateString("en-US") : "(employee removed)"}
+                    title={shownDeal.Employee ? shownDeal.Employee.User.firstName + " " + shownDeal.Employee.User.lastName + "'s deal since " + new Date(shownDeal.date).toLocaleDateString("en-US", {
+                        weekday: 'long', // "Monday"
+                        year: 'numeric', // "2023"
+                        month: 'long',   // "June"
+                        day: 'numeric'   // "21"
+                    }) : "(employee removed)"}
                     onConfirm={() => {setIsShown_1(false); updateDealStatus(newStatus); }}
                     onCancel={() => setIsShown_1(false)}
                     onCloseComplete={() => setIsShown_1(false)}
