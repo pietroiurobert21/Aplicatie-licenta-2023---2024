@@ -142,9 +142,9 @@ export default function Deals() {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
-            body: JSON.stringify({status: newStatus})
+            body: JSON.stringify({status: newStatus, description: newDescription, value: newValue})
         });
-        setUpdated(shownDeal.id + " " + newStatus);
+        setUpdated(shownDeal.id + " " + newStatus + " " + newDescription + " " + newValue);
     }
 
     const deleteDeal = async (id) => {
@@ -168,6 +168,8 @@ export default function Deals() {
     const [ selected, setSelected ] = useState()
     const [ shownDeal, setShownDeal ] = useState({})
     const [ newStatus, setNewStatus ] = useState('')
+    const [ newDescription, setNewDescription ] = useState('')
+    const [ newValue, setNewValue ] = useState(0)
     return (
         <>  
             {
@@ -188,7 +190,7 @@ export default function Deals() {
                 <Table.VirtualBody height={440}>
 
                     {deals.map((deal, index) => ( 
-                        <Table.Row key={deal.id} isSelectable onSelect={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status) }}>
+                        <Table.Row key={deal.id} isSelectable onSelect={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status); setNewDescription(deal.description); setNewValue(deal.value)  }}>
                             <Table.TextCell> {index+1} </Table.TextCell>
                             <Table.TextCell> {deal.value} </Table.TextCell>
                             { 
@@ -220,7 +222,7 @@ export default function Deals() {
 
             <div className={style.dealContainers}>
                 {deals.map(deal=>(
-                    <div className={style.dealContainer} onClick={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status) }}>
+                    <div className={style.dealContainer} onClick={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status); setNewDescription(deal.description); setNewValue(deal.value) }}>
                         <p> Value: {deal.value} </p>
                         {deal.Contact ? <p>Contact: {deal.Contact.firstName} {deal.Contact.lastName}</p> : <p>Contact: (contact removed)</p>}
                         <p> Date: {new Date(deal.date).toLocaleDateString("en-US", {
@@ -302,14 +304,14 @@ export default function Deals() {
                         placeholder="Value"
                         name="value"
                         type="number"
-                        disabled
-                        value={shownDeal.value}/>
+                        onChange={(e)=>{setNewValue(e.target.value)}}
+                        defaultValue={shownDeal.value}/>
                     <TextInputField
                         label="Description"
                         placeholder="Description"
                         name="description"
-                        disabled
-                        value={shownDeal.description}/>
+                        onChange={(e)=>{setNewDescription(e.target.value)}}
+                        defaultValue={shownDeal.description}/>
                     <Combobox
                         style={{width: "100%"}}
                         initialSelectedItem={shownDeal.status}

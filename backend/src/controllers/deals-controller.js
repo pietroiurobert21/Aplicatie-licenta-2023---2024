@@ -28,41 +28,49 @@ const updateDeal = async (req, res) => {
     const body = req.body
     try {
         const deal = await Deal.findByPk(id)
-        if (deal && deal.status!=body.status) {
-            // update organization points
-            const organization = await Organization.findByPk(deal.organizationId)
-            const employee = await Employee.findByPk(deal.employeeId)
-            
-            if (organization) {
-                if (deal.status=='proposed') {
-                    if (body.status=='accepted')
-                        organization.points++;
-                } else if (deal.status=='accepted') {
-                    if (body.status=='proposed' || body.status=='rejected')
-                        organization.points--;
-                } else if (deal.status=='rejected') {
-                    if (body.status=='accepted')
-                        organization.points++;
+        if (deal) {
+            if (deal.status!=body.status) {
+                // update organization points
+                const organization = await Organization.findByPk(deal.organizationId)
+                const employee = await Employee.findByPk(deal.employeeId)
+                
+                if (organization) {
+                    if (deal.status=='proposed') {
+                        if (body.status=='accepted')
+                            organization.points++;
+                    } else if (deal.status=='accepted') {
+                        if (body.status=='proposed' || body.status=='rejected')
+                            organization.points--;
+                    } else if (deal.status=='rejected') {
+                        if (body.status=='accepted')
+                            organization.points++;
+                    }
+                    await organization.save({fields: ['points']})
                 }
-                await organization.save({fields: ['points']})
-            }
 
-            if (employee) {
-                if (deal.status=='proposed') {
-                    if (body.status=='accepted')
-                        employee.points++;
-                } else if (deal.status=='accepted') {
-                    if (body.status=='proposed' || body.status=='rejected')
-                        employee.points--;
-                } else if (deal.status=='rejected') {
-                    if (body.status=='accepted')
-                        employee.points++;
+                if (employee) {
+                    if (deal.status=='proposed') {
+                        if (body.status=='accepted')
+                            employee.points++;
+                    } else if (deal.status=='accepted') {
+                        if (body.status=='proposed' || body.status=='rejected')
+                            employee.points--;
+                    } else if (deal.status=='rejected') {
+                        if (body.status=='accepted')
+                            employee.points++;
+                    }
+                    await employee.save({fields: ['points']})
                 }
-                await employee.save({fields: ['points']})
+                deal.status = body.status
             }
-
-            deal.status = body.status
-            await deal.save({fields: ['status']})
+        
+            if (deal.description !== body.description) {
+                deal.description = body.description
+            }
+            if (deal.value !== body.value) {
+                deal.value = body.value
+            }
+            await deal.save({fields: ['status', 'description', 'value']})
             res.status(200).json({success:true, deal})
         }
     } catch (error) {

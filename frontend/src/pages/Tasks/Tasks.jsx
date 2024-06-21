@@ -197,7 +197,7 @@ export default function Tasks() {
 
                                 <Table id={style.tasksTable}>
                                     <Table.Head>
-                                        <Table.SearchHeaderCell />
+                                        <Table.TextHeaderCell> ID </Table.TextHeaderCell>
                                         <Table.TextHeaderCell isSelectable  onClick={()=>sortingTable("description")}> Description </Table.TextHeaderCell>
                                         { role==="administrator" && <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("assignedToEmployeeId")}> Assigned to </Table.TextHeaderCell> }
                                         <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("isDone")}> IsDone </Table.TextHeaderCell>
