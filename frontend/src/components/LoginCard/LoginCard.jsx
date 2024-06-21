@@ -82,7 +82,7 @@ export default function LoginCard(props) {
                 <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
                     onClick={loginFunction}> Sign in </Button>
 
-                <p> I forgot my password </p>
+                {/* <p> I forgot my password </p> */}
 
                 <p style={{textAlign: 'center'}} onClick={()=>{navigate('/register')}}> Get started for free </p>
            
