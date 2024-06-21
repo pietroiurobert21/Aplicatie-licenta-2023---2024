@@ -185,7 +185,7 @@ export default function Contacts() {
                                         !checkedAllContacts && (
                                             <SelectMenu
                                             title="Select name"
-                                            options={contacts.map(contact => ({ label: contact.firstName, value: contact.firstName, emailAddress: contact.emailAddress,  key: contact.id }))}
+                                            options={contacts.map(contact => ({ label: contact.emailAddress, value: contact.firstName, emailAddress: contact.emailAddress,  key: contact.id }))}
                                             selected={shownSelected}
                                         
                                             onSelect={(item) => {setShownSelected(item.value); setSelected([{"emailAddress": item.emailAddress, "firstName": item.value }] )}}>

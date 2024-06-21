@@ -19,6 +19,31 @@ export default function MarketingCampaigns() {
         .then(data => { setCampaings(data.campaigns) })
     }
 
+
+    const [sortOrder, setSortOrder] = useState('asc');
+    const sortingTable = async (attribute) => {
+        const sortedProfiles = campaigns;
+        sortedProfiles.sort((a, b) => {
+            const attributeArray = attribute.split('.');
+            let aValue = a;
+            let bValue = b;
+            for (let key of attributeArray) {
+                aValue = aValue[key];
+                bValue = bValue[key];
+            }
+            // For string comparison, use localeCompare
+            if (typeof aValue === 'string' && typeof bValue === 'string') {
+                return sortOrder === 'asc' ? aValue.localeCompare(bValue) : bValue.localeCompare(aValue);
+            }
+            // For numeric comparison
+            return sortOrder === 'asc' ? aValue - bValue : bValue - aValue;
+        });
+        setCampaings(sortedProfiles);
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    }
+
+
+
     useEffect(() => {
         retrieveCampaigns()
     }, [])
@@ -29,14 +54,14 @@ export default function MarketingCampaigns() {
                 campaigns ? (
                     <>
                         <Table id={style.marketingTable}>
-                            <Table.Head>
+                            <Table.Head >
                                 <Table.HeaderCell style={{display:'flex', justifyContent:'center'}}><b>Campaigns History</b></Table.HeaderCell>
                             </Table.Head>
-                            <Table.Head>
-                                <Table.SearchHeaderCell />
-                                <Table.TextHeaderCell>Date</Table.TextHeaderCell>
-                                <Table.TextHeaderCell>Emails sent</Table.TextHeaderCell>
-                                <Table.TextHeaderCell>Subject</Table.TextHeaderCell>
+                            <Table.Head style={{userSelect: 'none'}}>
+                                <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("id")}> ID </Table.TextHeaderCell>
+                                <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("date")}>Date</Table.TextHeaderCell>
+                                <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("emailsSent")}>Emails sent</Table.TextHeaderCell>
+                                <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("subject")}>Subject</Table.TextHeaderCell>
                             </Table.Head>
                             <Table.VirtualBody height={440}>
                                 {campaigns.map(campaign => (
