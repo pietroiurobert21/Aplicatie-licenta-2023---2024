@@ -83,7 +83,7 @@ export default function TableComponent(props) {
         <div className={style.tableComponent}>
             <Table className={style.table}>
                 <Table.Head className={style.tableHeader} style={{userSelect: 'none'}}  >
-                    <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("firstName")}>ID</Table.TextHeaderCell>
+                    <Table.TextHeaderCell marginLeft={35} marginRight={-35} onClick={()=>sortingTable("firstName")}>ID</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("firstName")}>First Name</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("lastName")}>Last Name</Table.TextHeaderCell>
                     <Table.TextHeaderCell  isSelectable onClick={()=>sortingTable("professionalTitle")}>Professional Title</Table.TextHeaderCell>
