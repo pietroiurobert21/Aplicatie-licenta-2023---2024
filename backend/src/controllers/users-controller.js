@@ -26,7 +26,7 @@ const getUser = async (req, res) => {
     const id = req.userId
     try {
         const user = await Users.findByPk(id);
-        delete user.dataValues.password;
+       // delete user.dataValues.password;
         res.status(200).json({ user });
     } catch (error) {
         console.log(error)
@@ -127,11 +127,27 @@ const updateUser = async (req, res) => {
     }
 }
 
+const updatePassword = async (req, res) => {
+    const body = req.body
+    try {
+        const user = await Users.findByPk(body.id)
+        if (user) {
+            user.password = body.password
+            await user.save()
+            res.status(200).json({success:true})
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success:false, error: "error updating password" });
+    }
+}
+
 module.exports = {
     getUsers,
     postUser,
     loginUser,
     belongsToOrganization,
     getUser,
-    updateUser
+    updateUser,
+    updatePassword
 }

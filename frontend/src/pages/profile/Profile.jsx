@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster, Button, Dialog, TextInputField, TextInput } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
 
+import bcrypt from 'bcryptjs';
 
 export default function Profile(){
     const navigate = useNavigate();
@@ -89,6 +90,35 @@ export default function Profile(){
     }
 
     const [ isShown, setIsShown ] = useState(false)
+    const [ isShownPassword, setIsShownPassword ] = useState(false)
+    const [ validOldPassword, setValidOldPassword ] = useState(false)
+
+    const changePassword = async () => {
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(newPassword, salt);
+        setNewPassword(hash);
+        
+        const res = await fetch('http://localhost:3000/users/password', {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({id:userData.id, password: hash})
+        })
+        const code = res.status
+        if (code == 200) {
+            alert("password changed");
+            localStorage.removeItem('accessToken')
+            navigate('/')
+        } else {
+            alert("error changing password")
+        }
+    }
+
+    const [ oldPassword, setOldPassword ] = useState('')
+    const [ newPassword, setNewPassword ] = useState('')
+    const [ repeatNewPassword, setRepeatNewPassword ] = useState('')
     return (
         <>
             <div className={style.profileContainer}>
@@ -104,6 +134,7 @@ export default function Profile(){
                                     <Badge color={color} fontSize={13} margin={0} marginLeft={16}> {userRole} </Badge>
                                 </p>
                                 <Button style={{marginTop: "5%", width: "100%"}} onClick={()=>{setIsShown(true)}}> Edit profile </Button>
+                                <Button style={{marginTop: "5%", width: "100%"}} onClick={()=>{setIsShownPassword(true)}}> Update Password </Button>
                                 <p id={style.logout} onClick={()=>{ emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
                             </div>
                             <div className={style.contactInfoContainer}>
@@ -150,6 +181,36 @@ export default function Profile(){
                                     name="lastName"
                                     defaultValue={userData.lastName}
                                     onChange={handleInputChange}/>
+                            </Dialog>
+
+                            <Dialog
+                                title="Change password"
+                                isShown={isShownPassword}
+                                onCloseComplete={() => {setIsShownPassword(false); setValidOldPassword(false)}}
+                                preventBodyScrolling
+                                onConfirm={() => {
+                                    if (newPassword != repeatNewPassword) alert("passwords do not match!");
+                                    else if (oldPassword.trim()=='') alert("old password missing")
+                                    else if (newPassword.trim()=='') alert("new password missing")
+                                    else {
+                                        changePassword(); 
+                                        setIsShownPassword(false); setValidOldPassword(false)}
+                                    }
+                                }
+                                onCancel={()=>{setIsShownPassword(false); setValidOldPassword(false)}}
+                                shouldCloseOnOverlayClick={false}
+                            >
+                                <TextInputField 
+                                    label="Old Password"
+                                    onChange={(e)=>{setOldPassword(e.target.value);setValidOldPassword(e.target.value == userData.password || bcrypt.compareSync(e.target.value, userData.password))}}/>
+                                <TextInputField
+                                    disabled={validOldPassword ? false : true}
+                                    onChange={(e)=>setNewPassword(e.target.value)}
+                                    label="New password"/>
+                                <TextInputField
+                                    disabled={validOldPassword ? false : true}
+                                    onChange={(e)=>setRepeatNewPassword(e.target.value)}
+                                    label="Repeat new password"/>
                             </Dialog>
                         </>
                     )
