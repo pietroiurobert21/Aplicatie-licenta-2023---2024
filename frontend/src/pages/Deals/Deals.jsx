@@ -175,7 +175,7 @@ export default function Deals() {
             <>
             <Table id={style.dealsTable}>
                 <Table.Head style={{userSelect: 'none'}}>
-                    <Table.SearchHeaderCell style={{width:"1rem"}}/>
+                    <Table.TextHeaderCell> ID </Table.TextHeaderCell>
                     <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('value')}}> value </Table.TextHeaderCell>
                     <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('Contact.firstName')}}> contact </Table.TextHeaderCell>
                     <Table.TextHeaderCell isSelectable onClick={()=>{sortingTable('date')}}> date </Table.TextHeaderCell>
