@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import style from './Organization.module.css'
 import { Avatar, Button, Dialog, TextInput, toaster } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
+import img from '../../assets/Organization.png'
 
 export default function Organization() {
     CheckToken()
@@ -77,6 +78,7 @@ export default function Organization() {
 
     return (
         <div className={style.organizationContainer}>
+            <img src={img} id={style.imgOrganization}/>
             <div className={style.header}>
                 <p><b> {organization.name} </b></p>
             </div>

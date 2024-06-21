@@ -1,5 +1,5 @@
 .organizationContainer {
-    width: 70vw;
+    width: fit-content;
     height: 80vh;
     background-color: #fff;
     border: 1px solid #e6e6e6;
@@ -24,6 +24,10 @@
     padding-bottom: 3vh;
 }
 
+#imgOrganization {
+    height: 20vw;
+}
+
 @media screen and (max-width: 780px) {
     .organizationContainer {
         margin: 0;
@@ -32,6 +36,11 @@
         padding: 0;
         height: 92vh;
         overflow: auto;
+        display: flex;
+        flex-direction: column;
+    }
+    #imgOrganization {
+        height: 40vw;
     }
 }
 
