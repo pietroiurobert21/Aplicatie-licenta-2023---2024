@@ -145,7 +145,7 @@ export default function TableComponent(props) {
                 </Table.VirtualBody>
             </Table>
 
-            <div className={style.contactContainers}>
+            <div className={style.contactContainers} style={{ height: props.type === "customers" ? "60vh" : "74.4vh" }}>
                 {
                     props.data.map((profile, index)=>(
                         <ContactContainer data={profile} index={index} onClick={() => { setIsShown(true); setShownProfile(profile) }}/>

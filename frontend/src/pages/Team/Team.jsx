@@ -55,7 +55,14 @@ export default function Team() {
 
     const handleEmailSender = async (emailAddress, content) => {
         try {
-            await sendEmail(emailAddress, "Invitation code to CRMLite", content)
+            // await sendEmail(emailAddress, "Invitation code to CRMLite", content)
+            await fetch("http://localhost:3000/emails/sendEmail", {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({to: [emailAddress], subject: 'Invitation code to CRMLite', text: content, html: content})
+            })
             toaster.success("email sent successfully!")   
         } catch (error) {
             toaster.warning("email could not be sent!")   
@@ -113,7 +120,8 @@ export default function Team() {
                             <TextInput width={"100%"} name="text-input-name" placeholder="Email" onChange={(e)=>{setEmail(e.target.value)}}/>
                             <div className={style.invitationButtons}>
                             <Button width="49%" appearance="primary" onClick={()=>{
-                                handleEmailSender([{"emailAddress": email, "firstName": email }], `<p>You have been invited to join the organization  <b>${organization.name}</b>  within the  <b>CRMLite</b>  website. Below is the invitation code: </p><p>${organization.code}</p>`);
+                                // handleEmailSender([{"emailAddress": email, "firstName": email }], `<p>You have been invited to join the organization  <b>${organization.name}</b>  within the  <b>CRMLite</b>  website. Below is the invitation code: </p><p>${organization.code}</p>`);
+                                handleEmailSender(email, `<p>You have been invited to join the organization  <b>${organization.name}</b>  within the  <b>CRMLite</b>  website. Below is the invitation code: </p><p>${organization.code}</p>`);
                                 setIsShown(false)
                             }}> send </Button>
                             <Button width="49%" appearance="default" onClick={()=>{navigator.clipboard.writeText(organization.code); toaster.success('Code copied to clipboard', { duration: 1.5 });}}> copy code to clipboard </Button>

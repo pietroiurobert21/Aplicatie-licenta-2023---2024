@@ -22,6 +22,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "bcryptjs": "^2.4.3",
     "evergreen-ui": "^7.1.9",
+    "nodemailer": "^6.9.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-drag-drop-files": "^2.3.10",

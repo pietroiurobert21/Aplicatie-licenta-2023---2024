@@ -13,6 +13,7 @@ const task_routes = require('./routes/tasks-routes');
 const leads_routes = require('./routes/leads-routes');
 const templates_routes = require('./routes/templates-routes');
 const campaigns_routes = require('./routes/campaign-routes');
+const email_routes = require('./routes/email-routes');
 
 
 dotenv.config(); // Configure dotenv
@@ -28,7 +29,8 @@ app.use('/deals', deal_routes);
 app.use('/tasks', task_routes);
 app.use('/leads', leads_routes);
 app.use('/templates', templates_routes);
-app.use('/campaigns', campaigns_routes)
+app.use('/campaigns', campaigns_routes);
+app.use('/emails', email_routes);
 
 module.exports = app;
 

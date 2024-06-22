@@ -102,16 +102,27 @@ export default function Contacts() {
     }
 
     const startMarketingCampaign = async () => {
-        const emailAddress = selected
-        if (emailAddress=='') {
+        const emailAddress = selected.map(item => item.emailAddress);
+        console.log(emailAddress)
+        if (emailAddress.length==0) {
             toaster.warning("at least one contact has to be selected!")
-        } else if (content=='') {
+        } else if (content.trim()=='') {
             toaster.warning("a template has to be selected! you can make your own in the template editor tab.")
-        } else if (subject=='') {
+        } else if (subject.trim()=='') {
             toaster.warning("an email subject is required!")
         } else {
             try {
-                await sendEmail(emailAddress, subject, content)
+                // await sendEmail(emailAddress, subject, content)
+                console.log(emailAddress)
+
+                await fetch("http://localhost:3000/emails/sendEmail", {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({to: [emailAddress], subject: subject, text: content, html: content})
+                })
+                setSelected([])
                 toaster.success("email sent successfully!")   
                 getOrganization()
                 saveCampaignToDataBase()
@@ -182,7 +193,7 @@ export default function Contacts() {
                                 shouldCloseOnOverlayClick={false}
                             >
                                 <p style={{color:'#BBB7B6'}}> Step 1: select recipients </p>
-                                <p style={{display:'flex', width:'100%', gap:'4%', color: !checkedAllContacts && '#BBB7B6'}}> All contacts <Switch checked={checkedAllContacts} onChange={(e) => {setCheckedAllContacts(e.target.checked); setSelected(contacts)}} /></p>
+                                <p style={{display:'flex', width:'100%', gap:'4%', color: !checkedAllContacts && '#BBB7B6'}}> All contacts <Switch checked={checkedAllContacts} onChange={(e) => {setCheckedAllContacts(e.target.checked); if (e.target.checked) setSelected(contacts); else setSelected([])}} /></p>
                                     {
                                         !checkedAllContacts && (
                                             <SelectMenu
@@ -190,7 +201,7 @@ export default function Contacts() {
                                             options={contacts.map(contact => ({ label: contact.emailAddress, value: contact.firstName, emailAddress: contact.emailAddress,  key: contact.id }))}
                                             selected={shownSelected}
                                         
-                                            onSelect={(item) => {setShownSelected(item.value); setSelected([{"emailAddress": item.emailAddress, "firstName": item.value }] )}}>
+                                            onSelect={(item) => {setShownSelected(item.value); setSelected([{emailAddress: item.emailAddress}] )}}>
                                                 
                                             <TextInputField 
                                                 label="Desired contact"
