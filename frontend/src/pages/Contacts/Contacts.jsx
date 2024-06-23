@@ -103,6 +103,8 @@ export default function Contacts() {
 
     const startMarketingCampaign = async () => {
         const emailAddress = selected.map(item => item.emailAddress);
+        const names = selected.map(item => item.firstName)
+
         console.log(emailAddress)
         if (emailAddress.length==0) {
             toaster.warning("at least one contact has to be selected!")
@@ -120,7 +122,7 @@ export default function Contacts() {
                     headers: {
                         'Content-type': 'application/json',
                     },
-                    body: JSON.stringify({to: [emailAddress], subject: subject, text: content, html: content})
+                    body: JSON.stringify({to: emailAddress, subject: subject, text: content, html: content, names: names})
                 })
                 setSelected([])
                 toaster.success("email sent successfully!")   
@@ -201,7 +203,7 @@ export default function Contacts() {
                                             options={contacts.map(contact => ({ label: contact.emailAddress, value: contact.firstName, emailAddress: contact.emailAddress,  key: contact.id }))}
                                             selected={shownSelected}
                                         
-                                            onSelect={(item) => {setShownSelected(item.value); setSelected([{emailAddress: item.emailAddress}] )}}>
+                                            onSelect={(item) => {setShownSelected(item.value); setSelected([{emailAddress: item.emailAddress, firstName: item.firstName}] )}}>
                                                 
                                             <TextInputField 
                                                 label="Desired contact"
