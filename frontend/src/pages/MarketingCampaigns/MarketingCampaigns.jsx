@@ -85,7 +85,7 @@ export default function MarketingCampaigns() {
 
                     <div className={style.marketingContainers}>
                         {campaigns.map(campaign => (
-                            <div className={style.marketingContainer}>
+                            <div key={campaign.id} className={style.marketingContainer}>
                                 <p> Subject: {campaign.subject} </p>
                                 <p> Date: {campaign.date} </p>
                                 <p> Emails sent: {campaign.emailsSent} </p>

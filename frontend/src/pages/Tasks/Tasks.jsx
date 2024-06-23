@@ -207,7 +207,7 @@ export default function Tasks() {
                                     <Table.VirtualBody height={390}>
                                         {tasks.map((task, index) => (
                                             
-                                                <Table.Row isSelectable onSelect={()=>{ setSelectedTask({"id": task.id, "description": task.description, "assignedToEmployeeId": task.assignedToEmployeeId, "assignedByEmployeeId": task.assignedByEmployeeId, "isDone": task.isDone}); setIsShown(true); setSelected2(task.assignedTo.firstName + " " + task.assignedTo.lastName) } }>  
+                                                <Table.Row key={index} isSelectable onSelect={()=>{ setSelectedTask({"id": task.id, "description": task.description, "assignedToEmployeeId": task.assignedToEmployeeId, "assignedByEmployeeId": task.assignedByEmployeeId, "isDone": task.isDone}); setIsShown(true); setSelected2(task.assignedTo.firstName + " " + task.assignedTo.lastName) } }>  
                                                     <Table.TextCell>{index+1}</Table.TextCell>
                                                     <Table.TextCell>{task.description}</Table.TextCell>
                                                     { role==="administrator" && <Table.TextCell isNumber>{task.assignedTo.firstName} {task.assignedTo.lastName}</Table.TextCell>}
@@ -223,7 +223,7 @@ export default function Tasks() {
 
                                 <div className={style.tasksContainers}>
                                     {tasks.map(task=>(
-                                        <div className={style.tasksContainer} onClick={() => { setSelectedTask({"id": task.id, "description": task.description, "assignedToEmployeeId": task.assignedToEmployeeId, "assignedByEmployeeId": task.assignedByEmployeeId, "isDone": task.isDone}); setIsShown(true); setSelected2(task.assignedTo.firstName + " " + task.assignedTo.lastName)  }}>
+                                        <div key={task.id} className={style.tasksContainer} onClick={() => { setSelectedTask({"id": task.id, "description": task.description, "assignedToEmployeeId": task.assignedToEmployeeId, "assignedByEmployeeId": task.assignedByEmployeeId, "isDone": task.isDone}); setIsShown(true); setSelected2(task.assignedTo.firstName + " " + task.assignedTo.lastName)  }}>
                                             <p> Description: {task.description} </p>
                                             <p style={{display:'flex', width:'30vw', justifyContent: 'space-between'}}> Is done: <Switch checked={task.isDone} onClick={(e) => {e.stopPropagation(); toggleTaskStatus(task.id)}} /> </p>
                                             {

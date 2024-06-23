@@ -148,7 +148,7 @@ export default function TableComponent(props) {
             <div className={style.contactContainers} style={{ height: props.type === "customers" ? "60vh" : "74.4vh" }}>
                 {
                     props.data.map((profile, index)=>(
-                        <ContactContainer data={profile} index={index} onClick={() => { setIsShown(true); setShownProfile(profile) }}/>
+                        <ContactContainer key={index}  data={profile} index={index} onClick={() => { setIsShown(true); setShownProfile(profile) }}/>
                     ))
                 }
             </div>

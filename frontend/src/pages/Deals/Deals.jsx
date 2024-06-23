@@ -222,7 +222,7 @@ export default function Deals() {
 
             <div className={style.dealContainers}>
                 {deals.map(deal=>(
-                    <div className={style.dealContainer} onClick={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status); setNewDescription(deal.description); setNewValue(deal.value) }}>
+                    <div key={deal.id} className={style.dealContainer} onClick={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status); setNewDescription(deal.description); setNewValue(deal.value) }}>
                         <p> Value: {deal.value} </p>
                         {deal.Contact ? <p>Contact: {deal.Contact.firstName} {deal.Contact.lastName}</p> : <p>Contact: (contact removed)</p>}
                         <p> Date: {new Date(deal.date).toLocaleDateString("en-US", {
