@@ -189,9 +189,9 @@ export default function Contacts() {
                             <Dialog
                                 isShown={showMarketingDialog}
                                 title="Set up a marketing campagin"
-                                onConfirm={() => {setShowMarketingDialog(false); startMarketingCampaign();}}
-                                onCancel={()=> setShowMarketingDialog(false)}
-                                onCloseComplete={()=>setShowMarketingDialog(false)}
+                                onConfirm={() => {setShowMarketingDialog(false); setCheckedAllContacts(false); startMarketingCampaign();}}
+                                onCancel={()=> {setShowMarketingDialog(false); setCheckedAllContacts(false); setSelected([])}}
+                                onCloseComplete={()=>{setShowMarketingDialog(false); setCheckedAllContacts(false); setShownSelected(null); setSelected([])}}
                                 shouldCloseOnOverlayClick={false}
                             >
                                 <p style={{color:'#BBB7B6'}}> Step 1: select recipients </p>
@@ -203,7 +203,7 @@ export default function Contacts() {
                                             options={contacts.map(contact => ({ label: contact.emailAddress, value: contact.firstName, emailAddress: contact.emailAddress,  key: contact.id }))}
                                             selected={shownSelected}
                                         
-                                            onSelect={(item) => {setShownSelected(item.value); setSelected([{emailAddress: item.emailAddress, firstName: item.firstName}] )}}>
+                                            onSelect={(item) => {setShownSelected(item.value); setSelected([{emailAddress: item.emailAddress, firstName: item.value}] )}}>
                                                 
                                             <TextInputField 
                                                 label="Desired contact"

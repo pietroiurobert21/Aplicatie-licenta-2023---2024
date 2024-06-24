@@ -20,6 +20,7 @@ const sendEmail = async (req, res) => {
 
     const recipients = to;
     console.log(recipients)
+    console.log(names)
 
     try {
         // Loop through each recipient to send personalized emails
