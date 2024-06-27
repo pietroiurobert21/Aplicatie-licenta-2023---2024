@@ -16,7 +16,9 @@ export default function Contacts() {
 
     const [ filters, setFilters ] = useState({
         firstName: '',
-        lastName: ''
+        lastName: '',
+        professionalTitle: '',
+        companyName: ''
     })
 
     const [ contacts, setContacts ] = useState([])
@@ -198,9 +200,24 @@ export default function Contacts() {
                                     defaultValue={filters.lastName}
                                     onChange={(e)=>{setFilters((prev)=>({...prev, ['lastName']: e.target.value}))}}
                                 />
+                                <TextInputField
+                                    description="Professional title"
+                                    placeholder="Professional title"
+                                    name="professionalTitle"
+                                    defaultValue={filters.professionalTitle}
+                                    onChange={(e)=>{setFilters((prev)=>({...prev, ['professionalTitle']: e.target.value}))}}
+                                />
+                                <TextInputField
+                                    description="Company name"
+                                    placeholder="Company name"
+                                    name="companyName"
+                                    defaultValue={filters.companyName}
+                                    onChange={(e)=>{setFilters((prev)=>({...prev, ['companyName']: e.target.value}))}}
+                                />
                                 <Button appearance ="minimal" onClick={()=>{setFilters({}); close()}}> Reset filters </Button>
+                                <Button appearance ="minimal" onClick={()=>{close()}}> Close </Button>
                             </div>
-                        )}>
+                        )} shouldCloseOnExternalClick={false}>
                             <button> Filters <FilterIcon/> </button> 
                         </Popover>
                     <button onClick={() => setIsShown(true)}>  New contact  <NewPersonIcon/> </button>
