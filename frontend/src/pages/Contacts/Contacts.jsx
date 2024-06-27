@@ -180,7 +180,7 @@ export default function Contacts() {
     return (
         <div className={style.contactsPage}>  
             <div className={style.headerContacts}>
-                { contacts &&  <p> Total: {contacts.length} records </p> }
+                { contacts && contacts.length && <p> Total: {contacts.length} records </p> }
                 <div className={style.buttons}>
                         <Popover content={({close}) => (
                             <div className={style.filterDiv}>
@@ -209,7 +209,7 @@ export default function Contacts() {
                 </div>
             </div>
         {
-            contacts == -1 ? <p style={{width:"100vw", textAlign:'center'}}> No contacts found </p> :
+            contacts == -1 ? <p style={{width:"100%", textAlign:'center'}}> No contacts found </p> :
                 <>
                 {
                     contacts ? (
