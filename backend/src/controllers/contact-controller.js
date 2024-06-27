@@ -73,10 +73,24 @@ const getContactsByOrganizationId = async (req, res) => {
 }
 
 const getCustomersByOrganizationId = async (req, res) => {
+    const filters = req.query
     const organizationId = req.organizationId
+
+    const whereClause = {
+        organizationId: organizationId,
+        pipelineStatus: 'customer'
+    }
+
     try {
+        Object.keys(filters).forEach(key => {
+            if (filters[key].trim())
+                whereClause[key] = filters[key];
+        });
+
+        console.log(whereClause)
+
         const contacts = await Contact.findAll({
-            where: {organizationId: organizationId, pipelineStatus: 'customer'},
+            where: whereClause,
             order: [ ['id', 'ASC'] ]
         })
         if (contacts.length > 0) {

@@ -1,4 +1,5 @@
 import { toaster, Button, NewPersonIcon, DocumentIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon } from 'evergreen-ui'
+import { Popover, FilterIcon, TextInput } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
 import style from './Contacts.module.css'
@@ -12,6 +13,11 @@ import FileUploader from '../../components/FileUploader/FileUploader.jsx'
 
 export default function Contacts() {
     CheckToken()
+
+    const [ filters, setFilters ] = useState({
+        firstName: '',
+        lastName: ''
+    })
 
     const [ contacts, setContacts ] = useState([])
     const [ isShown, setIsShown ] =   useState(false)
@@ -42,7 +48,8 @@ export default function Contacts() {
     const [ subject, setSubject ] = useState('')
 
     const retrieveContacts = async () => {
-        const res = await fetch(`http://localhost:3000/contacts/customers/`, {
+        const query = new URLSearchParams(filters).toString();
+        const res = await fetch(`http://localhost:3000/contacts/customers/?${query}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -160,20 +167,42 @@ export default function Contacts() {
     useEffect(() => {
         getOrganization()
         retrieveContacts()
-    }, [updated])
+    }, [updated, filters])
 
     useEffect(()=>{
 
     }, [contacts])
     
 
-    const [shownSelected, setShownSelected] = useState()
+    const [ shownSelected, setShownSelected ] = useState()
     const [ jsonArray, setJSONArray ] = useState([])
+
     return (
         <div className={style.contactsPage}>  
             <div className={style.headerContacts}>
-                <p> Total: {contacts.length} records </p>
+                { contacts &&  <p> Total: {contacts.length} records </p> }
                 <div className={style.buttons}>
+                        <Popover content={({close}) => (
+                            <div className={style.filterDiv}>
+                                <TextInputField
+                                    description="First name"
+                                    placeholder="First name"
+                                    name="firstName"
+                                    defaultValue={filters.firstName}
+                                    onChange={(e)=>{setFilters((prev)=>({...prev, ['firstName']: e.target.value}))}}
+                                />
+                                <TextInputField
+                                    description="Last name"
+                                    placeholder="Last name"
+                                    name="lastName"
+                                    defaultValue={filters.lastName}
+                                    onChange={(e)=>{setFilters((prev)=>({...prev, ['lastName']: e.target.value}))}}
+                                />
+                                <Button appearance ="minimal" onClick={()=>{setFilters({}); close()}}> Reset filters </Button>
+                            </div>
+                        )}>
+                            <button> Filters <FilterIcon/> </button> 
+                        </Popover>
                     <button onClick={() => setIsShown(true)}>  New contact  <NewPersonIcon/> </button>
                     <button onClick={()=>setUploadIsShown(true)}>  Import data <DocumentIcon/></button>
                     { contacts!=-1 && <button onClick={() => setShowMarketingDialog(true)}>New marketing campaign <RocketSlantIcon/> </button> }
@@ -232,10 +261,6 @@ export default function Contacts() {
                 </>
         }
 
-            
-
-        
-        
         <Dialog
             isShown={uploadIsShown}
             title="Import data from external files"
