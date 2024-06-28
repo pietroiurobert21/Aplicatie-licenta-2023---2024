@@ -1,4 +1,5 @@
 import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox, IconButton, TrashIcon, toaster } from "evergreen-ui"
+import { Popover, FilterIcon } from 'evergreen-ui'
 import style from './Deals.module.css';
 import { useEffect, useState } from "react";
 import CheckToken from '../../middlewares/CheckToken'
@@ -13,8 +14,15 @@ export default function Deals() {
     const userId = localStorage.getItem("userId")
     const accessToken = localStorage.getItem("accessToken")
 
+
+    const [ filters, setFilters ] = useState({
+        lowestValue: '',
+        highestValue: '',
+    })
+
     const getDeals = async () => {
-        const res = await fetch(`http://localhost:3000/organizations/deals`, {
+        const query = new URLSearchParams(filters).toString();
+        const res = await fetch(`http://localhost:3000/organizations/deals/?${query}`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json',
@@ -113,7 +121,7 @@ export default function Deals() {
         getDeals()
         retrieveContacts()
         getEmployee()
-    }, [updated])
+    }, [updated, filters])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -175,6 +183,34 @@ export default function Deals() {
             {
                 loading ? <p>loading</p> : (
             <>
+            <div className={style.buttons}>
+                <button onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </button>
+                <Popover content={({close})=> (
+                    <div className={style.filterDiv}>
+                        <div style={{display:'flex', gap: '5%', alignItems:'end'}}>
+                            <TextInputField
+                                description="Value interval"
+                                placeholder="Lowest value"
+                                name="lowestValue"
+                                type="number"
+                                defaultValue={filters.lowestValue}
+                                onChange={(e)=>{setFilters((prev)=>({...prev, ['lowestValue']: e.target.value}))}}
+                            />
+                            <TextInputField
+                                placeholder="Highest value"
+                                name="highestValue"
+                                type="number"
+                                defaultValue={filters.highestValue}
+                                onChange={(e)=>{setFilters((prev)=>({...prev, ['highestValue']: e.target.value}))}}
+                            />
+                        </div>
+                        <Button appearance ="minimal" onClick={()=>{setFilters({}); close()}}> Reset filters </Button>
+                        <Button appearance ="minimal" onClick={()=>{close()}}> Close </Button>
+                    </div>
+                )}shouldCloseOnExternalClick={false}>
+                    <button> Filters <FilterIcon/> </button> 
+                </Popover>
+            </div>
             <Table id={style.dealsTable}>
                 <Table.Head style={{userSelect: 'none'}}>
                     <Table.TextHeaderCell> ID </Table.TextHeaderCell>
@@ -324,7 +360,7 @@ export default function Deals() {
                         }}/>
                     <Button appearance='primary' intent='danger' style={{width: "100%", marginTop: "20vh"}} onClick={()=>deleteDeal(shownDeal.id)}> Delete deal </Button>
                 </Dialog>
-            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </Button>
+            {/* <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <AddToArtifactIcon/> New Deal </Button> */}
                 </>
             )}
         </>

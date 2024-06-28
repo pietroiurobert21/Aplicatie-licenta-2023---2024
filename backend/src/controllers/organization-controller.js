@@ -75,9 +75,27 @@ const getOrganizationMembers = async (req, res) => {
 }
 
 const getOrganizationDeals = async (req, res) => {
+    const organizationId = req.organizationId
+    const filters = req.query
+
+    const whereClause = {
+        organizationId: organizationId
+    }
+
+    if (filters.lowestValue && filters.lowestValue.trim() !== '') {
+        whereClause.value = { [sequelize.Op.gte]: filters.lowestValue };
+    }
+
+    if (filters.highestValue && filters.highestValue.trim() !== '') {
+        whereClause.value = {
+            ...whereClause.value,
+            [sequelize.Op.lte]: filters.highestValue
+        };
+    }
+
     const id = req.organizationId
     try {
-        const organizationDeals = await Deal.findAll({where: {organizationId: id}, 
+        const organizationDeals = await Deal.findAll({where: whereClause, 
             include: [
                 { model: Employee , 
                     include: [

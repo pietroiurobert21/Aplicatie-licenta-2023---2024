@@ -1,5 +1,5 @@
 import { toaster, Button, NewPersonIcon, DocumentIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon } from 'evergreen-ui'
-import { Popover, FilterIcon, TextInput } from 'evergreen-ui'
+import { Popover, FilterIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
 import style from './Contacts.module.css'
