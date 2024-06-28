@@ -193,6 +193,7 @@ export default function Deals() {
                                 placeholder="Lowest value"
                                 name="lowestValue"
                                 type="number"
+                                step="1000"
                                 defaultValue={filters.lowestValue}
                                 onChange={(e)=>{setFilters((prev)=>({...prev, ['lowestValue']: e.target.value}))}}
                             />
@@ -200,6 +201,7 @@ export default function Deals() {
                                 placeholder="Highest value"
                                 name="highestValue"
                                 type="number"
+                                step="1000"
                                 defaultValue={filters.highestValue}
                                 onChange={(e)=>{setFilters((prev)=>({...prev, ['highestValue']: e.target.value}))}}
                             />
