@@ -103,7 +103,7 @@ export default function Navbar() {
     return (
         <>
             <div ref={divRef} className={on ? `${style.navbar} ${style.responsive}` : style.navbar}>
-                <div className={style.logoNavbar}>
+                <div className={style.logoNavbar} onClick={()=>navigate('/profile')}>
                     <img src={reactLogo} alt="React Logo" />
                     <p>Node CRM</p>
                 </div>

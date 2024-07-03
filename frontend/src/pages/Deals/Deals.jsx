@@ -225,7 +225,7 @@ export default function Deals() {
                     <Table.TextHeaderCell>  </Table.TextHeaderCell>
                 </Table.Head>
 
-                <Table.VirtualBody height={440}>
+                <Table.VirtualBody height={"70vh"}>
 
                     {deals.map((deal, index) => ( 
                         <Table.Row key={deal.id} isSelectable onSelect={() => { setIsShown_1(true); setShownDeal(deal); setNewStatus(deal.status); setNewDescription(deal.description); setNewValue(deal.value)  }}>

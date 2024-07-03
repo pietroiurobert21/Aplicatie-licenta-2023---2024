@@ -76,7 +76,7 @@
     align-items: start;
 }
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 1300px) {
     .stats {
         flex-direction: row;
         justify-content: center;

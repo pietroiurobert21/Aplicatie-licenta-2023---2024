@@ -118,6 +118,7 @@ const updateUser = async (req, res) => {
             user.firstName = body.firstName
             user.lastName = body.lastName
             await user.save()
+            res.status(200).json({success: true})
         } else {
             res.status(404).json({ success:false, error: "User not found" });
         }

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import style from "./Profile.module.css"
 import { useNavigate } from 'react-router-dom';
 
-import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster, Button, Dialog, TextInputField, TextInput } from 'evergreen-ui'
+import { Avatar, StatusIndicator, Badge, LogOutIcon, toaster, Button, Dialog, TextInputField, TextInput, Pane, Alert } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken'
 
 import bcrypt from 'bcryptjs';
@@ -79,14 +79,20 @@ export default function Profile(){
 
 
     const updateProfile = async () => {
-        await fetch('http://localhost:3000/users', {
+        const res = await fetch('http://localhost:3000/users', {
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json',
                 'Authorization': `Bearer ${accessToken}`
             },
             body: JSON.stringify({id: newUserData.id, username: newUserData.username, firstName: newUserData.firstName, lastName: newUserData.lastName})
-        }).then(()=>setUpdated(Math.floor(Math.random() * 9000)));
+        });
+        if (res.ok) {
+            toaster.success("contact modified successfully!");
+            setUpdated(Math.floor(Math.random() * 9000))
+        } else {
+            toaster.warning("there was an error updating the profile");
+        }
     }
 
     const [ isShown, setIsShown ] = useState(false)
@@ -158,10 +164,19 @@ export default function Profile(){
                                 title="Edit Profile"
                                 onCloseComplete={() => setIsShown(false)}
                                 preventBodyScrolling
-                                onConfirm={() => {updateProfile();setIsShown(false);}}
-                                onCancel={()=>{setIsShown(false)}}
+
                                 shouldCloseOnOverlayClick={false}
                                 id={style.profileDialog}
+                                footer={
+                                    <Pane display="flex" justifyContent="flex-end" padding={8}>
+                                        <Button marginRight={8} onClick={()=>{setIsShown(false)}}>
+                                            Cancel
+                                        </Button>
+                                        <Button appearance="primary" onClick={() => { setIsShown(false);updateProfile();}}>
+                                            Confirm
+                                        </Button>
+                                    </Pane>
+                                }
                             >
                                 <TextInputField
                                     label="Username"

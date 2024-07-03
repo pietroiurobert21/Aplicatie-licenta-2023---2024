@@ -26,6 +26,16 @@ export default function DialogComponent(props) {
                     onCloseComplete={() => props.setIsShown(false)}
                     onCancel={()=> props.setIsShown(false)}
                     shouldCloseOnOverlayClick={false}
+                    footer={
+                        <Pane display="flex" justifyContent="flex-end" padding={8}>
+                            <Button marginRight={8} onClick={() => props.setIsShown(false)}>
+                                Cancel
+                            </Button>
+                            <Button appearance="primary" onClick={() => { props.handleConfirm(props.newContact); props.setIsShown(false); }}>
+                                Confirm
+                            </Button>
+                        </Pane>
+                    }
                     >
                         <Pane height="90" width="90">
                         <div style={{display: 'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', paddingBottom: '5%'}}>

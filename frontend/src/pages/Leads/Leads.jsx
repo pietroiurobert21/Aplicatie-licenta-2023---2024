@@ -3,6 +3,7 @@ import TableComponent from "../../components/Table/TableComponent.jsx"
 import { Button, NewPersonIcon, toaster } from "evergreen-ui";
 import DialogComponent from "../../components/Dialog/DialogComponent.jsx";
 import CheckToken from '../../middlewares/CheckToken.jsx'
+import style from './Leads.module.css';
 
 export default function Leads() {
     CheckToken()    
@@ -97,7 +98,14 @@ export default function Leads() {
     }, [leads])
 
     return (
-        <>
+        <div className={style.contactsPage}>
+            <div className={style.headerContacts}>
+                {leads && <p style={{fontWeight: 500, paddingLeft: "2%"}}> Total: {leads!=-1 ? leads.length : 0} records </p> }
+                {/* <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New lead </Button> */}
+                <div className={style.buttons}>
+                    <button onClick={() => setIsShown(true)}>  New contact  <NewPersonIcon/> </button>
+                </div>
+            </div>
             {
                 leads == -1 ? <p style={{width:"100vw", textAlign:'center'}}> No leads found </p> :
                 <>
@@ -105,7 +113,6 @@ export default function Leads() {
                         leads ? 
                         (
                             <>
-                                <p style={{fontWeight: 500, paddingLeft: "2%"}}> Total: {leads.length} records </p>
                                 <TableComponent data={leads} showSatisfaction={false} setUpdated={setUpdated} setProfiles={setLeads}/> 
                             </>
                         )
@@ -115,7 +122,6 @@ export default function Leads() {
             </>
             }
             <DialogComponent title={"Add new lead"}  data={newLead} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewLead} newContact={newLead} handleConfirm={addNewLead}/> 
-            <Button appearance="default" intent="none" style={{left:"2%"}} onClick={() => setIsShown(true)}> <NewPersonIcon/> New lead </Button>
-        </>
+        </div>
     )
 }
