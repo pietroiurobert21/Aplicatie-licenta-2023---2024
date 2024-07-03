@@ -35,6 +35,12 @@
     gap: 0.2%;
 }
 
+.filterDiv {
+    padding: 10%;
+    display: flex;
+    flex-direction: column;
+}
+
 
 @media screen and (max-width: 780px) {
     .buttons {

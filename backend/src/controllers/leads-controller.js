@@ -6,10 +6,23 @@ const Contact = require("../database/models/contact")
 
 
 const getLeadsByOrganizationId = async (req, res) => {
+    const filters = req.query
     const organizationId = req.organizationId
+
+
+    const whereClause = {
+        organizationId: organizationId,
+        pipelineStatus: 'lead'
+    }
+
     try {
+        Object.keys(filters).forEach(key => {
+            if (filters[key].trim())
+                whereClause[key] = filters[key];
+        });
+
         const leads = await Contact.findAll({
-            where: {organizationId: organizationId, pipelineStatus: 'lead'},
+            where: whereClause,
             order: [ ['id', 'ASC'] ]
         })
         if (leads.length > 0) {
