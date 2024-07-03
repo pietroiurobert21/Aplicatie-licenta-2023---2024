@@ -203,17 +203,25 @@ export default function Profile(){
                                 isShown={isShownPassword}
                                 onCloseComplete={() => {setIsShownPassword(false); setValidOldPassword(false)}}
                                 preventBodyScrolling
-                                onConfirm={() => {
-                                    if (newPassword != repeatNewPassword) alert("passwords do not match!");
-                                    else if (oldPassword.trim()=='') alert("old password missing")
-                                    else if (newPassword.trim()=='') alert("new password missing")
-                                    else {
-                                        changePassword(); 
-                                        setIsShownPassword(false); setValidOldPassword(false)}
-                                    }
-                                }
-                                onCancel={()=>{setIsShownPassword(false); setValidOldPassword(false)}}
                                 shouldCloseOnOverlayClick={false}
+                                footer={
+                                    <Pane display="flex" justifyContent="flex-end" padding={8}>
+                                        <Button marginRight={8} onClick={()=>{setIsShownPassword(false); setValidOldPassword(false)}}>
+                                            Cancel
+                                        </Button>
+                                        <Button appearance="primary" onClick={() => { 
+                                            if (newPassword != repeatNewPassword) alert("passwords do not match!");
+                                            else if (oldPassword.trim()=='') alert("old password missing")
+                                            else if (newPassword.trim()=='') alert("new password missing")
+                                            else {
+                                                changePassword(); 
+                                                setIsShownPassword(false); setValidOldPassword(false)}
+                                            }
+                                        }>
+                                            Confirm
+                                        </Button>
+                                    </Pane>
+                                }
                             >
                                 <TextInputField 
                                     label="Old Password"

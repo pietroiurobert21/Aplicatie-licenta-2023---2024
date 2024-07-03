@@ -1,4 +1,4 @@
-import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox, IconButton, TrashIcon, toaster } from "evergreen-ui"
+import { Table, Button , AddToArtifactIcon, Dialog, TextInputField, SelectMenu, Badge, Combobox, IconButton, TrashIcon, toaster, Pane } from "evergreen-ui"
 import { Popover, FilterIcon } from 'evergreen-ui'
 import style from './Deals.module.css';
 import { useEffect, useState } from "react";
@@ -281,11 +281,20 @@ export default function Deals() {
             <Dialog
                 isShown={isShown}
                 title="Dialog title"
-                onConfirm={() => {setIsShown(false); saveNewDeal()}}
-                onCancel={()=>{setIsShown(false)}}
                 onCloseComplete={() => setIsShown(false)}
                 shouldCloseOnOverlayClick={false}
-                confirmLabel="Custom Label">
+                confirmLabel="Custom Label"
+                footer={
+                    <Pane display="flex" justifyContent="flex-end" padding={8}>
+                        <Button marginRight={8} onClick={()=>{setIsShown(false)}}>
+                            Cancel
+                        </Button>
+                        <Button appearance="primary" onClick={() => {setIsShown(false); saveNewDeal()}}>
+                            Confirm
+                        </Button>
+                    </Pane>
+                }    
+            >
                 <SelectMenu
                     title="Select name"
                     options={contacts.map(contact => ({ label:  contact.emailAddress, value: contact.emailAddress, key: contact.id }))}
@@ -320,11 +329,20 @@ export default function Deals() {
                         month: 'long',   // "June"
                         day: 'numeric'   // "21"
                     }) : "(employee removed)"}
-                    onConfirm={() => {setIsShown_1(false); updateDealStatus(newStatus); }}
-                    onCancel={() => setIsShown_1(false)}
                     onCloseComplete={() => setIsShown_1(false)}
                     shouldCloseOnOverlayClick={false}
-                    confirmLabel="Update deal">
+                    confirmLabel="Update deal"
+                    footer={
+                        <Pane display="flex" justifyContent="flex-end" padding={8}>
+                            <Button marginRight={8} onClick={()=>{setIsShown_1(false)}}>
+                                Cancel
+                            </Button>
+                            <Button appearance="primary" onClick={() => {setIsShown_1(false); updateDealStatus(newStatus);}}>
+                                Confirm
+                            </Button>
+                        </Pane>
+                    }       
+                >
                     <TextInputField
                         label="Contact"
                         placeholder="Contact"

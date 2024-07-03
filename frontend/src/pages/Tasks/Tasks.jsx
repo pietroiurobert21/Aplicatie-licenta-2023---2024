@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from './Tasks.module.css'
-import { Table, TextInput, Badge, Button, SelectMenu, IconButton, TrashIcon, Dialog, TextInputField, Switch  } from 'evergreen-ui'
+import { Table, TextInput, Badge, Button, SelectMenu, IconButton, TrashIcon, Dialog, TextInputField, Switch, Pane  } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 
 
@@ -263,11 +263,19 @@ export default function Tasks() {
                         isShown={isShown}
                         title="Update task"
                         onCloseComplete={() => setIsShown(false)}
-                        onCancel={()=>{setIsShown(false)}}
-                        onClose={()=>{setIsShown(false)}}
-                        onConfirm={()=>{updateTask(selectedTask); setIsShown(false)}}
                         preventBodyScrolling
-                        shouldCloseOnOverlayClick={false}>
+                        shouldCloseOnOverlayClick={false}
+                        footer={
+                            <Pane display="flex" justifyContent="flex-end" padding={8}>
+                                <Button marginRight={8} onClick={()=>{setIsShown(false)}}>
+                                    Cancel
+                                </Button>
+                                <Button appearance="primary" onClick={() => {updateTask(selectedTask); setIsShown(false)}}>
+                                    Confirm
+                                </Button>
+                            </Pane>
+                        }
+                    >
                         <TextInputField
                             label="Description"
                             placeholder="Description"

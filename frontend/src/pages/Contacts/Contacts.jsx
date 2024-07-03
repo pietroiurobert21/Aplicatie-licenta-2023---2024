@@ -1,4 +1,4 @@
-import { toaster, Button, NewPersonIcon, DocumentIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon } from 'evergreen-ui'
+import { toaster, Button, NewPersonIcon, DocumentIcon, Dialog, SelectMenu, TextInputField, Switch, RocketSlantIcon, Pane } from 'evergreen-ui'
 import { Popover, FilterIcon } from 'evergreen-ui'
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import { useEffect, useState } from 'react';
@@ -235,10 +235,18 @@ export default function Contacts() {
                             <Dialog
                                 isShown={showMarketingDialog}
                                 title="Set up a marketing campagin"
-                                onConfirm={() => {setShowMarketingDialog(false); setCheckedAllContacts(false); startMarketingCampaign();}}
-                                onCancel={()=> {setShowMarketingDialog(false); setCheckedAllContacts(false); setSelected([])}}
                                 onCloseComplete={()=>{setShowMarketingDialog(false); setCheckedAllContacts(false); setShownSelected(null); setSelected([])}}
                                 shouldCloseOnOverlayClick={false}
+                                footer={
+                                    <Pane display="flex" justifyContent="flex-end" padding={8}>
+                                        <Button marginRight={8} onClick={()=>{setShowMarketingDialog(false); setCheckedAllContacts(false); setSelected([])}}>
+                                            Cancel
+                                        </Button>
+                                        <Button appearance="primary" onClick={() => {setShowMarketingDialog(false); setCheckedAllContacts(false); startMarketingCampaign();}}>
+                                            Confirm
+                                        </Button>
+                                    </Pane>
+                                }
                             >
                                 <p style={{color:'#BBB7B6'}}> Step 1: select recipients </p>
                                 <p style={{display:'flex', width:'100%', gap:'4%', color: !checkedAllContacts && '#BBB7B6'}}> All contacts <Switch checked={checkedAllContacts} onChange={(e) => {setCheckedAllContacts(e.target.checked); if (e.target.checked) setSelected(contacts); else setSelected([])}} /></p>
@@ -282,8 +290,16 @@ export default function Contacts() {
             isShown={uploadIsShown}
             title="Import data from external files"
             onCloseComplete={() => setUploadIsShown(false)}
-            onCancel={() => setUploadIsShown(false)}
-            onConfirm={()=>{console.log(jsonArray); saveMultipleContacts()}}
+            footer={
+                <Pane display="flex" justifyContent="flex-end" padding={8}>
+                    <Button marginRight={8} onClick={()=>setUploadIsShown(false)}>
+                        Cancel
+                    </Button>
+                    <Button appearance="primary" onClick={() => {console.log(jsonArray); saveMultipleContacts()}}>
+                        Confirm
+                    </Button>
+                </Pane>
+            }
         >
             <FileUploader setJSONArray={setJSONArray}/>
         </Dialog>
