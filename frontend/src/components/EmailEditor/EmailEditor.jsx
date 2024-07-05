@@ -127,7 +127,7 @@ export default function EmailTemplate(props) {
       <div style={{display:'flex', justifyContent:'space-between'}}>
         <EmailTemplates setShowTemplateId={setShowTemplateId} effect={effect}/>
 
-        <div style={{display:'flex', gap:'1%',paddingBottom: '2%'}}>
+        <div style={{display:'flex', gap:'1%',paddingBottom: '2%'}} className={style.editorButtons}>
           <TextInput name="template-input-name" defaultValue={shownTemplate} placeholder="Template name..." onChange={(e)=>setTemplateName(e.target.value)}/>
           <button onClick={()=>resetEditor()} id={style.newButton}>
             <CubeAddIcon/>
