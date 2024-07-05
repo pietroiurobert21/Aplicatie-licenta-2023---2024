@@ -7,6 +7,13 @@ export default function LeaderboardComponent(props) {
             <div className={style.header}>
                 <p><b>Leaderboard</b></p>
             </div>
+            <div className={style.columns}>
+                <div style={{ display: 'flex', gap: '46%', width: '80%' }}>
+                    <p> </p>
+                    <p><b> Name </b></p>
+                </div>
+                <p><b> Score </b></p>
+            </div>
             <div className={style.leaderboardList}>
                 {items.map((item, index) => (
                     <div className={style.leaderboardItem} key={index}>

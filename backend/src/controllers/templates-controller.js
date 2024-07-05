@@ -34,6 +34,21 @@ const postTemplate = async (req, res) => {
     }
 }
 
+const deleteTemplate = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const template = await Templates.findByPk(id);
+        if (template) {
+            await template.destroy();
+            res.status(200).json({success: true});
+        } else {
+            res.status(404).json({success: false, error: "Template not found"});
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, error: "Error deleting template" });
+    }
+}
+
 const getTemplateById = async (req, res) => {
     const { id } = req.params
     try {
@@ -51,5 +66,6 @@ const getTemplateById = async (req, res) => {
 module.exports = { 
     getTemplatesByOrganizationID,
     postTemplate,
+    deleteTemplate,
     getTemplateById
 }

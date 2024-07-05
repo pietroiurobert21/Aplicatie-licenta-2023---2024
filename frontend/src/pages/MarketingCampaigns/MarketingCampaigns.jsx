@@ -63,7 +63,7 @@ export default function MarketingCampaigns() {
                                 <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("emailsSent")}>Emails sent</Table.TextHeaderCell>
                                 <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("subject")}>Subject</Table.TextHeaderCell>
                             </Table.Head>
-                            <Table.VirtualBody height={570}>
+                            <Table.VirtualBody height={540}>
                                 {campaigns.map(campaign => (
                                     <Table.Row key={campaign.id}>
                                         <Table.TextCell>{campaign.id}</Table.TextCell>

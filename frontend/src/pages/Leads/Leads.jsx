@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TableComponent from "../../components/Table/TableComponent.jsx"
-import { Button, NewPersonIcon, toaster, Popover, FilterIcon, TextInputField } from "evergreen-ui";
+import { Button, NewPersonIcon, toaster, Popover, FilterIcon, TextInputField, DocumentIcon } from "evergreen-ui";
 import DialogComponent from "../../components/Dialog/DialogComponent.jsx";
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import style from './Leads.module.css';
@@ -146,9 +146,10 @@ export default function Leads() {
                                 <Button appearance ="minimal" onClick={()=>{close()}}> Close </Button>
                             </div>
                         )} shouldCloseOnExternalClick={false}>
-                            <button> Filters <FilterIcon/> </button> 
+                            <button> <FilterIcon/> Filters </button> 
                         </Popover>
-                    <button onClick={() => setIsShown(true)}>  New contact  <NewPersonIcon/> </button>
+                    <button onClick={() => setIsShown(true)}>  <NewPersonIcon/> New contact  </button>
+                    <button onClick={()=>setUploadIsShown(true)}> <DocumentIcon/> Import data </button>
                 </div>
             </div>
             {

@@ -1,0 +1,32 @@
+button {
+    border-radius: 70px;
+    background-color: #FFFFFF;
+    border: 1px solid #EAEEF4;
+    color: #092C4C;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    padding: 1%;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2% 2% 2% 2%;
+    width: 10vw;
+}
+
+#newButton:hover {
+    border: 1px solid black;
+    transition: 300ms;
+}
+
+#confirmButton:hover {
+    border: 1px solid #188817;
+    color: #188817;
+    transition: 300ms;
+}
+
+#cancelButton:hover {
+    border: 1px solid #fb1c1f;
+    color: #fb1c1f;
+    transition: 300ms;
+}

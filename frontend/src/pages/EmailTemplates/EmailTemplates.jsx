@@ -4,6 +4,7 @@ import { Combobox } from 'evergreen-ui'
 export default function EmailTemplates(props) {
     
     const [ templates, setTemplates ] = useState([])
+    const [ selectedTemplate, setSelectedTemplate ] = useState(null);
 
     const accessToken = localStorage.getItem('accessToken')
 
@@ -19,10 +20,11 @@ export default function EmailTemplates(props) {
             setTemplates(data.templates)
         })
     }
-    
+
     useEffect(() => {
+        setSelectedTemplate(null)
         retrieveTemplates()
-    }, [])
+    }, [props.effect])
 
     return (
         <div style={{width:'fix-content'}}>
@@ -32,7 +34,7 @@ export default function EmailTemplates(props) {
                     items={templates.map((template, index) => ({ label: template.name, id: template.id, content: template.html }))}
                     itemToString={item => (item ? item.label : '')}
                     onChange={selected => {
-                        console.log(selected), 
+                        setSelectedTemplate(selected)
                         props.setShowTemplateId && props.setShowTemplateId(selected.id)
                         props.setContent && props.setContent(selected.content)
                     }}    
@@ -40,6 +42,7 @@ export default function EmailTemplates(props) {
                     autocompleteProps={{
                         title: 'Template'
                     }}
+                    selectedItem={selectedTemplate}
                 />
                 ) : <p> no templates found </p>
             }

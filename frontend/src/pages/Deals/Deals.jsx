@@ -210,7 +210,7 @@ export default function Deals() {
                         <Button appearance ="minimal" onClick={()=>{close()}}> Close </Button>
                     </div>
                 )}shouldCloseOnExternalClick={false}>
-                    <button> Filters <FilterIcon/> </button> 
+                    <button> <FilterIcon/> Filters </button> 
                 </Popover>
             </div>
             <Table id={style.dealsTable}>

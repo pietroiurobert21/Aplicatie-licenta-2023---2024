@@ -218,11 +218,11 @@ export default function Contacts() {
                                 <Button appearance ="minimal" onClick={()=>{close()}}> Close </Button>
                             </div>
                         )} shouldCloseOnExternalClick={false}>
-                            <button> Filters <FilterIcon/> </button> 
+                            <button> <FilterIcon/> Filters </button> 
                         </Popover>
-                    <button onClick={() => setIsShown(true)}>  New contact  <NewPersonIcon/> </button>
-                    <button onClick={()=>setUploadIsShown(true)}>  Import data <DocumentIcon/></button>
-                    { contacts!=-1 && <button onClick={() => setShowMarketingDialog(true)}>New marketing campaign <RocketSlantIcon/> </button> }
+                    <button onClick={() => setIsShown(true)}> <NewPersonIcon/>  New contact  </button>
+                    <button onClick={()=>setUploadIsShown(true)}> <DocumentIcon/> Import data </button>
+                    { contacts!=-1 && <button onClick={() => setShowMarketingDialog(true)}> <RocketSlantIcon/> New marketing campaign </button> }
                 </div>
             </div>
         {

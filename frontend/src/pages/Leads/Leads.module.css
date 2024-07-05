@@ -19,6 +19,9 @@
     font-weight: 500;
     padding: 1%;
     font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    gap: 7%;
 }
 
 .buttons button:hover {
