@@ -80,10 +80,11 @@ button:hover {
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        width: 100%;
+        width: 90%;
         margin-bottom: 2%;
     }
     button {
         width: 100%;
+        overflow-x: hidden;
     }
 }
