@@ -58,15 +58,16 @@ export default function MarketingCampaigns() {
                                 <Table.HeaderCell style={{display:'flex', justifyContent:'center'}}><b>Campaigns History</b></Table.HeaderCell>
                             </Table.Head>
                             <Table.Head style={{userSelect: 'none'}}>
-                                <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("id")}> ID </Table.TextHeaderCell>
+                                {/* isSelectable onClick={()=>sortingTable("id")} */}
+                                <Table.TextHeaderCell> ID </Table.TextHeaderCell> 
                                 <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("date")}>Date</Table.TextHeaderCell>
                                 <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("emailsSent")}>Emails sent</Table.TextHeaderCell>
                                 <Table.TextHeaderCell isSelectable onClick={()=>sortingTable("subject")}>Subject</Table.TextHeaderCell>
                             </Table.Head>
                             <Table.VirtualBody height={540}>
-                                {campaigns.map(campaign => (
+                                {campaigns.map((campaign, index) => (
                                     <Table.Row key={campaign.id}>
-                                        <Table.TextCell>{campaign.id}</Table.TextCell>
+                                        <Table.TextCell>{index+1}</Table.TextCell>
                                         <Table.TextCell>
                                             {new Date(campaign.date).toLocaleDateString("en-US", {
                                             weekday: 'long', // "Monday"

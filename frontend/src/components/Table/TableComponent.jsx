@@ -135,7 +135,7 @@ export default function TableComponent(props) {
                                     </Tooltip>
                                 </Table.TextCell>
                                 <Table.TextCell >
-                                    <Tooltip content="Delete contact">
+                                    <Tooltip content="delete contact">
                                     <IconButton icon={TrashIcon} style={{float:'left'}} intent="danger" onClick={(event)=>{event.stopPropagation(); deleteContact(profile.id)}}/> 
                                     </Tooltip>
                                 </Table.TextCell>
