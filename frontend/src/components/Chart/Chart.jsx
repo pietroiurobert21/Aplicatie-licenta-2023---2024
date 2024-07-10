@@ -70,9 +70,14 @@ export default function Chart(props) {
             setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
 
           // for barchart
-          const prevData = acceptedDeals
-          prevData[+value.MONTH-1] = +value.COUNT_VALUE;
-          setAcceptedDeals(prevData)
+          // const prevData = acceptedDeals
+          // prevData[+value.MONTH-1] = +value.COUNT_VALUE;
+          // setAcceptedDeals(prevData)
+            setAcceptedDeals(prevData => {
+              const newData = [...prevData];
+              newData[+value.MONTH - 1] = +value.COUNT_VALUE;
+              return newData;
+          });
       })
 
       res.rejectedDeals
@@ -84,26 +89,41 @@ export default function Chart(props) {
             setClosedDealsMonth(prev => prev+ (+value.COUNT_VALUE))
         
             // for barchart
-        const prevData = rejectedDeals
-        prevData[+value.MONTH-1] = +value.COUNT_VALUE;
-        setRejectedDeals(prevData)      
+        // const prevData = rejectedDeals
+        // prevData[+value.MONTH-1] = +value.COUNT_VALUE;
+        // setRejectedDeals(prevData)      
+          setRejectedDeals(prevData => {
+            const newData = [...prevData];
+            newData[+value.MONTH - 1] = +value.COUNT_VALUE;
+            return newData;
+        });
+      
       })
 
       res.proposedDeals
         .filter(value => value.YEAR === props.year)
         .map((value, index)=>{
             // for barchart
-        const prevData = proposedDeals
-        prevData[+value.MONTH-1] = +value.COUNT_VALUE;
-        setProposedDeals(prevData)    
+        // const prevData = proposedDeals
+        // prevData[+value.MONTH-1] = +value.COUNT_VALUE;
+        // setProposedDeals(prevData)    
+          setProposedDeals(prevData => {
+            const newData = [...prevData];
+            newData[+value.MONTH - 1] = +value.COUNT_VALUE;
+            return newData;
+        });
+      
       })
         
-      
+          }
+
+    useEffect(() => {
       setBarValues([{ data: acceptedDeals}, {data: rejectedDeals}, {data: proposedDeals}])
-    }
+    }, [acceptedDeals, rejectedDeals, proposedDeals])
   
     useEffect(()=>{
       retrieveStructuredData()
+      console.log(barValues)
     }, [props.year])
 
     return (

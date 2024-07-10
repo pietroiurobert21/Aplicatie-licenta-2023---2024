@@ -193,6 +193,7 @@ const getOrganizationDealsYears = async (req, res) => {
 
         if (years.length) {
             const yearsArray = years.map(yearObj => yearObj.year);
+            yearsArray.sort((a, b) => b - a);
             res.status(200).json({ success: true, years: yearsArray });
         } else {
             res.status(200).json({ success: true, years: [] });
