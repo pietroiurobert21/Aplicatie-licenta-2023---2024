@@ -76,17 +76,17 @@ export default function RegisterToCompanyCard() {
                 
                 <p id={style.pheader}> Join an organization </p>
                 <TextInput name="text-input-code" placeholder="Company Code" onChange={(e)=>{setCompanyCode(e.target.value)}}/>
-                <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}} onClick={()=>{getOrganizationByCode(companyCode)}}> Join Company </Button>            
+                <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem", overflow: 'visible'}} onClick={()=>{getOrganizationByCode(companyCode)}}> Join Company </Button>            
 
                 <p id={style.pheader}> Create an organization </p>
                 <TextInput name="text-input-company" placeholder="Company Name" onChange={(e)=>{setCompanyName(e.target.value)}} />
                 <TextInput name="text-input-employees" type="number" placeholder="Number of employees"/>
-                <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}} onClick={createCompanyFunc}> Create Company </Button>
-                <Button appearance="default" intent="danger" style={{width: "17.5rem", fontSize:"1rem"}}
+                <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem", overflow: 'visible'}} onClick={createCompanyFunc}> Create Company </Button>
+                <Button appearance="default" intent="danger" style={{width: "17.5rem", fontSize:"1rem", overflow: 'visible'}}
                     onClick={()=>{navigate('/'); localStorage.removeItem('accessToken')}}> LogOut </Button>
 
                 <div style={{position: 'relative', height: '55%'}}>
-                    <p style={{textAlign: 'center', position: 'absolute', bottom: 0, width: '100%'}}>2024 @All rights reserved</p>
+                    {/* <p style={{textAlign: 'center', position: 'absolute', bottom: 0, width: '100%'}}>2024 @All rights reserved</p> */}
                 </div>
             </div>
         </>

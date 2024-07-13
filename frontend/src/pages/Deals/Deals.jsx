@@ -251,7 +251,7 @@ export default function Deals() {
                             <Table.TextCell>
                                 <Badge color={deal.status === 'accepted' ? 'green' : deal.status === 'rejected' ? 'red' : 'inherit'}> {deal.status} </Badge>
                             </Table.TextCell>
-                            <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={100} onClick={(event)=>{event.stopPropagation(); deleteDeal(deal.id)}} style={{color:"Red"}}/> </Table.TextCell>
+                            <Table.TextCell> <IconButton icon={TrashIcon} intent="danger" marginLeft={30} onClick={(event)=>{event.stopPropagation(); deleteDeal(deal.id)}} style={{color:"Red"}}/> </Table.TextCell>
                         </Table.Row>
                     ))}
 

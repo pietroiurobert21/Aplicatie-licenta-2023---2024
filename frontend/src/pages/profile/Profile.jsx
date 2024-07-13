@@ -139,8 +139,8 @@ export default function Profile(){
                                     <StatusIndicator color="success" marginRight={16} fontSize={16}> Online </StatusIndicator>
                                     <Badge color={color} fontSize={13} margin={0} marginLeft={16}> {userRole} </Badge>
                                 </p>
-                                <Button style={{marginTop: "5%", width: "100%"}} onClick={()=>{setIsShown(true)}}> Edit profile </Button>
-                                <Button appearance="minimal" style={{marginTop: "5%", width: "100%"}} onClick={()=>{setIsShownPassword(true)}}> Update Password </Button>
+                                <Button style={{marginTop: "5%", width: "100%", overflow: 'visible'}} onClick={()=>{setIsShown(true)}}> Edit profile </Button>
+                                <Button appearance="minimal" style={{marginTop: "5%", width: "100%", overflow: 'visible'}} onClick={()=>{setIsShownPassword(true)}}> Update Password </Button>
                                 <p id={style.logout} onClick={()=>{ emptyLocalstorage()}}> <LogOutIcon/> LogOut </p>
                             </div>
                             <div className={style.contactInfoContainer}>
@@ -168,11 +168,11 @@ export default function Profile(){
                                 shouldCloseOnOverlayClick={false}
                                 id={style.profileDialog}
                                 footer={
-                                    <Pane display="flex" justifyContent="flex-end" padding={8}>
-                                        <Button marginRight={8} onClick={()=>{setIsShown(false)}}>
+                                    <Pane display="flex" style={{overflow:'visible'}} justifyContent="flex-end" padding={8}>
+                                        <Button style={{overflow:'visible'}} marginRight={8} onClick={()=>{setIsShown(false)}}>
                                             Cancel
                                         </Button>
-                                        <Button appearance="primary" onClick={() => { setIsShown(false);updateProfile();}}>
+                                        <Button style={{overflow:'visible'}} appearance="primary" onClick={() => { setIsShown(false);updateProfile();}}>
                                             Confirm
                                         </Button>
                                     </Pane>
@@ -206,10 +206,10 @@ export default function Profile(){
                                 shouldCloseOnOverlayClick={false}
                                 footer={
                                     <Pane display="flex" justifyContent="flex-end" padding={8}>
-                                        <Button marginRight={8} onClick={()=>{setIsShownPassword(false); setValidOldPassword(false)}}>
+                                        <Button style={{overflow:'visible'}} marginRight={8} onClick={()=>{setIsShownPassword(false); setValidOldPassword(false)}}>
                                             Cancel
                                         </Button>
-                                        <Button appearance="primary" onClick={() => { 
+                                        <Button style={{overflow:'visible'}} appearance="primary" onClick={() => { 
                                             if (newPassword != repeatNewPassword) alert("passwords do not match!");
                                             else if (oldPassword.trim()=='') alert("old password missing")
                                             else if (newPassword.trim()=='') alert("new password missing")

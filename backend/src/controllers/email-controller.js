@@ -24,7 +24,9 @@ const sendEmail = async (req, res) => {
 
     try {
         // Loop through each recipient to send personalized emails
-        recipients.map(async (recipient, index) => {
+
+        // slice 0 9 => only the first 9 contacts will receive emails
+        recipients.slice(0,9).map(async (recipient, index) => {
             const personalizedHtml = names && html.replace('{name}', names[index]);
             const info = {
                 from: {
@@ -36,7 +38,7 @@ const sendEmail = async (req, res) => {
                 text, // plain text body
                 html: names ? personalizedHtml : html// html body
             };
-        
+            
             // Send the email
             await transporter.sendMail(info);
         });

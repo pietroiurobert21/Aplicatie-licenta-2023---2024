@@ -46,15 +46,15 @@ export default function RegisterCard() {
                 <TextInput name="text-input-email" placeholder="Email" />
                 <TextInput name="text-input-password" type="password" placeholder="Password"/>
 
-                <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
+                <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem", overflow: 'visible'}}
                     onClick={registerUser}> Next </Button>
-                <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
+                <Button appearance="default" intent="success" style={{width: "17.5rem", fontSize:"1rem", overflow: 'visible'}}
                     onClick={()=>{navigate('/')}}> Back </Button>
 
                 <p style={{textAlign: 'center'}} onClick={()=>{navigate('/login')}}> Already have an account? </p>
 
                 <div style={{position: 'relative', height: '40%'}}>
-                    <p style={{textAlign: 'center', position: 'absolute', bottom: 0, width: '100%'}}>2024 @All rights reserved</p>
+                    {/* <p style={{textAlign: 'center', position: 'absolute', bottom: 0, width: '100%'}}>2024 @All rights reserved</p> */}
                 </div>
             </div>
         </>

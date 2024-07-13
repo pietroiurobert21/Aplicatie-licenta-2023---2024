@@ -53,17 +53,28 @@ export default function Team() {
         }
     }
 
+    const isValidEmail = (email) => {
+        // Regular expression for basic email validation
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailPattern.test(email);
+    }
+
     const handleEmailSender = async (emailAddress, content) => {
         try {
-            // await sendEmail(emailAddress, "Invitation code to CRMLite", content)
-            await fetch("http://localhost:3000/emails/sendEmail", {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify({to: [emailAddress], subject: 'Invitation code to CRMLite', text: content, html: content})
-            })
-            toaster.success("email sent successfully!")   
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailAddress.trim().length && isValidEmail(emailAddress.trim())) {
+                // await sendEmail(emailAddress, "Invitation code to CRMLite", content)
+                await fetch("http://localhost:3000/emails/sendEmail", {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({to: [emailAddress], subject: 'Invitation code to CRMLite', text: content, html: content})
+                })
+                toaster.success("email sent successfully!")   
+            } else {
+                toaster.warning("email format required")
+            }
         } catch (error) {
             toaster.warning("email could not be sent!")   
         }

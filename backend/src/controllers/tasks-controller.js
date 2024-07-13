@@ -31,11 +31,14 @@ const deleteTask = async (req, res) => {
 
 const getTasksAssignedByUserId = async (req, res) => {
     const id = req.userId
+    const employee = await Employee.findOne({where: {userId: id}});
+
     try {
         const tasks = await Tasks.findAll({
-            where: {assignedByEmployeeId: id},
+            where: {assignedByEmployeeId: employee.id},
             order: [ ['id', 'ASC'] ]
         });
+
         if(tasks) {
             const tasksWithAllProperties = await Promise.all(tasks.map(async task => {
                 const assignedToEmployee = await Employee.findByPk(task.assignedToEmployeeId);
@@ -44,10 +47,12 @@ const getTasksAssignedByUserId = async (req, res) => {
                 if (assignedToEmployee && assignedByEmployee) {
                     const assignedToUser = await User.findByPk(assignedToEmployee.userId)
                     const assignedByUser = await User.findByPk(assignedByEmployee.userId)
+                    
 
                     return { ...task.toJSON(), assignedTo:assignedToUser, assignedBy: assignedByUser };
                 }
             }));
+
             res.status(200).json({ success: true, tasks: tasksWithAllProperties });
         } else {
             res.status(404).json({ success: false,  error: "No tasks found"});
@@ -60,9 +65,10 @@ const getTasksAssignedByUserId = async (req, res) => {
 
 const getTasksAssignedToUserId = async (req, res) => {
     const id = req.userId
+    const employee = await Employee.findOne({where: {userId: id}});
     try {
         const tasks = await Tasks.findAll({
-            where: {assignedToEmployeeId: id},
+            where: {assignedToEmployeeId: employee.id},
             order: [ ['id', 'ASC'] ]
         })
         if(tasks) {

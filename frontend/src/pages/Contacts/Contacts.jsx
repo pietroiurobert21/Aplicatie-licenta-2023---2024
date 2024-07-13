@@ -49,6 +49,11 @@ export default function Contacts() {
     const [ content, setContent ] = useState('')
     const [ subject, setSubject ] = useState('')
 
+    const [ toasterMessage, setToasterMessage ] = useState({
+        added: 0,
+        errors: 0,
+        missing: 0
+    }) 
     const retrieveContacts = async () => {
         const query = new URLSearchParams(filters).toString();
         const res = await fetch(`http://localhost:3000/contacts/customers/?${query}`, {
@@ -100,6 +105,7 @@ export default function Contacts() {
             })
             if (response.ok) {
                 toaster.success("contact added!", {id:'1'})
+                setAdded(prev => prev + 1)
             } else {
                 const responseJson = await response.json()
                 toaster.danger(responseJson.error, {id:'1'})
@@ -109,6 +115,38 @@ export default function Contacts() {
             toaster.danger('missing fields!', {id:'1'});
         }
     }
+
+    const addNewContactNoToaster = async (contact) => {
+        console.log(contact)
+        let missingFields = false;
+        for(let key in newContact)
+            if (contact[key] == '') {
+                missingFields = true;
+            }
+
+        if (missingFields==false) {
+            const response = await fetch("http://localhost:3000/contacts", {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(contact)
+            })
+            if (response.ok) {
+                setToasterMessage(prev => ({...prev, added: prev.added + 1}))
+            } else {
+                const responseJson = await response.json()
+                setToasterMessage(prev => ({...prev, errors: prev.errors + 1}))
+                // toaster.danger(responseJson.error, {id:'1'})
+            }
+        } else {
+            setToasterMessage(prev => ({...prev, missing: prev.missing + 1}))
+            // toaster.danger('missing fields!', {id:'1'});
+        }
+        setUpdated(Math.floor(Math.random() * 9000))
+    }
+
 
     const startMarketingCampaign = async () => {
         const emailAddress = selected.map(item => item.emailAddress);
@@ -155,14 +193,25 @@ export default function Contacts() {
         setUpdated(Math.floor(Math.random() * 9000))
     }
 
+    const [updatedMultiple, setUpdatedMultiple] = useState(0)
     const saveMultipleContacts = async () => {
+        setToasterMessage({
+            added: 0,
+            errors: 0,
+            missing: 0
+        })
         for (const contact of jsonArray) {
-            contact.organizationId = organizationId
-            if (contact.pipelineStatus && (contact.pipelineStatus=='lead' || contact.pipelineStatus=='customer')) {
-                await addNewContact(contact);
+            if (Object.keys(contact).length == 7 && contact.firstName && contact.lastName && contact.professionalTitle && contact.emailAddress && contact.homeAddress && contact.phoneNumber && contact.companyName) {
+                contact.organizationId = organizationId
+                contact.pipelineStatus = 'customer'
+                
+                await addNewContactNoToaster(contact);
+            } else {
+                toaster.danger("Incorrect collumns found")
             }
-        }
-        setUpdated(prev => prev + 1);
+        }   
+
+        setUpdatedMultiple(prev => prev + 1);
     }
 
 
@@ -174,6 +223,34 @@ export default function Contacts() {
     useEffect(()=>{
 
     }, [contacts])
+
+    useEffect(()=>{
+        console.log(toasterMessage)
+
+        if (toasterMessage.added > 1) {
+            toaster.notify(toasterMessage.added + " customers added")
+        } else if (toasterMessage.added == 1) {
+            toaster.notify(toasterMessage.added + " customer added")
+        }
+
+        if (toasterMessage.errors > 1) {
+            toaster.notify(toasterMessage.errors + " contacts already exist or do not meet the format!")
+        } else if (toasterMessage.errors == 1) {
+            toaster.notify(toasterMessage.errors + " contact already exists or does not meet the format!")
+        }
+
+        if (toasterMessage.missing > 1) {
+            toaster.notify(toasterMessage.missing + " records have missing fields!")
+        } else if (toasterMessage.missing == 1) {
+            toaster.notify(toasterMessage.missing + " record has missing fields!")
+        }
+
+        setToasterMessage({
+            added: 0,
+            errors: 0,
+            missing: 0
+        })
+    }, [updatedMultiple])
     
 
     const [ shownSelected, setShownSelected ] = useState()
@@ -238,11 +315,11 @@ export default function Contacts() {
                                 onCloseComplete={()=>{setShowMarketingDialog(false); setCheckedAllContacts(false); setShownSelected(null); setSelected([])}}
                                 shouldCloseOnOverlayClick={false}
                                 footer={
-                                    <Pane display="flex" justifyContent="flex-end" padding={8}>
-                                        <Button marginRight={8} onClick={()=>{setShowMarketingDialog(false); setCheckedAllContacts(false); setSelected([])}}>
+                                    <Pane display="flex" justifyContent="flex" padding={8}>
+                                        <Button marginRight={8} style={{overflow:'visible'}} onClick={()=>{setShowMarketingDialog(false); setCheckedAllContacts(false); setSelected([])}}>
                                             Cancel
                                         </Button>
-                                        <Button appearance="primary" onClick={() => {setShowMarketingDialog(false); setCheckedAllContacts(false); startMarketingCampaign();}}>
+                                        <Button appearance="primary" style={{overflow:'visible'}} onClick={() => {setShowMarketingDialog(false); setCheckedAllContacts(false); startMarketingCampaign();}}>
                                             Confirm
                                         </Button>
                                     </Pane>
@@ -292,10 +369,10 @@ export default function Contacts() {
             onCloseComplete={() => setUploadIsShown(false)}
             footer={
                 <Pane display="flex" justifyContent="flex-end" padding={8}>
-                    <Button marginRight={8} onClick={()=>setUploadIsShown(false)}>
+                    <Button style={{overflow:'visible'}} marginRight={8} onClick={()=>setUploadIsShown(false)}>
                         Cancel
                     </Button>
-                    <Button appearance="primary" onClick={() => {console.log(jsonArray); saveMultipleContacts()}}>
+                    <Button style={{overflow:'visible'}} appearance="primary" onClick={() => {console.log(jsonArray); saveMultipleContacts()}}>
                         Confirm
                     </Button>
                 </Pane>

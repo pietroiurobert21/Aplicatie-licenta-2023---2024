@@ -144,7 +144,12 @@ export default function Tasks() {
 
     useEffect(()=>{
         role === "administrator" ? retrieveTaskAssignedBy() : retrieveTaskAssignedTo()
-    }, [employeeId, effect])
+    }, [employeeId, effect, role])
+
+    // useEffect(()=>{
+    //     console.log(role)
+    //     console.log(tasks)
+    // }, [tasks,role])
 
     
     const [ selected, setSelected ] = useState()

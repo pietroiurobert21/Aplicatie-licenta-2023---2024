@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import TableComponent from "../../components/Table/TableComponent.jsx"
-import { Button, NewPersonIcon, toaster, Popover, FilterIcon, TextInputField, DocumentIcon } from "evergreen-ui";
+import { Button, NewPersonIcon, toaster, Popover, FilterIcon, TextInputField, DocumentIcon, Pane, Dialog } from "evergreen-ui";
 import DialogComponent from "../../components/Dialog/DialogComponent.jsx";
 import CheckToken from '../../middlewares/CheckToken.jsx'
 import style from './Leads.module.css';
+import FileUploader from '../../components/FileUploader/FileUploader.jsx'
 
 export default function Leads() {
     CheckToken()    
@@ -20,6 +21,7 @@ export default function Leads() {
     const accessToken = localStorage.getItem('accessToken')
 
     const [ isShown, setIsShown ] =   useState(false)
+    const [ uploadIsShown, setUploadIsShown ] = useState(false);
 
     const [ shownLead, setShownLead ] = useState({})
     const [ updated, setUpdated ] = useState()
@@ -35,6 +37,7 @@ export default function Leads() {
         pipelineStatus: 'lead',
         organizationId: ''
     });
+    const [organizationId, setOrganizationId] = useState(-1)
 
     const addNewLead = async () => {
         let missingFields = false;
@@ -91,10 +94,67 @@ export default function Leads() {
             }
         }).then(data=>data.json())
         .then(data=>{
+            setOrganizationId(data.organization.id);
             setNewLead(prev=>({...prev, ['organizationId']: data.organization.organizationId}))
         })
     }
     
+    const [ toasterMessage, setToasterMessage ] = useState({
+        added: 0,
+        errors: 0,
+        missing: 0
+    }) 
+    const addNewLeadNoToaster = async (contact) => {
+        let missingFields = false;
+        for(let key in contact)
+            if (contact[key] == '') {
+                missingFields = true;
+            }
+        console.log(contact)
+        if (missingFields==false) {
+            const response = await fetch("http://localhost:3000/contacts", {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                body: JSON.stringify(contact)
+            })
+            if (response.ok) {
+                setToasterMessage(prev => ({...prev, added: prev.added + 1}))
+            } else {
+                const responseJson = await response.json();
+                setToasterMessage(prev => ({...prev, errors: prev.errors + 1}))
+            }
+        } else {
+            setToasterMessage(prev => ({...prev, missing: prev.missing + 1}))
+        }
+        setUpdated(Math.floor(Math.random() * 9000))
+    }
+
+
+    const [updatedMultiple, setUpdatedMultiple] = useState(0)
+
+    const saveMultipleContacts = async () => {
+        setToasterMessage({
+            added: 0,
+            errors: 0,
+            missing: 0
+        })
+        for (const contact of jsonArray) {
+            if (Object.keys(contact).length == 7 && contact.firstName && contact.lastName && contact.professionalTitle && contact.emailAddress && contact.homeAddress && contact.phoneNumber && contact.companyName) {
+                contact.organizationId = organizationId
+                contact.pipelineStatus = 'lead'
+                
+                await addNewLeadNoToaster(contact);
+            } else {
+                toaster.danger("Incorrect collumns found")
+            }
+        }   
+
+        setUpdatedMultiple(prev => prev + 1);
+    }
+
 
 
     useEffect(()=>{
@@ -106,6 +166,35 @@ export default function Leads() {
 
     }, [leads])
 
+    useEffect(()=>{
+        console.log(toasterMessage)
+
+        if (toasterMessage.added > 1) {
+            toaster.notify(toasterMessage.added + " customers added")
+        } else if (toasterMessage.added == 1) {
+            toaster.notify(toasterMessage.added + " customer added")
+        }
+
+        if (toasterMessage.errors > 1) {
+            toaster.notify(toasterMessage.errors + " contacts already exist or do not meet the format!")
+        } else if (toasterMessage.errors == 1) {
+            toaster.notify(toasterMessage.errors + " contact already exists or does not meet the format!")
+        }
+
+        if (toasterMessage.missing > 1) {
+            toaster.notify(toasterMessage.missing + " records have missing fields!")
+        } else if (toasterMessage.missing == 1) {
+            toaster.notify(toasterMessage.missing + " record has missing fields!")
+        }
+
+        setToasterMessage({
+            added: 0,
+            errors: 0,
+            missing: 0
+        })
+    }, [updatedMultiple])
+
+    const [ jsonArray, setJSONArray ] = useState([])
     return (
         <div className={style.contactsPage}>
             <div className={style.headerContacts}>
@@ -142,8 +231,8 @@ export default function Leads() {
                                     defaultValue={filters.companyName}
                                     onChange={(e)=>{setFilters((prev)=>({...prev, ['companyName']: e.target.value}))}}
                                 />
-                                <Button appearance ="minimal" onClick={()=>{setFilters({}); close()}}> Reset filters </Button>
-                                <Button appearance ="minimal" onClick={()=>{close()}}> Close </Button>
+                                <Button style={{overflow:'visible'}} appearance ="minimal" onClick={()=>{setFilters({}); close()}}> Reset filters </Button>
+                                <Button style={{overflow:'visible'}} appearance ="minimal" onClick={()=>{close()}}> Close </Button>
                             </div>
                         )} shouldCloseOnExternalClick={false}>
                             <button> <FilterIcon/> Filters </button> 
@@ -167,6 +256,29 @@ export default function Leads() {
                     }
             </>
             }
+
+        <Dialog
+            isShown={uploadIsShown}
+            title="Import data from external files"
+            onCloseComplete={() => setUploadIsShown(false)}
+            footer={
+                <Pane display="flex" justifyContent="flex-end" padding={8}>
+                    <Button style={{overflow:'visible'}} marginRight={8} onClick={()=>setUploadIsShown(false)}>
+                        Cancel
+                    </Button>
+                    <Button style={{overflow:'visible'}} appearance="primary" onClick={() => {console.log(jsonArray); saveMultipleContacts()}}>
+                        Confirm
+                    </Button>
+                </Pane>
+            }
+        >
+            <FileUploader setJSONArray={setJSONArray}/>
+        </Dialog>
+
+
+
+
+
             <DialogComponent title={"Add new lead"}  data={newLead} isShown={isShown} setIsShown={setIsShown} setNewContact={setNewLead} newContact={newLead} handleConfirm={addNewLead}/> 
         </div>
     )

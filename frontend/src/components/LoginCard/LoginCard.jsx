@@ -79,7 +79,7 @@ export default function LoginCard(props) {
                 <TextInput name="text-input-password" type="password" placeholder="Password" 
                     onChange={(e)=>setPassword(e.target.value)}/>
 
-                <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem"}}
+                <Button appearance="primary" intent="success" style={{width: "17.5rem", fontSize:"1rem", overflow: 'visible'}}
                     onClick={loginFunction}> Sign in </Button>
 
                 {/* <p> I forgot my password </p> */}
@@ -87,7 +87,7 @@ export default function LoginCard(props) {
                 <p style={{textAlign: 'center'}} onClick={()=>{navigate('/register')}}> Get started for free </p>
            
                 <div style={{position: 'relative', height: '55%'}}>
-                    <p style={{textAlign: 'center', position: 'absolute', bottom: 0, width: '100%'}}>2024 @All rights reserved</p>
+                    {/* <p style={{textAlign: 'center', position: 'absolute', bottom: 0, width: '100%'}}>2024 @All rights reserved</p> */}
                 </div>
             </div>
         </>
