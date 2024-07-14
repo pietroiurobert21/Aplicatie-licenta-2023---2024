@@ -1,7 +1,7 @@
 import style from './LoginCard.module.css';
 import { TextInput, Button, toaster } from 'evergreen-ui';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import reactLogo from '../../assets/react.svg';
 
@@ -66,6 +66,7 @@ export default function LoginCard(props) {
             navigate('/registerToCompany')
         }
     }
+
 
     return (
         <>

@@ -11,12 +11,36 @@ import LoginCard from '../../../components/LoginCard/LoginCard';
 
 export default function Login() {
     const navigate = useNavigate()
+    const [belongs, setBelongs] = useState(false)
+
+    const checkUserBelongsToOrganization = async () => {
+        const data = await fetch('http://localhost:3000/users/belongsToOrganization', {
+            method: 'POST',
+            headers: {
+                "Content-type": "application/json",
+            },
+            body: JSON.stringify({email})
+        })
+        const response = await data.json();
+        if (response.success) {
+            setBelongs(true)
+        } else {
+            setBelongs(false)
+        }
+    }
+
+    useEffect(() => {
+        checkUserBelongsToOrganization()
+    }, [])
+
     useEffect(() => {
         const token = localStorage.getItem("accessToken")
-        if (token) {
+        if (token && belongs) {
             navigate('/profile')
+        } else if (token && !belongs) {
+            navigate('/registerToCompany')
         }
-    }, [])
+    }, [belongs])
 
     return (
         <>
